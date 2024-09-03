@@ -85,11 +85,11 @@ export class AuthService {
     });
   }
 
-  loginUser(user: Pick<UsersModel, 'id' | 'email'>) {
+  loginUser(user: Pick<UsersModel, 'id' | 'email' | 'nickname'>) {
     return {
       accessToken: this.signToken(user, false),
       refreshToken: this.signToken(user, true),
-      user,
+      user: { userEmail: user.email, userNickname: user.nickname },
     };
   }
 
