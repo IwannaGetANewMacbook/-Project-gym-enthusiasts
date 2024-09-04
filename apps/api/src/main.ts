@@ -21,6 +21,10 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
+
+  /**HTTP 관련된 모든 excpetion이 발생할때 마다 이 서버 전체에서 HttpExceptionFilter 가 적용됨. */
+  // app.useGlobalFilters(new HttpExceptionFilter());
+
   await app.listen(3000);
 }
 bootstrap();

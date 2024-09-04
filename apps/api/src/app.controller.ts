@@ -4,6 +4,7 @@ import { AccessTokenGuard } from './auth/guard/bearer-token.guard';
 
 @Controller()
 export class AppController {
+  getHello: any;
   constructor(private readonly appService: AppService) {}
 
   @Get()

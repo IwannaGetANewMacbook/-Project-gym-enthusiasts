@@ -10,6 +10,7 @@ import { Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Login } from './components/login';
 import { Registraion } from './components/registration';
+import { Post } from './components/Post';
 
 function App() {
   return (
@@ -54,6 +55,18 @@ function App() {
                 <MainBg />
                 <br />
                 <Registraion></Registraion>
+              </>
+            }
+          />
+          <Route
+            path='/post'
+            element={
+              <>
+                <NavBar></NavBar>
+                <MainBg />
+                <br />
+
+                <Post></Post>
               </>
             }
           />

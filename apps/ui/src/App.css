@@ -49,10 +49,10 @@
 }
 
 .cardImg {
-  height: auto;
+  /* height: auto; */
   max-height: 400px;
-  width: auto;
-  /* max-width: 300px; */
+  /* width: auto; */
+  max-width: 300px;
 }
 
 .loader {
@@ -64,4 +64,24 @@
   display: inline-block;
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
+}
+
+.navHover:hover {
+  -webkit-transform: scale(1.3);
+  transform: scale(1.3);
+}
+
+.post-post-label {
+  margin: 5px 0 20px 0;
+  font-weight: bold;
+  font-size: 13px;
+  color: #0095f6;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.post-post-image-minimize {
+  max-width: 10%;
+  max-height: 10%;
+  display: block;
 }

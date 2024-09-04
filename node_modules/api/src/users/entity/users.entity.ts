@@ -1,16 +1,29 @@
-import { Exclude } from 'class-transformer';
-import { IsEmail, IsString, Length } from 'class-validator';
-import { BaseModel } from 'src/common/entity/base.entity';
-import { Column, Entity } from 'typeorm';
+/**
+ * enum: 특정한 값들이 지정되어 있고 이 값들만 존재할 수 있다고 했을 때 유용함.
+ */
+
+import { PostsModel } from 'src/posts/entity/posts.entity';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { RolesEnum } from '../const/roles.const';
+import { BaseModel } from 'src/common/entity/base.entity';
+import { IsEmail, IsString, Length } from 'class-validator';
+import { Exclude } from 'class-transformer';
+import { ChatsModel } from 'src/chats/entity/chat.entity';
+import { MessagesModel } from 'src/chats/messages/entity/messages.entity';
+import { CommentsModel } from 'src/posts/comments/entity/comments.entity';
+// import { UserFollowersModel } from './user-followers.entity';
 
 @Entity()
 export class UsersModel extends BaseModel {
-  @Column()
+  @Column({ length: 20, unique: true })
+  // 1) 길이가 20을 넘지 않을 것.
+  // 2) 유일무이한 값이 될 것.
+  @IsString()
   @Length(1, 20)
   nickname: string;
 
   @Column({ unique: true })
+  // 1) 유일무이한 값이 될 것.
   @IsString()
   @IsEmail()
   email: string;
@@ -40,4 +53,37 @@ export class UsersModel extends BaseModel {
 
   @Column({ enum: Object.values(RolesEnum), default: RolesEnum.USER })
   role: RolesEnum;
+
+  @OneToMany(() => PostsModel, (post) => post.author)
+  posts: PostsModel[];
+
+  @ManyToMany(() => ChatsModel, (chat) => chat.users)
+  @JoinTable()
+  chats: ChatsModel[];
+
+  @OneToMany(() => MessagesModel, (message) => message.author)
+  messages: MessagesModel;
+
+  @OneToMany(() => CommentsModel, (comment) => comment.author)
+  postComments: CommentsModel[];
+
+  // // 나를 팔로우 하고 있는 사람들
+  // @OneToMany(() => UserFollowersModel, (ufm) => ufm.follower)
+  // followers: UserFollowersModel[];
+
+  // // 팔로우 당하고 있는 사람들(내가 팔로우 하는 사람들)
+  // @OneToMany(() => UserFollowersModel, (ufm) => ufm.followee)
+  // followees: UserFollowersModel[];
+
+  // @Column({
+  //   nullable: false,
+  //   default: 0,
+  // })
+  // followerCount: number;
+
+  // @Column({
+  //   nullable: false,
+  //   default: 0,
+  // })
+  // followeeCount: number;
 }

@@ -1,10 +1,8 @@
 import axios from 'axios';
 import { useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
-
-import ListGroup from 'react-bootstrap/ListGroup';
-
 import Col from 'react-bootstrap/Col';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 import { getPost } from '../store/post';
 import { useAppDispatch, useAppSelector } from '../hooks';
@@ -50,12 +48,14 @@ export function Cards() {
   return postSlice.map((v, i) => {
     return (
       <Col sm={4} key={i}>
-        <Card>
-          <Card.Img
-            variant='top'
-            src={`../../public/wk${i + 1}.jpg`}
-            className='cardImg'
-          />
+        <Card style={{ maxWidth: '300px' }}>
+          <div style={{ textAlign: 'center' }}>
+            <Card.Img
+              variant='top'
+              src={`../../public/wk${i + 1}.jpg`}
+              className='cardImg'
+            />
+          </div>
           <Card.Body>
             <Card.Title>{v.title}</Card.Title>
             <Card.Text>{v.content}</Card.Text>

@@ -16,7 +16,7 @@ export function NavBar() {
   return (
     <Navbar expand='lg' className='bg-body-tertiary'>
       <Container>
-        <Navbar.Brand href='#home'>LIMITLESS</Navbar.Brand>
+        <Navbar.Brand className='navHover'>LIMITLESS</Navbar.Brand>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='me-auto'>
@@ -29,7 +29,13 @@ export function NavBar() {
             </Nav.Link>
             {token ? <NavLogout></NavLogout> : <NavLogin></NavLogin>}
 
-            <Nav.Link href='#link'>Link</Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                navigate('/post');
+              }}
+            >
+              Post
+            </Nav.Link>
             {/* <NavDropdown title='Dropdown' id='basic-nav-dropdown'>
               <NavDropdown.Item href='#action/3.1'>Action</NavDropdown.Item>
               <NavDropdown.Item href='#action/3.2'>
