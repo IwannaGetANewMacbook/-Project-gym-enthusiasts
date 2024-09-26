@@ -31,9 +31,23 @@ export function Post() {
 
   useEffect(() => {
     if (!accessToken) {
-      alert('토큰이 없습니다. 로그인 해 주십시오');
+      alert(' 로그인 해 주십시오');
       navigate('/auth/login/email');
+      return;
     }
+    axios
+      .get(`${env.VITE_HOST}/auth/checkValidToken`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((r) => {
+        console.log('유효한 토큰입니다', '\n', `${r.data}`);
+      })
+      .catch((e) => {
+        console.log(e.response?.data.message);
+        alert('세션이 만료되었습니다. 다시 로그인해주세요.');
+        window.localStorage.clear();
+        navigate('/auth/login/email');
+      });
   }, []);
 
   return (
@@ -103,6 +117,13 @@ export function Post() {
               navigate('/');
             })
             .catch((e) => {
+              if (e.response.status === 401) {
+                alert(
+                  '세션이 만료되었거나 토큰이 없습니다\n 다시 로그인 해주세요.'
+                );
+                navigate('/auth/login/email');
+                return;
+              }
               console.log(e.response?.data.message);
               alert(e.response?.data.message);
               window.location.reload();

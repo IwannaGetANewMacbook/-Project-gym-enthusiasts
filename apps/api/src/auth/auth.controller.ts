@@ -1,4 +1,11 @@
-import { Body, Controller, Headers, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Headers,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { BasicTokenGuard } from './guard/basic-token.guard';
 import { RefreshTokenGuard } from './guard/bearer-token.guard';
@@ -58,5 +65,10 @@ export class AuthController {
   registerWithEmail(@Body() body: RegisterUserDto) {
     const { nickname, email, password } = body;
     return this.authService.registerWithEmail({ nickname, email, password });
+  }
+
+  @Get('checkValidToken')
+  checkValidToken() {
+    return true;
   }
 }

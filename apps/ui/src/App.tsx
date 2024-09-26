@@ -37,6 +37,16 @@ function App() {
             }
           />
           <Route
+            path='/test'
+            element={
+              <>
+                <NavBar></NavBar>
+                <MainBg />
+                <br />
+              </>
+            }
+          />
+          <Route
             path='/auth/login/email'
             element={
               <>
