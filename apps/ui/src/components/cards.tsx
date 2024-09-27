@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
@@ -65,7 +64,7 @@ export function Cards() {
     return (
       <Col sm={4} key={i}>
         <Card style={{ maxWidth: '300px' }}>
-          <div style={{ textAlign: 'center' }}>
+          <div className='cardImgContainer'>
             <Card.Img
               variant='top'
               src={`${env.VITE_HOST}${v.images[0]}`}
@@ -73,11 +72,11 @@ export function Cards() {
             />
           </div>
           <Card.Body>
-            <Card.Title>{v.title}</Card.Title>
-            <Card.Text>{v.content}</Card.Text>
+            <Card.Title className='cardTitleFixed'>{v.title}</Card.Title>
+            <Card.Text className='cardBodyFixed'>{v.content}</Card.Text>
           </Card.Body>
           <ListGroup className='list-group-flush'>
-            <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+            {/* <ListGroup.Item>Vestibulum at eros</ListGroup.Item> */}
             <ListGroup.Item>작성자: {v.author.nickname}</ListGroup.Item>
           </ListGroup>
           <Card.Footer>

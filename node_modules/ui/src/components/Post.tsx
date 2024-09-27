@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import defaultProfile from '../assets/No-photo.jpg';
 
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
@@ -51,17 +52,8 @@ export function Post() {
   }, []);
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'left',
-        position: 'relative',
-        marginBottom: '100px',
-      }}
-    >
-      <Card style={{ width: '80%' }}>
+    <div className='post-container'>
+      <Card className='post-card'>
         <Form.Group controlId='formFileMultiple' className='mb-3'>
           <Form.Label>사진을 올려주세요.</Form.Label>
           <Form.Control type='file' multiple onChange={handleImgForm} />
@@ -84,50 +76,85 @@ export function Post() {
         </Card.Body>
       </Card>
       <Button
-        style={{
-          position: 'absolute',
-          bottom: -50,
-        }}
+        className='post-button'
         variant='dark'
         type='button'
         onClick={() => {
+          // if a user doesn't upload imgFile, automatically upload defalut imgFile.
           if (!imageFile) {
-            alert('이미지를 넣어 주십시오.');
-            window.location.reload();
-          }
+            // fetch default image and set it to imageFile state, then post
+            fetch(defaultProfile)
+              .then((res) => res.blob())
+              .then((blob) => {
+                const defaultFile = new File([blob], 'defaultProfile.jpg', {
+                  type: blob.type,
+                });
+                setimageFile(defaultFile);
 
-          const formData = new FormData();
-          formData.append('title', title);
-          formData.append('content', content);
-          formData.append('image', imageFile);
-          axios
-            .post(
-              `${env.VITE_HOST}/posts`,
-              formData,
+                // Create the form data and post immediately after setting the default image
+                const formData = new FormData();
+                formData.append('title', title);
+                formData.append('content', content);
+                formData.append('image', defaultFile);
 
-              {
+                axios
+                  .post(`${env.VITE_HOST}/posts`, formData, {
+                    headers: {
+                      Authorization: `Bearer ${accessToken}`,
+                    },
+                  })
+                  .then((r) => {
+                    console.log(r.data);
+                    alert('포스팅 완료!');
+                    navigate('/');
+                  })
+                  .catch((e) => {
+                    if (e.response.status === 401) {
+                      alert(
+                        '세션이 만료되었거나 토큰이 없습니다\n 다시 로그인 해주세요.'
+                      );
+                      navigate('/auth/login/email');
+                      return;
+                    }
+                    console.log(e.response?.data.message);
+                    alert(e.response?.data.message);
+                    window.location.reload();
+                  });
+              })
+              .catch((error) =>
+                console.error('Error fetching default profile image:', error)
+              );
+          } else {
+            // If imageFile exists, directly post
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('content', content);
+            formData.append('image', imageFile);
+
+            axios
+              .post(`${env.VITE_HOST}/posts`, formData, {
                 headers: {
                   Authorization: `Bearer ${accessToken}`,
                 },
-              }
-            )
-            .then((r) => {
-              console.log(r.data);
-              alert('포스팅 완료!');
-              navigate('/');
-            })
-            .catch((e) => {
-              if (e.response.status === 401) {
-                alert(
-                  '세션이 만료되었거나 토큰이 없습니다\n 다시 로그인 해주세요.'
-                );
-                navigate('/auth/login/email');
-                return;
-              }
-              console.log(e.response?.data.message);
-              alert(e.response?.data.message);
-              window.location.reload();
-            });
+              })
+              .then((r) => {
+                console.log(r.data);
+                alert('포스팅 완료!');
+                navigate('/');
+              })
+              .catch((e) => {
+                if (e.response.status === 401) {
+                  alert(
+                    '세션이 만료되었거나 토큰이 없습니다\n 다시 로그인 해주세요.'
+                  );
+                  navigate('/auth/login/email');
+                  return;
+                }
+                console.log(e.response?.data.message);
+                alert(e.response?.data.message);
+                window.location.reload();
+              });
+          }
         }}
       >
         Post
