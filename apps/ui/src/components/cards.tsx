@@ -62,7 +62,13 @@ export function Cards() {
 
   return dataFromServer.map((v, i) => {
     return (
-      <Col sm={4} key={i}>
+      <Col
+        sm={4}
+        key={i}
+        onClick={() => {
+          navigate(`/detail/${v.id}`);
+        }}
+      >
         <Card style={{ maxWidth: '300px' }}>
           <div className='cardImgContainer'>
             <Card.Img
@@ -71,16 +77,11 @@ export function Cards() {
               className='cardImg'
             />
           </div>
-          <Card.Body>
-            <Card.Title className='cardTitleFixed'>{v.title}</Card.Title>
-            <Card.Text className='cardBodyFixed'>{v.content}</Card.Text>
-          </Card.Body>
-          <ListGroup className='list-group-flush'>
-            {/* <ListGroup.Item>Vestibulum at eros</ListGroup.Item> */}
-            <ListGroup.Item>작성자: {v.author.nickname}</ListGroup.Item>
-          </ListGroup>
+          <ListGroup className='list-group-flush'></ListGroup>
           <Card.Footer>
-            <small className='text-muted'>{v.createdAt}</small>
+            <small className='text-muted'>
+              <strong>{v.author.nickname}</strong> <div></div> {v.createdAt}
+            </small>
           </Card.Footer>
         </Card>
         <br />

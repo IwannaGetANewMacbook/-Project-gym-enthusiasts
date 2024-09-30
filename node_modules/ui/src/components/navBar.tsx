@@ -51,7 +51,7 @@ export function NavBar() {
         </Navbar.Collapse>
       </Container>
       <br />
-      <Nav className='me-auto' style={{ width: '100px', margin: 'auto' }}>
+      <Nav className='me-auto text-center user-info-nav'>
         {localStorage.getItem('user') ? `${userInfo.userNickname}` : null}
       </Nav>
     </Navbar>

@@ -57,7 +57,7 @@ export class PostsController {
   }
 
   @Get(':id')
-  @IsPublic()
+  // @IsPublic()
   // @UseInterceptors(LogInterceptor)
   getPost(@Param('id', ParseIntPipe) id: number) {
     return this.postsService.getPostById(id);

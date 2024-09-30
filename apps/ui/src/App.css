@@ -36,6 +36,13 @@
   display: block;
 }
 
+/* navBar.tsx */
+.user-info-nav {
+  width: 100px;
+  margin: auto;
+  font-size: 15px;
+}
+
 /* card.tsx */
 .cardImgContainer {
   width: 100%; /* 원하는 너비 */

@@ -11,6 +11,7 @@ import { Route, Routes } from 'react-router-dom';
 import { Login } from './components/login';
 import { Registraion } from './components/registration';
 import { Post } from './components/Post';
+import { CardsDetail } from './components/cards.detail';
 
 function App() {
   return (
@@ -31,6 +32,21 @@ function App() {
                 <Container>
                   <Row>
                     <Cards></Cards>
+                  </Row>
+                </Container>
+              </>
+            }
+          />
+          <Route
+            path='/detail/:id'
+            element={
+              <>
+                <NavBar></NavBar>
+                <MainBg />
+                <br />
+                <Container>
+                  <Row>
+                    <CardsDetail></CardsDetail>
                   </Row>
                 </Container>
               </>
@@ -75,7 +91,6 @@ function App() {
                 <NavBar></NavBar>
                 <MainBg />
                 <br />
-
                 <Post></Post>
               </>
             }
