@@ -12,6 +12,8 @@ import { Login } from './components/login';
 import { Registraion } from './components/registration';
 import { Post } from './components/Post';
 import { CardsDetail } from './components/cards.detail';
+import { Footer } from './components/footer';
+import { MyPage } from './components/myPage';
 
 function App() {
   return (
@@ -34,6 +36,7 @@ function App() {
                     <Cards></Cards>
                   </Row>
                 </Container>
+                <Footer></Footer>
               </>
             }
           />
@@ -49,16 +52,7 @@ function App() {
                     <CardsDetail></CardsDetail>
                   </Row>
                 </Container>
-              </>
-            }
-          />
-          <Route
-            path='/test'
-            element={
-              <>
-                <NavBar></NavBar>
-                <MainBg />
-                <br />
+                <Footer></Footer>
               </>
             }
           />
@@ -70,6 +64,7 @@ function App() {
                 <MainBg />
                 <br />
                 <Login></Login>
+                <Footer></Footer>
               </>
             }
           />
@@ -81,6 +76,7 @@ function App() {
                 <MainBg />
                 <br />
                 <Registraion></Registraion>
+                <Footer></Footer>
               </>
             }
           />
@@ -92,6 +88,34 @@ function App() {
                 <MainBg />
                 <br />
                 <Post></Post>
+                <Footer></Footer>
+              </>
+            }
+          />
+          <Route
+            path='/mypage'
+            element={
+              <>
+                <NavBar></NavBar>
+                <MainBg />
+                <br />
+                <Container>
+                  <Row>
+                    <MyPage></MyPage>
+                  </Row>
+                </Container>
+                <Footer></Footer>
+              </>
+            }
+          />
+          <Route
+            path='/test'
+            element={
+              <>
+                <NavBar></NavBar>
+                <MainBg />
+                <br />
+                <Footer></Footer>
               </>
             }
           />

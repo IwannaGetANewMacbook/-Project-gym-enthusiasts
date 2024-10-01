@@ -27,7 +27,6 @@ export function NavBar() {
             >
               Home
             </Nav.Link>
-            {token ? <NavLogout></NavLogout> : <NavLogin></NavLogin>}
 
             <Nav.Link
               onClick={() => {
@@ -36,6 +35,14 @@ export function NavBar() {
             >
               Post
             </Nav.Link>
+            {/* <Nav.Link
+              onClick={() => {
+                navigate('/mypage');
+              }}
+            >
+              MyPage
+            </Nav.Link> */}
+            {token ? <NavLogout></NavLogout> : <NavLogin></NavLogin>}
             {/* <NavDropdown title='Dropdown' id='basic-nav-dropdown'>
               <NavDropdown.Item href='#action/3.1'>Action</NavDropdown.Item>
               <NavDropdown.Item href='#action/3.2'>
@@ -52,7 +59,9 @@ export function NavBar() {
       </Container>
       <br />
       <Nav className='me-auto text-center user-info-nav'>
-        {localStorage.getItem('user') ? `${userInfo.userNickname}` : null}
+        <h6>
+          {localStorage.getItem('user') ? `${userInfo.userNickname}님` : null}
+        </h6>
       </Nav>
     </Navbar>
   );

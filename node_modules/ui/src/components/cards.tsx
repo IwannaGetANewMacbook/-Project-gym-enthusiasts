@@ -69,7 +69,7 @@ export function Cards() {
           navigate(`/detail/${v.id}`);
         }}
       >
-        <Card style={{ maxWidth: '300px' }}>
+        <Card style={{ maxWidth: '300px', cursor: 'pointer' }}>
           <div className='cardImgContainer'>
             <Card.Img
               variant='top'

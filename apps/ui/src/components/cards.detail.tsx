@@ -56,36 +56,39 @@ export function CardsDetail() {
 
   return dataFromServer.map((v, i) => {
     return (
-      <Col sm={4} key={i}>
-        <Card style={{ maxWidth: '300px' }}>
-          <div className='cardImgContainer'>
-            <Card.Img
-              variant='top'
-              src={`${env.VITE_HOST}${dataFromServer[0].images[0]}`}
-              className='cardImg'
-            />
-          </div>
-          <Card.Body>
-            <Card.Title className='cardTitleFixed'>
-              {dataFromServer[0].title}
-            </Card.Title>
-            <Card.Text className='cardBodyFixed'>
-              {dataFromServer[0].content}
-            </Card.Text>
-          </Card.Body>
-          <ListGroup className='list-group-flush'>
-            {/* <ListGroup.Item>Vestibulum at eros</ListGroup.Item> */}
-            <ListGroup.Item>
-              작성자: {dataFromServer[0].author.nickname}
-            </ListGroup.Item>
-          </ListGroup>
-          <Card.Footer>
-            <small className='text-muted'>{dataFromServer[0].createdAt}</small>
-          </Card.Footer>
-        </Card>
-        <br />
-      </Col>
+      <div key={i} className='center-align'>
+        <Col sm={4}>
+          <Card style={{ maxWidth: '300px' }}>
+            <div className='cardImgContainer'>
+              <Card.Img
+                variant='top'
+                src={`${env.VITE_HOST}${dataFromServer[0].images[0]}`}
+                className='cardImg'
+              />
+            </div>
+            <Card.Body>
+              <Card.Title className='cardTitleFixed'>
+                {dataFromServer[0].title}
+              </Card.Title>
+              <Card.Text className='cardBodyFixed'>
+                {dataFromServer[0].content}
+              </Card.Text>
+            </Card.Body>
+            <ListGroup className='list-group-flush'>
+              {/* <ListGroup.Item>Vestibulum at eros</ListGroup.Item> */}
+              <ListGroup.Item>
+                작성자: {dataFromServer[0].author.nickname}
+              </ListGroup.Item>
+            </ListGroup>
+            <Card.Footer>
+              <small className='text-muted'>
+                {dataFromServer[0].createdAt}
+              </small>
+            </Card.Footer>
+          </Card>
+          <br />
+        </Col>
+      </div>
     );
   });
-  return <div></div>;
 }

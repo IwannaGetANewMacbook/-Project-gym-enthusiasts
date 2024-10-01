@@ -30,7 +30,7 @@ export class UsersModel extends BaseModel {
 
   @Column()
   @IsString()
-  @Length(3, 8)
+  @Length(3, 32)
   /**
    * Request
    * frontend -> backend 데이터 전송 시에는,
