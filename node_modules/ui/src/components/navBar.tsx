@@ -35,13 +35,13 @@ export function NavBar() {
             >
               Post
             </Nav.Link>
-            {/* <Nav.Link
+            <Nav.Link
               onClick={() => {
                 navigate('/mypage');
               }}
             >
               MyPage
-            </Nav.Link> */}
+            </Nav.Link>
             {token ? <NavLogout></NavLogout> : <NavLogin></NavLogin>}
             {/* <NavDropdown title='Dropdown' id='basic-nav-dropdown'>
               <NavDropdown.Item href='#action/3.1'>Action</NavDropdown.Item>
