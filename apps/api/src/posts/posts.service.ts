@@ -254,11 +254,6 @@ export class PostsService {
       relations: { author: true },
     });
 
-    if (posts.length === 0) {
-      throw new NotFoundException(
-        '404 Not Found: The post could not be found.',
-      );
-    }
     return posts;
   }
 }
