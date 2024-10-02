@@ -100,4 +100,10 @@ export class PostsController {
   deletePost(@Param('postId', ParseIntPipe) id: number) {
     return this.postsService.deletePost(id);
   }
+
+  // 마이페이지 라우팅
+  @Get('mypage/:username')
+  getPostsMine(@Param('username') username: string) {
+    return this.postsService.getPostsMine(username);
+  }
 }

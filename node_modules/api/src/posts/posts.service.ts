@@ -10,6 +10,7 @@ import {
   ENV_HOST_KEY,
   ENV_PROTOCOL_KEY,
 } from 'src/common/const/env-keys.const';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class PostsService {
@@ -18,6 +19,7 @@ export class PostsService {
     private readonly postsRepository: Repository<PostsModel>,
     private readonly commonService: CommonService,
     private readonly configService: ConfigService,
+    private readonly usersService: UsersService,
   ) {}
 
   // 모든 repository method는 전부 다 async(비동기)임!
@@ -238,5 +240,25 @@ export class PostsService {
       where: { id: postId, author: { id: userId } },
       relations: { author: true },
     });
+  }
+
+  // 로그인한 유저의 포스트 가져오기
+  async getPostsMine(username: string) {
+    const isUsername = await this.usersService.CheckUserByNickname(username);
+    if (!isUsername) {
+      throw new NotFoundException('404 Not Found: The User does not exist.');
+    }
+
+    const posts = await this.postsRepository.find({
+      where: { author: { nickname: username } },
+      relations: { author: true },
+    });
+
+    if (posts.length === 0) {
+      throw new NotFoundException(
+        '404 Not Found: The post could not be found.',
+      );
+    }
+    return posts;
   }
 }

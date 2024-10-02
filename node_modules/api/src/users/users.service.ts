@@ -54,4 +54,11 @@ export class UsersService {
   async getUserByEmail(email: string) {
     return this.usersRepository.findOne({ where: { email: email } });
   }
+
+  async CheckUserByNickname(username: string) {
+    const result = await this.usersRepository.exists({
+      where: { nickname: username },
+    });
+    return result;
+  }
 }

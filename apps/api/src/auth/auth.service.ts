@@ -89,7 +89,11 @@ export class AuthService {
     return {
       accessToken: this.signToken(user, false),
       refreshToken: this.signToken(user, true),
-      user: { userEmail: user.email, userNickname: user.nickname },
+      user: {
+        userEmail: user.email,
+        userNickname: user.nickname,
+        userId: user.id,
+      },
     };
   }
 
