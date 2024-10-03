@@ -93,7 +93,7 @@ function App() {
             }
           />
           <Route
-            path='/mypage'
+            path='posts/mypage/:username'
             element={
               <>
                 <NavBar></NavBar>

@@ -13,7 +13,15 @@ import { useNavigate } from 'react-router-dom';
 export function MyPage() {
   const navigate = useNavigate();
 
+  interface User {
+    userEmail: string;
+    userNickname: string;
+    userId: number;
+  }
+
   const accessToken = window.localStorage.getItem('accessToken');
+  const user: User = JSON.parse(window.localStorage.getItem('user'));
+  const username = user.userNickname;
 
   // const dispatch = useAppDispatch();
 
@@ -30,13 +38,13 @@ export function MyPage() {
     }
 
     axios
-      .get(`${env.VITE_HOST}/posts`, {
+      .get(`${env.VITE_HOST}/posts/mypage/${username}`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((r) => {
         // const copy = [...r.data.data];
         // setDataFromServer(copy.reverse());
-        const convertedData = r.data.data.map(
+        const convertedData = r.data.map(
           (v: { createdAt: string | Date; updatedAt: string | Date }) => {
             // UTC에서 KST (Asia/Seoul) 시간대로 변환한 다음 "Relative Time" 형식으로 변환
             v.createdAt = moment(v.createdAt).tz('Asia/Seoul').fromNow();

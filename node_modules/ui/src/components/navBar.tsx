@@ -37,7 +37,7 @@ export function NavBar() {
             </Nav.Link>
             <Nav.Link
               onClick={() => {
-                navigate('/mypage');
+                navigate('/posts/mypage/:username');
               }}
             >
               MyPage
