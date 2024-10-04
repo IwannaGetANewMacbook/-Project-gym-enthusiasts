@@ -14,6 +14,7 @@ import { Post } from './components/Post';
 import { CardsDetail } from './components/cards.detail';
 import { Footer } from './components/footer';
 import { MyPage } from './components/myPage';
+import NotFoundPage from './components/notFoundPage';
 
 function App() {
   return (
@@ -115,6 +116,16 @@ function App() {
                 <NavBar></NavBar>
                 <MainBg />
                 <br />
+                <Footer></Footer>
+              </>
+            }
+          />
+          {/* 등록된 Routes 외 모든 경로 처리 */}
+          <Route
+            path='*'
+            element={
+              <>
+                <NotFoundPage></NotFoundPage>
                 <Footer></Footer>
               </>
             }

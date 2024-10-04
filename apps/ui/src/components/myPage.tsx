@@ -3,34 +3,20 @@ import { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Button from 'react-bootstrap/Button'; // Button 컴포넌트 import
 import moment from 'moment-timezone';
 
 // import { getPost } from '../store/post';
 // import { useAppDispatch, useAppSelector } from '../hooks';
 // import { RootState } from '../store';
 import { useNavigate } from 'react-router-dom';
-
+import NoPosts from './noPosts';
+interface User {
+  userEmail: string;
+  userNickname: string;
+  userId: number;
+}
 export function MyPage() {
-  const navigate = useNavigate();
-
-  interface User {
-    userEmail: string;
-    userNickname: string;
-    userId: number;
-  }
-
-  const accessToken = window.localStorage.getItem('accessToken');
-  const user: User = JSON.parse(window.localStorage.getItem('user'));
-  const username = user.userNickname;
-
-  // const dispatch = useAppDispatch();
-
-  // const postSlice = useAppSelector((state: RootState) => state.postSlice);
-
-  const env = import.meta.env;
-
-  const [dataFromServer, setDataFromServer] = useState([]);
-
   useEffect(() => {
     if (!accessToken) {
       alert('토큰이 없습니다. 로그인 해 주십시오');
@@ -67,17 +53,36 @@ export function MyPage() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const env = import.meta.env;
 
+  const navigate = useNavigate();
+
+  const [dataFromServer, setDataFromServer] = useState([]);
+
+  const accessToken = window.localStorage.getItem('accessToken');
+
+  const user: User = JSON.parse(window.localStorage.getItem('user'));
+  if (!user) {
+    alert('로그인을 해 주십시오.');
+    window.location.replace('/auth/login/email');
+    return;
+  }
+
+  const username = user.userNickname;
+
+  // const dispatch = useAppDispatch();
+
+  // const postSlice = useAppSelector((state: RootState) => state.postSlice);
+
+  if (dataFromServer.length === 0) {
+    return <NoPosts username={username}></NoPosts>;
+  }
+
+  // html 랜더링
   return dataFromServer.map((v, i) => {
     return (
-      <Col
-        sm={4}
-        key={i}
-        onClick={() => {
-          navigate(`/detail/${v.id}`);
-        }}
-      >
-        <Card style={{ maxWidth: '300px', cursor: 'pointer' }}>
+      <Col sm={4} key={i}>
+        <Card style={{ maxWidth: '300px' }}>
           <div className='cardImgContainer'>
             <Card.Img
               variant='top'
@@ -85,11 +90,20 @@ export function MyPage() {
               className='cardImg'
             />
           </div>
-          <ListGroup className='list-group-flush'></ListGroup>
-          <Card.Footer>
-            <small className='text-muted'>
-              <strong>{v.author.nickname}</strong> <div></div> {v.createdAt}
-            </small>
+          <Card.Body>
+            <Card.Title className='cardTitleFixed'>{v.title}</Card.Title>
+            <Card.Text className='cardBodyFixed'>{v.content}</Card.Text>
+          </Card.Body>
+          <ListGroup className='list-group-flush'>
+            {/* <ListGroup.Item>Vestibulum at eros</ListGroup.Item> */}
+            <ListGroup.Item>작성자: {v.author.nickname}</ListGroup.Item>
+          </ListGroup>
+          <Card.Footer className='d-flex justify-content-between align-items-center'>
+            <small className='text-muted'>{v.createdAt}</small>
+            {/* 삭제 버튼 추가 */}
+            <Button variant='danger' size='sm'>
+              삭제
+            </Button>
           </Card.Footer>
         </Card>
         <br />

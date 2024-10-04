@@ -20,29 +20,37 @@ export function NavBar() {
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='me-auto'>
-            <Nav.Link
-              onClick={() => {
-                navigate('/');
-              }}
-            >
-              Home
-            </Nav.Link>
+            {token ? (
+              <Nav.Link
+                onClick={() => {
+                  navigate('/');
+                }}
+              >
+                Home
+              </Nav.Link>
+            ) : null}
 
-            <Nav.Link
-              onClick={() => {
-                navigate('/post');
-              }}
-            >
-              Post
-            </Nav.Link>
-            <Nav.Link
-              onClick={() => {
-                navigate('/posts/mypage/:username');
-              }}
-            >
-              MyPage
-            </Nav.Link>
-            {token ? <NavLogout></NavLogout> : <NavLogin></NavLogin>}
+            {token ? (
+              <Nav.Link
+                onClick={() => {
+                  navigate('/post');
+                }}
+              >
+                Post
+              </Nav.Link>
+            ) : null}
+
+            {token ? (
+              <Nav.Link
+                onClick={() => {
+                  navigate('/posts/mypage/:username');
+                }}
+              >
+                MyPage
+              </Nav.Link>
+            ) : null}
+
+            {token ? null : <NavLogin></NavLogin>}
             {/* <NavDropdown title='Dropdown' id='basic-nav-dropdown'>
               <NavDropdown.Item href='#action/3.1'>Action</NavDropdown.Item>
               <NavDropdown.Item href='#action/3.2'>
@@ -58,10 +66,15 @@ export function NavBar() {
         </Navbar.Collapse>
       </Container>
       <br />
+
       <Nav className='me-auto text-center user-info-nav'>
-        <h6>
-          {localStorage.getItem('user') ? `${userInfo.userNickname}님` : null}
-        </h6>
+        <div className='d-flex align-items-center'>
+          {localStorage.getItem('user') ? (
+            <span className='me-3 text-nowrap'>{userInfo.userNickname}님</span>
+          ) : null}
+
+          {token ? <NavLogout></NavLogout> : null}
+        </div>
       </Nav>
     </Navbar>
   );

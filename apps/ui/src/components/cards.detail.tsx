@@ -62,28 +62,20 @@ export function CardsDetail() {
             <div className='cardImgContainer'>
               <Card.Img
                 variant='top'
-                src={`${env.VITE_HOST}${dataFromServer[0].images[0]}`}
+                src={`${env.VITE_HOST}${v.images[0]}`}
                 className='cardImg'
               />
             </div>
             <Card.Body>
-              <Card.Title className='cardTitleFixed'>
-                {dataFromServer[0].title}
-              </Card.Title>
-              <Card.Text className='cardBodyFixed'>
-                {dataFromServer[0].content}
-              </Card.Text>
+              <Card.Title className='cardTitleFixed'>{v.title}</Card.Title>
+              <Card.Text className='cardBodyFixed'>{v.content}</Card.Text>
             </Card.Body>
             <ListGroup className='list-group-flush'>
               {/* <ListGroup.Item>Vestibulum at eros</ListGroup.Item> */}
-              <ListGroup.Item>
-                작성자: {dataFromServer[0].author.nickname}
-              </ListGroup.Item>
+              <ListGroup.Item>작성자: {v.author.nickname}</ListGroup.Item>
             </ListGroup>
             <Card.Footer>
-              <small className='text-muted'>
-                {dataFromServer[0].createdAt}
-              </small>
+              <small className='text-muted'>{v.createdAt}</small>
             </Card.Footer>
           </Card>
           <br />
