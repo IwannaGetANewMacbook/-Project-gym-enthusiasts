@@ -92,7 +92,6 @@ export class AuthService {
       user: {
         userEmail: user.email,
         userNickname: user.nickname,
-        userId: user.id,
       },
     };
   }

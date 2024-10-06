@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+axios.defaults.withCredentials = true; // withCredentials 전역 설정
 export function Login() {
   const [email, setEmail] = useState('');
 
@@ -37,7 +37,7 @@ export function Login() {
         navigate('/');
       })
       .catch((e) => {
-        console.log(e.response?.data.message);
+        console.log(e);
         alert(e.response?.data.message);
         window.location.reload();
       });
