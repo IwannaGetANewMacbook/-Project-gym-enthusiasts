@@ -67,16 +67,33 @@ export function MyPage() {
     window.location.replace('/auth/login/email');
     return;
   }
-
   const username = user.userNickname;
-
-  // const dispatch = useAppDispatch();
-
-  // const postSlice = useAppSelector((state: RootState) => state.postSlice);
 
   if (dataFromServer.length === 0) {
     return <NoPosts username={username}></NoPosts>;
   }
+  // Handle post deletion
+  const handleDeletePost = (postId: number) => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      axios
+        .delete(`${env.VITE_HOST}/posts/${postId}`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        })
+        .then((r) => {
+          console.log(r.data);
+          alert('게시물이 삭제되었습니다.');
+
+          // 상태 업데이트하여 삭제된 게시물 제거
+          setDataFromServer(
+            dataFromServer.filter((post) => post.id !== postId)
+          );
+        })
+        .catch((e) => {
+          console.log(e);
+          alert('게시물 삭제에 실패했습니다.');
+        });
+    }
+  };
 
   // html 랜더링
   return dataFromServer.map((v, i) => {
@@ -101,7 +118,13 @@ export function MyPage() {
           <Card.Footer className='d-flex justify-content-between align-items-center'>
             <small className='text-muted'>{v.createdAt}</small>
             {/* 삭제 버튼 추가 */}
-            <Button variant='danger' size='sm'>
+            <Button
+              variant='danger'
+              size='sm'
+              onClick={() => {
+                handleDeletePost(v.id);
+              }}
+            >
               삭제
             </Button>
           </Card.Footer>
