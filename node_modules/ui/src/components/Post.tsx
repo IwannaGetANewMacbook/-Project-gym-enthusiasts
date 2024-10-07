@@ -53,6 +53,7 @@ export function Post() {
         window.localStorage.clear();
         navigate('/auth/login/email');
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
