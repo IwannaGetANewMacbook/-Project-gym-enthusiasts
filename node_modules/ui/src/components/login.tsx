@@ -6,7 +6,11 @@ import Col from 'react-bootstrap/Col';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-axios.defaults.withCredentials = true; // withCredentials 전역 설정
+
+// 클라이언트 측에서 요청 시 쿠키를 포함하고, 응답 시 서버로부터 전달된 쿠키를 브라우저에 저장할 수 있도록 하는 역할
+// 모든 요청과 응답에 쿠키를 포함할 수 있도록 하기 위하여 전역으로 true로 설정.
+axios.defaults.withCredentials = true;
+
 export function Login() {
   const [email, setEmail] = useState('');
 
