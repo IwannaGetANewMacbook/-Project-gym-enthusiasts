@@ -31,8 +31,13 @@ export class AuthController {
   @Post('token/access')
   @IsPublic()
   @UseGuards(RefreshTokenGuard)
-  createTokenAccess(@Headers('authorization') rawToken: string) {
-    const token = this.authService.extractTokenFromHeader(rawToken, true);
+  createTokenAccess(
+    @Res({ passthrough: true }) res: Response,
+    @Headers('Cookie') rawToken: string,
+  ) {
+    // console.log('로우한토큰: ', rawToken);
+    const token = this.authService.extractTokenFromHeaderForRefresh(rawToken);
+    // console.log('정제된 토큰: ', token);
 
     const newToken = this.authService.rotateToken(token, false);
 
@@ -46,8 +51,8 @@ export class AuthController {
   @IsPublic()
   @UseGuards(RefreshTokenGuard)
   createTokenRefresh(
-    @Headers('authorization') rawToken: string,
     @Res({ passthrough: true }) res: Response,
+    @Headers('cookie') rawToken: string,
   ) {
     const token = this.authService.extractTokenFromHeader(rawToken, true);
 
@@ -113,6 +118,7 @@ export class AuthController {
     return {
       message: 'Refresh token set as HttpOnly cookie',
       accessToken,
+      refreshToken,
       user,
     };
 
@@ -151,6 +157,7 @@ export class AuthController {
     return {
       message: 'Refresh token set as HttpOnly cookie',
       accessToken,
+      refreshToken,
       user,
     };
 
@@ -176,8 +183,8 @@ export class AuthController {
     };
   }
 
-  @Get('checkValidToken')
-  checkValidToken() {
+  @Get('validateAccessToken')
+  validateAccessToken() {
     return true;
   }
 }

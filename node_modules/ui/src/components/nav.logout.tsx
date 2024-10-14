@@ -5,7 +5,7 @@ export function NavLogout() {
   return (
     <Nav.Link
       onClick={() => {
-        logout('/auth/login/email');
+        logout('/auth/login/email', true);
       }}
     >
       logout

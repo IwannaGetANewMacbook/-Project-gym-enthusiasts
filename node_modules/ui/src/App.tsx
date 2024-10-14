@@ -6,7 +6,7 @@ import { Cards } from './components/cards';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import { MainBg } from './components/mainBg';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Login } from './components/login';
 import { Registraion } from './components/registration';
@@ -15,8 +15,24 @@ import { CardsDetail } from './components/cards.detail';
 import { Footer } from './components/footer';
 import { MyPage } from './components/myPage';
 import NotFoundPage from './components/notFoundPage';
+import { newAccessToken } from './common/renewAccessToken';
 
 function App() {
+  // useEffect(() => {
+  //   // 7초마다 newAccessToken 함수 호출하여 토큰 갱신
+  //   const interval = setInterval(() => {
+  //     newAccessToken().then((newToken) => {
+  //       if (newToken) {
+  //         window.localStorage.setItem('accessToken', newToken);
+  //         console.log('accessToken 갱신 완료.');
+  //       }
+  //     });
+  //   }, 7000); // 7초마다 실행
+
+  //   // 컴포넌트가 언마운트 될 때 interval 정리
+  //   return () => clearInterval(interval);
+  // });
+
   return (
     <>
       <Suspense

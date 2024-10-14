@@ -41,11 +41,11 @@ export function Post() {
       return;
     }
     axios
-      .get(`${env.VITE_HOST}/auth/checkValidToken`, {
+      .get(`${env.VITE_HOST}/auth/validateAccessToken`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
-      .then((r) => {
-        console.log('유효한 토큰입니다', '\n', `${r.data}`);
+      .then(() => {
+        console.log('유효한 토큰입니다');
       })
       .catch((e) => {
         console.log(e.response?.data.message);

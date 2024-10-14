@@ -35,7 +35,6 @@ export function Login() {
         }
       )
       .then((r) => {
-        console.log(r.data);
         localStorage.setItem('accessToken', r.data.accessToken);
         localStorage.setItem('user', JSON.stringify(r.data.user));
         navigate('/');

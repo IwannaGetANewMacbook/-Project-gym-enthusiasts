@@ -81,16 +81,63 @@ export class AccessTokenGuard extends BearerTokenGuard {
   }
 }
 
+/** Refresh 토큰을 req.header로부터 읽어올때의 코드*/
+// @Injectable()
+// export class RefreshTokenGuard extends BearerTokenGuard {
+//   async canActivate(context: ExecutionContext): Promise<boolean> {
+//     await super.canActivate(context);
+
+//     const req = context.switchToHttp().getRequest();
+
+//     if (req.isRoutePublic) {
+//       return true;
+//     }
+
+//     if (req.tokenType !== 'refresh') {
+//       throw new UnauthorizedException('401 Not Refresh Token');
+//     }
+
+//     return true;
+//   }
+// }
+
+/** Refresh 토큰을 req.cookie로부터 읽어올때의 코드*/
 @Injectable()
-export class RefreshTokenGuard extends BearerTokenGuard {
+export class RefreshTokenGuard implements CanActivate {
+  constructor(
+    private readonly authService: AuthService,
+    private readonly usersService: UsersService,
+    private readonly reflector: Reflector,
+  ) {}
+
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    await super.canActivate(context);
+    const isPublic = this.reflector.getAllAndOverride(IS_PUBLIC_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
 
     const req = context.switchToHttp().getRequest();
 
-    if (req.isRoutePublic) {
+    if (isPublic) {
+      req.isRoutePublic = true;
       return true;
     }
+
+    // RefreshToken은 쿠키에서 가져옴
+    const refreshToken = req.cookies['refreshToken'];
+    if (!refreshToken) {
+      throw new UnauthorizedException('401 Not Extant Refresh Token');
+    }
+
+    // RefreshToken 검증
+    const result = await this.authService.verifyToken(refreshToken);
+
+    // 사용자 정보 가져오기.
+    const user = await this.usersService.getUserByEmail(result.email);
+
+    req.user = user;
+    req.token = refreshToken;
+    req.tokenType = result.type;
 
     if (req.tokenType !== 'refresh') {
       throw new UnauthorizedException('401 Not Refresh Token');

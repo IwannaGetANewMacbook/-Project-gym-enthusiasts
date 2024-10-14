@@ -81,7 +81,7 @@ export class AuthService {
 
     return this.jwtService.sign(payload, {
       secret: this.configService.get<string>(ENV_JWT_SECRET_KEY),
-      expiresIn: isRefreshToken ? 3600 : 300, // sec
+      expiresIn: isRefreshToken ? 3600 : 10, // sec
     });
   }
 
@@ -167,6 +167,19 @@ export class AuthService {
     if (splitToken.length !== 2 || splitToken[0] !== prefix) {
       throw new UnauthorizedException('401 Unauthorized\n Wrong Token');
     }
+
+    const token = splitToken[1];
+
+    return token;
+  }
+
+  extractTokenFromHeaderForRefresh(header: string) {
+    if (!header) {
+      throw new UnauthorizedException(
+        '401 Unauthorized: Wrong Token - Refresh Token is not given',
+      );
+    }
+    const splitToken = header.split('='); // -> [refreshToken, {token}]
 
     const token = splitToken[1];
 
