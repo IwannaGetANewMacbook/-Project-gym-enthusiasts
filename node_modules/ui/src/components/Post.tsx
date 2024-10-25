@@ -6,6 +6,8 @@ import defaultProfile from '../assets/No-photo.jpg';
 
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
+import { handleTokenExpiration } from '../common/handleTokenExpiration';
+import api from '../common/api';
 
 // 클라이언트 측에서 요청 시 쿠키를 포함하고, 응답 시 서버로부터 전달된 쿠키를 브라우저에 저장할 수 있도록 하는 역할
 // 모든 요청과 응답에 쿠키를 포함할 수 있도록 하기 위하여 전역으로 true로 설정.
@@ -36,25 +38,12 @@ export function Post() {
 
   useEffect(() => {
     if (!accessToken) {
-      alert(' 로그인 해 주십시오');
-      navigate('/auth/login/email');
+      handleTokenExpiration(navigate);
       return;
     }
-    axios
-      .get(`${env.VITE_HOST}/auth/validateAccessToken`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
-      .then(() => {
-        console.log('유효한 토큰입니다');
-      })
-      .catch((e) => {
-        console.log(e.response?.data.message);
-        alert('세션이 만료되었습니다. 다시 로그인해주세요.');
-        window.localStorage.clear();
-        navigate('/auth/login/email');
-      });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [navigate]);
 
   return (
     <div className='post-container'>
@@ -102,7 +91,7 @@ export function Post() {
                 formData.append('content', content);
                 formData.append('image', defaultFile);
 
-                axios
+                api
                   .post(`${env.VITE_HOST}/posts`, formData, {
                     headers: {
                       Authorization: `Bearer ${accessToken}`,
@@ -136,7 +125,7 @@ export function Post() {
             formData.append('content', content);
             formData.append('image', imageFile);
 
-            axios
+            api
               .post(`${env.VITE_HOST}/posts`, formData, {
                 headers: {
                   Authorization: `Bearer ${accessToken}`,

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
@@ -9,6 +10,8 @@ import moment from 'moment-timezone';
 // import { useAppDispatch, useAppSelector } from '../hooks';
 // import { RootState } from '../store';
 import { useNavigate } from 'react-router-dom';
+import { handleTokenExpiration } from '../common/handleTokenExpiration';
+import api from '../common/api';
 
 // 클라이언트 측에서 요청 시 쿠키를 포함하고, 응답 시 서버로부터 전달된 쿠키를 브라우저에 저장할 수 있도록 하는 역할
 // 모든 요청과 응답에 쿠키를 포함할 수 있도록 하기 위하여 전역으로 true로 설정.
@@ -19,50 +22,42 @@ export function Cards() {
 
   const accessToken = window.localStorage.getItem('accessToken');
 
-  // const dispatch = useAppDispatch();
-
-  // const postSlice = useAppSelector((state: RootState) => state.postSlice);
-
   const env = import.meta.env;
 
   const [dataFromServer, setDataFromServer] = useState([]);
 
   useEffect(() => {
     if (!accessToken) {
-      alert('토큰이 없습니다. 로그인 해 주십시오');
-      navigate('/auth/login/email');
+      handleTokenExpiration(navigate);
+      return;
     }
+    /**
+     * app전역으로 토큰유효성 검사를 하기때문에 개별 컴포넌트에서는 중복적으로 하지 않음.
+     */
+    const fetchData = async () => {
+      try {
+        const response = await api.get(`/posts`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
 
-    axios
-      .get(`${env.VITE_HOST}/posts`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
-      .then((r) => {
-        // const copy = [...r.data.data];
-        // setDataFromServer(copy.reverse());
-        const convertedData = r.data.data.map(
-          (v: { createdAt: string | Date; updatedAt: string | Date }) => {
-            // UTC에서 KST (Asia/Seoul) 시간대로 변환한 다음 "Relative Time" 형식으로 변환
+        const convertedData = [...response.data.data]
+          .reverse()
+          .map((v: { createdAt: string | Date; updatedAt: string | Date }) => {
             v.createdAt = moment(v.createdAt).tz('Asia/Seoul').fromNow();
             v.updatedAt = moment(v.updatedAt).tz('Asia/Seoul').fromNow();
             return v;
-          }
-        );
-        setDataFromServer(convertedData.reverse());
-      })
-      .catch((e) => {
-        console.log(e.response?.data);
-        if (localStorage.getItem('accessToken')) {
-          alert(
-            `${e.response?.data.message}\n토큰이 만료되었습니다. 다시 로그인 해주세요.`
-          );
-          navigate('/auth/login/email');
-          return localStorage.clear();
-        }
-      });
+          });
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+        setDataFromServer(convertedData);
+      } catch (e: any) {
+        console.log(e.response?.data.message);
+        handleTokenExpiration(navigate);
+      }
+    };
+
+    // fetchData 호출.
+    fetchData();
+  }, [accessToken, env.VITE_HOST, navigate]);
 
   return dataFromServer.map((v, i) => {
     return (

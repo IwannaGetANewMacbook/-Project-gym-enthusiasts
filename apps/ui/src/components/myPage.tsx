@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
@@ -11,6 +12,10 @@ import moment from 'moment-timezone';
 // import { RootState } from '../store';
 import { useNavigate } from 'react-router-dom';
 import NoPosts from './noPosts';
+import { handleTokenExpiration } from '../common/handleTokenExpiration';
+import { LoadingSpinner } from './loadingSpinner';
+import api from '../common/api';
+
 interface User {
   userEmail: string;
   userNickname: string;
@@ -22,66 +27,68 @@ interface User {
 axios.defaults.withCredentials = true;
 
 export function MyPage() {
-  useEffect(() => {
-    if (!accessToken) {
-      alert('토큰이 없습니다. 로그인 해 주십시오');
-      navigate('/auth/login/email');
-    }
-
-    axios
-      .get(`${env.VITE_HOST}/posts/mypage/${username}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
-      .then((r) => {
-        // const copy = [...r.data.data];
-        // setDataFromServer(copy.reverse());
-        const convertedData = r.data.map(
-          (v: { createdAt: string | Date; updatedAt: string | Date }) => {
-            // UTC에서 KST (Asia/Seoul) 시간대로 변환한 다음 "Relative Time" 형식으로 변환
-            v.createdAt = moment(v.createdAt).tz('Asia/Seoul').fromNow();
-            v.updatedAt = moment(v.updatedAt).tz('Asia/Seoul').fromNow();
-            return v;
-          }
-        );
-        setDataFromServer(convertedData.reverse());
-      })
-      .catch((e) => {
-        console.log(e.response?.data);
-        if (localStorage.getItem('accessToken')) {
-          alert(
-            `${e.response?.data.message}\n토큰이 만료되었습니다. 다시 로그인 해주세요.`
-          );
-          navigate('/auth/login/email');
-          return localStorage.clear();
-        }
-      });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   const env = import.meta.env;
 
   const navigate = useNavigate();
 
-  const [dataFromServer, setDataFromServer] = useState([]);
+  const user: User = JSON.parse(window.localStorage.getItem('user'));
 
   const accessToken = window.localStorage.getItem('accessToken');
 
-  const user: User = JSON.parse(window.localStorage.getItem('user'));
-  if (!user) {
-    alert('로그인을 해 주십시오.');
-    window.location.replace('/auth/login/email');
-    return;
-  }
+  const [dataFromServer, setDataFromServer] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+
   const username = user.userNickname;
+
+  useEffect(() => {
+    if (!accessToken || !user) {
+      handleTokenExpiration(navigate);
+    }
+
+    // fetchData 함수 선언
+    const fetchData = async () => {
+      try {
+        // api get 요청.
+        const result = await api.get(`/posts/mypage/${username}`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        // post들의날짜 변경
+        const convertedData = [...result.data]
+          .reverse()
+          .map((v: { createdAt: string | Date; updatedAt: string | Date }) => {
+            v.createdAt = moment(v.createdAt).tz('Asia/Seoul').fromNow();
+            v.updatedAt = moment(v.updatedAt).tz('Asia/Seoul').fromNow();
+            return v;
+          });
+
+        setDataFromServer(convertedData);
+      } catch (e: any) {
+        console.log(e.response?.data);
+        handleTokenExpiration(navigate);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // fetchData 함수 호출
+    fetchData();
+    // 의존성 배열에 변수들 추가.
+  }, [accessToken, username, env.VITE_HOST, navigate, user]);
+
+  if (loading) {
+    return <LoadingSpinner></LoadingSpinner>;
+  }
 
   if (dataFromServer.length === 0) {
     return <NoPosts username={username}></NoPosts>;
   }
+
   // Handle post deletion
   const handleDeletePost = (postId: number) => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
-      axios
-        .delete(`${env.VITE_HOST}/posts/${postId}`, {
+      api
+        .delete(`/posts/${postId}`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         })
         .then((r) => {
@@ -90,7 +97,7 @@ export function MyPage() {
 
           // 상태 업데이트하여 삭제된 게시물 제거
           setDataFromServer(
-            dataFromServer.filter((post) => post.id !== postId)
+            [...dataFromServer].filter((post) => post.id !== postId)
           );
         })
         .catch((e) => {

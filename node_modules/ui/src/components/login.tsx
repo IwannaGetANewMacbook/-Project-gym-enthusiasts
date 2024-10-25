@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
@@ -20,11 +21,11 @@ export function Login() {
 
   const env = import.meta.env;
 
-  const onClickForLogin = () => {
-    const encoded = Buffer.from(`${email}:${password}`).toString('base64');
+  const onClickForLogin = async () => {
+    const encoded = btoa(`${email}:${password}`);
 
-    axios
-      .post(
+    try {
+      const result = await axios.post(
         `${env.VITE_HOST}/auth/login/email`,
         {},
         {
@@ -33,17 +34,17 @@ export function Login() {
             'Content-Type': 'application/json',
           },
         }
-      )
-      .then((r) => {
-        localStorage.setItem('accessToken', r.data.accessToken);
-        localStorage.setItem('user', JSON.stringify(r.data.user));
-        navigate('/');
-      })
-      .catch((e) => {
-        console.log(e);
-        alert(e.response?.data.message);
-        window.location.reload();
-      });
+      );
+
+      // result 를 받아오면 localStorage에 accessToken과 user정보를 저장.
+      localStorage.setItem('accessToken', result.data.accessToken);
+      localStorage.setItem('user', JSON.stringify(result.data.user));
+
+      navigate('/');
+    } catch (e: any) {
+      console.log(e);
+      alert(e.response?.data.message || '로그인 중 에러가 발생했습니다.');
+    }
   };
 
   return (
