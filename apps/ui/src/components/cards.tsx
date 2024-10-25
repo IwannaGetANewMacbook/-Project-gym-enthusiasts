@@ -12,6 +12,7 @@ import moment from 'moment-timezone';
 import { useNavigate } from 'react-router-dom';
 import { handleTokenExpiration } from '../common/handleTokenExpiration';
 import api from '../common/api';
+import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
 
 // 클라이언트 측에서 요청 시 쿠키를 포함하고, 응답 시 서버로부터 전달된 쿠키를 브라우저에 저장할 수 있도록 하는 역할
 // 모든 요청과 응답에 쿠키를 포함할 수 있도록 하기 위하여 전역으로 true로 설정.
@@ -26,11 +27,10 @@ export function Cards() {
 
   const [dataFromServer, setDataFromServer] = useState([]);
 
+  // html 렌더링 전 accessToken 유무 검사
+  checkAccessTokenBeforeRendering(accessToken);
+
   useEffect(() => {
-    if (!accessToken) {
-      handleTokenExpiration(navigate);
-      return;
-    }
     /**
      * app전역으로 토큰유효성 검사를 하기때문에 개별 컴포넌트에서는 중복적으로 하지 않음.
      */

@@ -15,6 +15,7 @@ import NoPosts from './noPosts';
 import { handleTokenExpiration } from '../common/handleTokenExpiration';
 import { LoadingSpinner } from './loadingSpinner';
 import api from '../common/api';
+import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
 
 interface User {
   userEmail: string;
@@ -41,11 +42,10 @@ export function MyPage() {
 
   const username = user.userNickname;
 
-  useEffect(() => {
-    if (!accessToken || !user) {
-      handleTokenExpiration(navigate);
-    }
+  // html 렌더링 전 accessToken 유무 검사
+  checkAccessTokenBeforeRendering(accessToken);
 
+  useEffect(() => {
     // fetchData 함수 선언
     const fetchData = async () => {
       try {

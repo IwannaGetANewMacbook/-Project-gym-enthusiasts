@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
@@ -6,8 +6,8 @@ import defaultProfile from '../assets/No-photo.jpg';
 
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
-import { handleTokenExpiration } from '../common/handleTokenExpiration';
 import api from '../common/api';
+import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
 
 // 클라이언트 측에서 요청 시 쿠키를 포함하고, 응답 시 서버로부터 전달된 쿠키를 브라우저에 저장할 수 있도록 하는 역할
 // 모든 요청과 응답에 쿠키를 포함할 수 있도록 하기 위하여 전역으로 true로 설정.
@@ -36,14 +36,8 @@ export function Post() {
     setContent(e.currentTarget.value);
   };
 
-  useEffect(() => {
-    if (!accessToken) {
-      handleTokenExpiration(navigate);
-      return;
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigate]);
+  // html 렌더링 전 accessToken 유무 검사
+  checkAccessTokenBeforeRendering(accessToken);
 
   return (
     <div className='post-container'>

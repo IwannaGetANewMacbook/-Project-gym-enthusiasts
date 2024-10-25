@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { handleTokenExpiration } from '../common/handleTokenExpiration';
 import api from '../common/api';
+import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
 
 // 클라이언트 측에서 요청 시 쿠키를 포함하고, 응답 시 서버로부터 전달된 쿠키를 브라우저에 저장할 수 있도록 하는 역할
 // 모든 요청과 응답에 쿠키를 포함할 수 있도록 하기 위하여 전역으로 true로 설정.
@@ -26,12 +27,10 @@ export function CardsDetail() {
 
   const [dataFromServer, setDataFromServer] = useState([]);
 
-  useEffect(() => {
-    if (!accessToken) {
-      alert('토큰이 없습니다. 로그인 해 주십시오');
-      window.location.replace('/auth/login/email');
-    }
+  // html 렌더링 전 accessToken 유무 검사
+  checkAccessTokenBeforeRendering(accessToken);
 
+  useEffect(() => {
     /**
      * app전역으로 토큰유효성 검사를 하기때문에 개별 컴포넌트에서는 중복적으로 하지 않음.
      */
