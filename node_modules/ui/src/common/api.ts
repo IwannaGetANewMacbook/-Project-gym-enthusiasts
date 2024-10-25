@@ -45,6 +45,22 @@ api.interceptors.response.use(
       } catch (refreshError) {
         // 토큰 갱신 실패 시 처리 로직
         console.error('토큰 갱신에 실패했습니다.', refreshError);
+
+        // 로그아웃 요청 보내기 (서버 측에서 refreshToken 삭제)
+        try {
+          await axios.post(
+            `${import.meta.env.VITE_HOST}/auth/logout`,
+            {},
+            {
+              withCredentials: true,
+            }
+          );
+          console.log('로그아웃 요청 성공: refreshToken 삭제 완료');
+        } catch (logoutError) {
+          console.log('로그아웃 요청 실패', logoutError);
+        }
+
+        // 로컬 스토리지를 비우고 로인 페이지로 이동
         window.localStorage.clear();
         window.location.href = '/auth/login/email';
       }
