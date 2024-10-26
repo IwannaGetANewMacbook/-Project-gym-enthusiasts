@@ -16,6 +16,7 @@ import { handleTokenExpiration } from '../common/handleTokenExpiration';
 import { LoadingSpinner } from './loadingSpinner';
 import api from '../common/api';
 import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
+import { deletePost } from '../common/deletePosts';
 
 interface User {
   userEmail: string;
@@ -86,25 +87,16 @@ export function MyPosts() {
 
   // Handle post deletion
   const handleDeletePost = (postId: number) => {
-    if (window.confirm('정말 삭제하시겠습니까?')) {
-      api
-        .delete(`/posts/${postId}`, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        })
-        .then((r) => {
-          console.log(r.data);
-          alert('게시물이 삭제되었습니다.');
-
-          // 상태 업데이트하여 삭제된 게시물 제거
-          setDataFromServer(
-            [...dataFromServer].filter((post) => post.id !== postId)
-          );
-        })
-        .catch((e) => {
-          console.log(e);
-          alert('게시물 삭제에 실패했습니다.');
-        });
-    }
+    deletePost(postId, accessToken)
+      .then(() => {
+        // 상태 업데이트 하여 삭제된 게시물 제거
+        setDataFromServer(
+          [...dataFromServer].filter((post) => post.id !== postId)
+        );
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   };
 
   // html 랜더링
