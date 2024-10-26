@@ -43,10 +43,10 @@ export function NavBar() {
             {token ? (
               <Nav.Link
                 onClick={() => {
-                  navigate('/posts/mypage/:username');
+                  navigate('/posts/myposts/:username');
                 }}
               >
-                MyPage
+                MyPosts
               </Nav.Link>
             ) : null}
 

@@ -102,7 +102,7 @@ export class PostsController {
   }
 
   // 마이페이지 라우팅
-  @Get('mypage/:username')
+  @Get('myposts/:username')
   getPostsMine(@Param('username') username: string) {
     return this.postsService.getPostsMine(username);
   }

@@ -13,8 +13,8 @@ import { Registraion } from './components/registration';
 import { Post } from './components/Post';
 import { CardsDetail } from './components/cards.detail';
 import { Footer } from './components/footer';
-import { MyPage } from './components/myPage';
 import NotFoundPage from './components/notFoundPage';
+import { MyPosts } from './components/myPosts';
 
 function App() {
   return (
@@ -94,7 +94,7 @@ function App() {
             }
           />
           <Route
-            path='posts/mypage/:username'
+            path='posts/myposts/:username'
             element={
               <>
                 <NavBar></NavBar>
@@ -102,7 +102,7 @@ function App() {
                 <br />
                 <Container>
                   <Row>
-                    <MyPage></MyPage>
+                    <MyPosts></MyPosts>
                   </Row>
                 </Container>
                 <Footer></Footer>
