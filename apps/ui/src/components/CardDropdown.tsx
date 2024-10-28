@@ -1,6 +1,6 @@
 import Dropdown from 'react-bootstrap/Dropdown';
 
-export function CardDropdown() {
+export function CardDropdown({ onDelete }: { onDelete: () => void }) {
   return (
     <Dropdown
       align='end'
@@ -17,7 +17,9 @@ export function CardDropdown() {
       </Dropdown.Toggle>
       <Dropdown.Menu>
         <Dropdown.Item href='#'>Edit</Dropdown.Item>
-        <Dropdown.Item href='#'>Delete</Dropdown.Item>
+        <Dropdown.Item href='#' onClick={onDelete}>
+          Delete
+        </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );

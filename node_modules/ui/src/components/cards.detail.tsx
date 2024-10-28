@@ -12,6 +12,7 @@ import { handleTokenExpiration } from '../common/handleTokenExpiration';
 import api from '../common/api';
 import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
 import { CardDropdown } from './CardDropdown';
+import { deletePost } from '../common/deletePosts';
 
 // 클라이언트 측에서 요청 시 쿠키를 포함하고, 응답 시 서버로부터 전달된 쿠키를 브라우저에 저장할 수 있도록 하는 역할
 // 모든 요청과 응답에 쿠키를 포함할 수 있도록 하기 위하여 전역으로 true로 설정.
@@ -65,6 +66,21 @@ export function CardsDetail() {
     fetchData();
   }, [accessToken, env.VITE_HOST, id, navigate]);
 
+  // Handle post deletion
+  const handleDeletePost = (postId: number) => {
+    deletePost(postId, accessToken)
+      .then(() => {
+        // 상태 업데이트 하여 삭제된 게시물 제거
+        setDataFromServer(
+          [...dataFromServer].filter((post) => post.id !== postId)
+        );
+        navigate('/');
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  };
+
   return dataFromServer.map((v, i) => {
     return (
       <div key={i} className='center-align'>
@@ -76,7 +92,9 @@ export function CardsDetail() {
                 src={`${env.VITE_HOST}${v.images[0]}`}
                 className='cardImg'
               />
-              {user?.userNickname === v.author.nickname && <CardDropdown />}
+              {user?.userNickname === v.author.nickname && (
+                <CardDropdown onDelete={() => handleDeletePost(v.id)} />
+              )}
             </div>
             <Card.Body>
               <Card.Title className='cardTitleFixed'>{v.title}</Card.Title>

@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
-import Button from 'react-bootstrap/Button'; // Button 컴포넌트 import
 import moment from 'moment-timezone';
 
 // import { getPost } from '../store/post';
@@ -17,6 +16,7 @@ import { LoadingSpinner } from './loadingSpinner';
 import api from '../common/api';
 import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
 import { deletePost } from '../common/deletePosts';
+import { CardDropdown } from './CardDropdown';
 
 interface User {
   userEmail: string;
@@ -110,6 +110,9 @@ export function MyPosts() {
               src={`${env.VITE_HOST}${v.images[0]}`}
               className='cardImg'
             />
+            <CardDropdown
+              onDelete={() => handleDeletePost(v.id)}
+            ></CardDropdown>
           </div>
           <Card.Body>
             <Card.Title className='cardTitleFixed'>{v.title}</Card.Title>
@@ -121,16 +124,6 @@ export function MyPosts() {
           </ListGroup>
           <Card.Footer className='d-flex justify-content-between align-items-center'>
             <small className='text-muted'>{v.createdAt}</small>
-            {/* 삭제 버튼 추가 */}
-            <Button
-              variant='danger'
-              size='sm'
-              onClick={() => {
-                handleDeletePost(v.id);
-              }}
-            >
-              삭제
-            </Button>
           </Card.Footer>
         </Card>
         <br />
