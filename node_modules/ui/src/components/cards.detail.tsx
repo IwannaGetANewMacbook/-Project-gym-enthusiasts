@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { handleTokenExpiration } from '../common/handleTokenExpiration';
 import api from '../common/api';
 import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
+import { CardDropdown } from './CardDropdown';
 
 // 클라이언트 측에서 요청 시 쿠키를 포함하고, 응답 시 서버로부터 전달된 쿠키를 브라우저에 저장할 수 있도록 하는 역할
 // 모든 요청과 응답에 쿠키를 포함할 수 있도록 하기 위하여 전역으로 true로 설정.
@@ -26,6 +27,8 @@ export function CardsDetail() {
   const { id } = useParams();
 
   const [dataFromServer, setDataFromServer] = useState([]);
+
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   // html 렌더링 전 accessToken 유무 검사
   checkAccessTokenBeforeRendering(accessToken);
@@ -73,6 +76,7 @@ export function CardsDetail() {
                 src={`${env.VITE_HOST}${v.images[0]}`}
                 className='cardImg'
               />
+              {user?.userNickname === v.author.nickname && <CardDropdown />}
             </div>
             <Card.Body>
               <Card.Title className='cardTitleFixed'>{v.title}</Card.Title>
