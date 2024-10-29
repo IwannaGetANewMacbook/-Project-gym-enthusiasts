@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -74,8 +75,8 @@ export function MyPosts() {
 
     // fetchData 함수 호출
     fetchData();
-    // 의존성 배열에 변수들 추가.
-  }, [accessToken, username, env.VITE_HOST, navigate, user]);
+    // 의존성 배열에 어떠한 변수도 넣지않고 컴포넌트 마운트시 딱 한번만 실행(의도적으로.)
+  }, []);
 
   if (loading) {
     return <LoadingSpinner></LoadingSpinner>;
