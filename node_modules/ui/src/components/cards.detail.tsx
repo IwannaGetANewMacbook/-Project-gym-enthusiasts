@@ -93,7 +93,10 @@ export function CardsDetail() {
                 className='cardImg'
               />
               {user?.userNickname === v.author.nickname && (
-                <CardDropdown onDelete={() => handleDeletePost(v.id)} />
+                <CardDropdown
+                  postId={v.id}
+                  onDelete={() => handleDeletePost(v.id)}
+                />
               )}
             </div>
             <Card.Body>

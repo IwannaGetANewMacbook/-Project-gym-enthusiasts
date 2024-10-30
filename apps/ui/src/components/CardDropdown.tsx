@@ -1,6 +1,17 @@
 import Dropdown from 'react-bootstrap/Dropdown';
+import { useNavigate } from 'react-router-dom';
 
-export function CardDropdown({ onDelete }: { onDelete: () => void }) {
+export function CardDropdown({
+  postId,
+  onDelete,
+}: {
+  postId: number;
+  onDelete: () => void;
+}) {
+  // const postId = useParams();
+
+  const navigate = useNavigate();
+
   return (
     <Dropdown
       align='end'
@@ -16,10 +27,10 @@ export function CardDropdown({ onDelete }: { onDelete: () => void }) {
         &#8942;
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        <Dropdown.Item href='#'>Edit</Dropdown.Item>
-        <Dropdown.Item href='#' onClick={onDelete}>
-          Delete
+        <Dropdown.Item onClick={() => navigate(`/posts/edit/${postId}`)}>
+          Edit
         </Dropdown.Item>
+        <Dropdown.Item onClick={onDelete}>Delete</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );

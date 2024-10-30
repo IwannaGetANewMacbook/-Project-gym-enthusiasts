@@ -15,6 +15,7 @@ import { CardsDetail } from './components/cards.detail';
 import { Footer } from './components/footer';
 import NotFoundPage from './components/notFoundPage';
 import { MyPosts } from './components/myPosts';
+import { EditPost } from './components/EditPost';
 
 function App() {
   return (
@@ -89,6 +90,18 @@ function App() {
                 <MainBg />
                 <br />
                 <Post></Post>
+                <Footer></Footer>
+              </>
+            }
+          />
+          <Route
+            path='/posts/edit/:postId'
+            element={
+              <>
+                <NavBar></NavBar>
+                <MainBg />
+                <br />
+                <EditPost></EditPost>
                 <Footer></Footer>
               </>
             }

@@ -112,6 +112,7 @@ export function MyPosts() {
               className='cardImg'
             />
             <CardDropdown
+              postId={v.id} // 여기서 postId를 전달
               onDelete={() => handleDeletePost(v.id)}
             ></CardDropdown>
           </div>
