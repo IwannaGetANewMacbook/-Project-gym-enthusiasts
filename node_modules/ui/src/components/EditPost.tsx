@@ -12,6 +12,7 @@ export function EditPost() {
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [image, setImage] = useState('');
 
   // 수정을 원하는 post의 데이터를 불러오는 useEffect 함수
   useEffect(() => {
@@ -32,6 +33,7 @@ export function EditPost() {
 
         setTitle(post.title);
         setContent(post.content);
+        setImage(post.images[0]);
       } catch (e) {
         console.error('게시물을 불러오는 중 오류 발생', e);
         navigate('/');
@@ -60,6 +62,17 @@ export function EditPost() {
       <Row className='justify-content-center'>
         <Col xs={12} md={8} lg={6}>
           <Card className='shadow-sm'>
+            <div className='cardImgContainer'>
+              {image ? (
+                <Card.Img
+                  variant='top'
+                  src={`${import.meta.env.VITE_HOST}${image}`}
+                  className='cardImg'
+                />
+              ) : (
+                <p>No image available</p>
+              )}
+            </div>
             <Card.Body>
               <Form>
                 <Form.Group className='mb-3'>
