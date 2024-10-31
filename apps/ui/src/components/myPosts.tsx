@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
-import moment from 'moment-timezone';
 
 // import { getPost } from '../store/post';
 // import { useAppDispatch, useAppSelector } from '../hooks';
@@ -18,6 +17,7 @@ import api from '../common/api';
 import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
 import { deletePost } from '../common/deletePosts';
 import { CardDropdown } from './CardDropdown';
+import { convertPostDates } from '../common/convertPostDates';
 
 interface User {
   userEmail: string;
@@ -55,14 +55,9 @@ export function MyPosts() {
         const result = await api.get(`/posts/myposts/${username}`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
+
         // post들의날짜 변경
-        const convertedData = [...result.data]
-          .reverse()
-          .map((v: { createdAt: string | Date; updatedAt: string | Date }) => {
-            v.createdAt = moment(v.createdAt).tz('Asia/Seoul').fromNow();
-            v.updatedAt = moment(v.updatedAt).tz('Asia/Seoul').fromNow();
-            return v;
-          });
+        const convertedData = convertPostDates([...result.data]);
 
         setDataFromServer(convertedData);
       } catch (e: any) {
