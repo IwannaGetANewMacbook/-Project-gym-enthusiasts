@@ -13,6 +13,7 @@ import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBefor
 import { CardDropdown } from './CardDropdown';
 import { deletePost } from '../common/deletePosts';
 import { convertPostDates } from '../common/convertPostDates';
+import { LoadingSpinner } from './LoadingSpinner';
 
 // 클라이언트 측에서 요청 시 쿠키를 포함하고, 응답 시 서버로부터 전달된 쿠키를 브라우저에 저장할 수 있도록 하는 역할
 // 모든 요청과 응답에 쿠키를 포함할 수 있도록 하기 위하여 전역으로 true로 설정.
@@ -28,6 +29,8 @@ export function CardsDetail() {
   const { id } = useParams();
 
   const [dataFromServer, setDataFromServer] = useState([]);
+
+  const [loading, setLoading] = useState(true);
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
@@ -53,6 +56,8 @@ export function CardsDetail() {
       } catch (e: any) {
         console.log(e.response?.data.message);
         handleTokenExpiration(navigate);
+      } finally {
+        setLoading(false);
       }
     };
     // fetchData 함수 호출
@@ -73,6 +78,10 @@ export function CardsDetail() {
         console.error(e);
       });
   };
+
+  if (loading) {
+    return <LoadingSpinner></LoadingSpinner>;
+  }
 
   return dataFromServer.map((v, i) => {
     return (

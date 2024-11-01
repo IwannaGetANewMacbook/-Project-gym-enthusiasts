@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Card, Button, Form, Row, Col, Container } from 'react-bootstrap';
 import api from '../common/api';
 import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
+import { LoadingSpinner } from './LoadingSpinner';
 
 export function EditPost() {
   const { postId } = useParams();
@@ -11,8 +12,12 @@ export function EditPost() {
   const user = JSON.parse(window.localStorage.getItem('user'));
 
   const [title, setTitle] = useState('');
+
   const [content, setContent] = useState('');
+
   const [image, setImage] = useState('');
+
+  const [loading, setLoading] = useState(true);
 
   // 수정을 원하는 post의 데이터를 불러오는 useEffect 함수
   useEffect(() => {
@@ -37,6 +42,8 @@ export function EditPost() {
       } catch (e) {
         console.error('게시물을 불러오는 중 오류 발생', e);
         navigate('/');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -56,6 +63,10 @@ export function EditPost() {
 
   // html 렌더링 전 accessToken 유무검사
   checkAccessTokenBeforeRendering(accessToken);
+
+  if (loading) {
+    return <LoadingSpinner></LoadingSpinner>;
+  }
 
   return (
     <Container className='my-5'>
