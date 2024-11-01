@@ -1,20 +1,20 @@
 import './App.css';
 
-import { NavBar } from './components/navBar';
+import { NavBar } from './components/NavBar';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Cards } from './components/cards';
+import { Cards } from './components/Cards';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
-import { MainBg } from './components/mainBg';
+import { MainBg } from './components/MainBg';
 import { Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { Login } from './components/login';
-import { Registraion } from './components/registration';
+import { Login } from './components/Login';
+import { Registraion } from './components/Registration';
 import { Post } from './components/Post';
-import { CardsDetail } from './components/cards.detail';
-import { Footer } from './components/footer';
-import NotFoundPage from './components/notFoundPage';
-import { MyPosts } from './components/myPosts';
+import { CardsDetail } from './components/CardsDetail';
+import { Footer } from './components/Footer';
+import NotFoundPage from './components/NotFoundPage';
+import { MyPosts } from './components/MyPosts';
 import { EditPost } from './components/EditPost';
 
 function App() {
