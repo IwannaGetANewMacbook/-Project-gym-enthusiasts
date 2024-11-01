@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
-import moment from 'moment-timezone';
 import { useParams } from 'react-router-dom';
 
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +12,7 @@ import api from '../common/api';
 import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
 import { CardDropdown } from './CardDropdown';
 import { deletePost } from '../common/deletePosts';
+import { convertPostDates } from '../common/convertPostDates';
 
 // 클라이언트 측에서 요청 시 쿠키를 포함하고, 응답 시 서버로부터 전달된 쿠키를 브라우저에 저장할 수 있도록 하는 역할
 // 모든 요청과 응답에 쿠키를 포함할 수 있도록 하기 위하여 전역으로 true로 설정.
@@ -42,20 +42,13 @@ export function CardsDetail() {
     // 데이터 가져오기 함수 정의.
     const fetchData = async () => {
       try {
-        const response = await api.get(`/posts/${id}`, {
+        const result = await api.get(`/posts/${id}`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
 
-        const copy = [response.data];
-
-        const convertedData = copy.map(
-          (v: { createdAt: string | Date; updatedAt: string | Date }) => {
-            v.createdAt = moment(v.createdAt).tz('Asia/Seoul').fromNow();
-            v.updatedAt = moment(v.updatedAt).tz('Asia/Seoul').fromNow();
-            return v;
-          }
-        );
-
+        // post들의 날짜 변경
+        const copy = [result.data];
+        const convertedData = convertPostDates(copy);
         setDataFromServer(convertedData);
       } catch (e: any) {
         console.log(e.response?.data.message);

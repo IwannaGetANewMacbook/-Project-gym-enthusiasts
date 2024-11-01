@@ -56,7 +56,7 @@ export function MyPosts() {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
 
-        // post들의날짜 변경
+        // post들의 날짜 변경
         const convertedData = convertPostDates([...result.data]);
 
         setDataFromServer(convertedData);
