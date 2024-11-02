@@ -30,7 +30,10 @@ export function EditPost() {
         const post = response.data;
 
         // 해당 post의 author과 localStorage에 저장된 userNickname 이 일치하지 않다면 권한 없음!
-        if (post.author.nickname !== user.userNickname) {
+        if (
+          post.author.nickname !== user.userNickname &&
+          user.userNickname !== 'Admin'
+        ) {
           alert('403 Forbidden\n권한이 없음.');
           navigate('/');
           return;

@@ -94,7 +94,8 @@ export function CardsDetail() {
                 src={`${env.VITE_HOST}${v.images[0]}`}
                 className='cardImg'
               />
-              {user?.userNickname === v.author.nickname && (
+              {(user?.userNickname === v.author.nickname ||
+                user?.userNickname === 'Admin') && (
                 <CardDropdown
                   postId={v.id}
                   onDelete={() => handleDeletePost(v.id)}
