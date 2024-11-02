@@ -56,8 +56,13 @@ export function MyPosts() {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
 
+        // createdAt 기준으로 내림차순 정렬
+        const sortedData = result.data.sort(
+          (a: any, b: any) =>
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
         // post들의 날짜 변경
-        const convertedData = convertPostDates([...result.data]);
+        const convertedData = convertPostDates([...sortedData]);
 
         setDataFromServer(convertedData);
       } catch (e: any) {

@@ -124,7 +124,7 @@ export function EditPost() {
                         .then((r) => {
                           console.log(r.data);
                           alert('업데이트 완료!');
-                          navigate('/');
+                          navigate(-1);
                         })
                         .catch((e) => {
                           if (e.response.status === 401) {
