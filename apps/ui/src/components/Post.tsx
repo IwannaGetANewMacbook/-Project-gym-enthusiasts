@@ -48,6 +48,62 @@ export function Post() {
     setContent(e.currentTarget.value);
   };
 
+  const handlePost = () => {
+    // if a user doesn't upload imgFile, automatically upload default imgFile.
+    if (!imageFile) {
+      fetch(defaultProfile)
+        .then((res) => res.blob())
+        .then((blob) => {
+          const defaultFile = new File([blob], 'defaultProfile.jpg', {
+            type: blob.type,
+          });
+          setImageFile(defaultFile);
+
+          // Create the form data and post immediately after setting the default image.
+          const formData = new FormData();
+          formData.append('title', title);
+          formData.append('content', content);
+          formData.append('image', defaultFile);
+
+          submitPost(formData);
+        })
+        .catch((error) =>
+          console.log('Error fetching default profile image: ', error)
+        );
+    }
+    // If a user uploads their imageFile, directly post.
+    else {
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('content', content);
+      formData.append('image', imageFile);
+
+      submitPost(formData);
+    }
+  };
+
+  const submitPost = (formData: FormData) => {
+    api
+      .post(`${env.VITE_HOST}/posts`, formData, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((r) => {
+        console.log(r.data);
+        alert('포스팅 완료!');
+        navigate('/');
+      })
+      .catch((e) => {
+        if (e.response.status === 401) {
+          alert('세션이 만료되었거나 토큰이 없습니다\n다시 로그인 해주세요.');
+          navigate('/auth/login/email');
+          return;
+        }
+        console.log(e.response?.data.message);
+        alert(e.response?.data.message);
+        window.location.reload();
+      });
+  };
+
   // html 렌더링 전 accessToken 유무 검사
   checkAccessTokenBeforeRendering(accessToken);
 
@@ -85,94 +141,7 @@ export function Post() {
                   />
                 </Form.Group>
                 <div className='d-grid'>
-                  <Button
-                    variant='primary'
-                    type='button'
-                    onClick={() => {
-                      // if a user doesn't upload imgFile, automatically upload default imgFile.
-                      if (!imageFile) {
-                        // fetch default image and set it to imageFile state, then post
-                        fetch(defaultProfile)
-                          .then((res) => res.blob())
-                          .then((blob) => {
-                            const defaultFile = new File(
-                              [blob],
-                              'defaultProfile.jpg',
-                              {
-                                type: blob.type,
-                              }
-                            );
-                            setImageFile(defaultFile);
-
-                            // Create the form data and post immediately after setting the default image
-                            const formData = new FormData();
-                            formData.append('title', title);
-                            formData.append('content', content);
-                            formData.append('image', defaultFile);
-
-                            api
-                              .post(`${env.VITE_HOST}/posts`, formData, {
-                                headers: {
-                                  Authorization: `Bearer ${accessToken}`,
-                                },
-                              })
-                              .then((r) => {
-                                console.log(r.data);
-                                alert('포스팅 완료!');
-                                navigate('/');
-                              })
-                              .catch((e) => {
-                                if (e.response.status === 401) {
-                                  alert(
-                                    '세션이 만료되었거나 토큰이 없습니다\n 다시 로그인 해주세요.'
-                                  );
-                                  navigate('/auth/login/email');
-                                  return;
-                                }
-                                console.log(e.response?.data.message);
-                                alert(e.response?.data.message);
-                                window.location.reload();
-                              });
-                          })
-                          .catch((error) =>
-                            console.error(
-                              'Error fetching default profile image:',
-                              error
-                            )
-                          );
-                      } else {
-                        // If imageFile exists, directly post
-                        const formData = new FormData();
-                        formData.append('title', title);
-                        formData.append('content', content);
-                        formData.append('image', imageFile);
-
-                        api
-                          .post(`${env.VITE_HOST}/posts`, formData, {
-                            headers: {
-                              Authorization: `Bearer ${accessToken}`,
-                            },
-                          })
-                          .then((r) => {
-                            console.log(r.data);
-                            alert('포스팅 완료!');
-                            navigate('/');
-                          })
-                          .catch((e) => {
-                            if (e.response.status === 401) {
-                              alert(
-                                '세션이 만료되었거나 토큰이 없습니다\n 다시 로그인 해주세요.'
-                              );
-                              navigate('/auth/login/email');
-                              return;
-                            }
-                            console.log(e.response?.data.message);
-                            alert(e.response?.data.message);
-                            window.location.reload();
-                          });
-                      }
-                    }}
-                  >
+                  <Button variant='primary' type='button' onClick={handlePost}>
                     Post
                   </Button>
                 </div>
