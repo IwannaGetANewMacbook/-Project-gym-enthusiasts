@@ -16,6 +16,7 @@ import { Footer } from './components/Footer';
 import NotFoundPage from './components/NotFoundPage';
 import { MyPosts } from './components/MyPosts';
 import { EditPost } from './components/EditPost';
+import { CardsPagination } from './components/CardsPagination';
 
 function App() {
   return (
@@ -35,7 +36,8 @@ function App() {
                 <br />
                 <Container>
                   <Row>
-                    <Cards></Cards>
+                    {/* <Cards></Cards> */}
+                    <CardsPagination></CardsPagination>
                   </Row>
                 </Container>
                 <Footer></Footer>
