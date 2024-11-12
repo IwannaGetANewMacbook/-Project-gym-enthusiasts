@@ -103,7 +103,10 @@ export class PostsController {
 
   // 마이페이지 라우팅
   @Get('myposts/:username')
-  getPostsMine(@Param('username') username: string) {
-    return this.postsService.getPostsMine(username);
+  getPostsMine(
+    @Param('username') username: string,
+    @Query() query: PaginatePostDto,
+  ) {
+    return this.postsService.getPostsMine(username, query);
   }
 }

@@ -243,17 +243,20 @@ export class PostsService {
   }
 
   // 로그인한 유저의 포스트 가져오기
-  async getPostsMine(username: string) {
+  async getPostsMine(username: string, dto: PaginatePostDto) {
     const isUsername = await this.usersService.CheckUserByNickname(username);
     if (!isUsername) {
       throw new NotFoundException('404 Not Found: The User does not exist.');
     }
 
-    const posts = await this.postsRepository.find({
-      where: { author: { nickname: username } },
-      relations: { author: true },
-    });
-
-    return posts;
+    return this.commonService.paginate(
+      dto,
+      this.postsRepository,
+      {
+        where: { author: { nickname: username } },
+        relations: { author: true },
+      },
+      'posts',
+    );
   }
 }

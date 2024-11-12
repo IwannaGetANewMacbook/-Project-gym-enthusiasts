@@ -35,6 +35,7 @@ export function CardsPagination() {
   const [totalPages, setTotalPages] = useState<number>(1);
 
   // URL의 쿼리 파라미터를 사용하기 위한 훅
+  // setSerchParams: 새 쿼리 파라미터를 설정하면 URL이 업데이트되고, 컴포넌트가 URL에 맞게 다시 렌더링
   const [searchParams, setSearchParams] = useSearchParams();
 
   // 첫 번째 데이터를 가져오는 useEffect
@@ -79,7 +80,7 @@ export function CardsPagination() {
     setSearchParams({ page: page.toString() });
   };
 
-  // 데이터가 아직 로딩 중인 경우 로딩 스피너를 표시
+  // 서버 요청이 아직 로딩중인 경우 로딩스피너를 표시
   if (loading) {
     return <LoadingSpinner />;
   }
