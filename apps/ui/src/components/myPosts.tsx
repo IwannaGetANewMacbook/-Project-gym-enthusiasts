@@ -113,6 +113,8 @@ export function MyPosts() {
      * 뒤로가기, 앞으로가기 할 때 상태유지 가능
      */
     setSerchParams({ page: page.toString() });
+    // 페이지 변경 시 화면 맨 위로 스크롤
+    window.scrollTo(0, 0);
   };
 
   // 서버 요청이 아직 로딩중인 경우 로딩스피너를 표시
