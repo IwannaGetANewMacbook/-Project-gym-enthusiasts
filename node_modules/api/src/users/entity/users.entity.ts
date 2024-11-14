@@ -6,7 +6,7 @@ import { PostsModel } from 'src/posts/entity/posts.entity';
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { RolesEnum } from '../const/roles.const';
 import { BaseModel } from 'src/common/entity/base.entity';
-import { IsEmail, IsString, Length } from 'class-validator';
+import { IsEmail, IsOptional, IsString, Length } from 'class-validator';
 import { Exclude } from 'class-transformer';
 import { ChatsModel } from 'src/chats/entity/chat.entity';
 import { MessagesModel } from 'src/chats/messages/entity/messages.entity';
@@ -50,6 +50,12 @@ export class UsersModel extends BaseModel {
     toPlainOnly: true, // 응답이 나가는 상황에서만 제외시키겠다.(요청에서는 제외안됨.)
   })
   password: string;
+
+  @Column({ nullable: true })
+  @IsString()
+  @Length(0, 150)
+  @IsOptional()
+  bio: string;
 
   @Column({ enum: Object.values(RolesEnum), default: RolesEnum.USER })
   role: RolesEnum;

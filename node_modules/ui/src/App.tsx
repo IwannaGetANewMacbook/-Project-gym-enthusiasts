@@ -2,7 +2,6 @@ import './App.css';
 
 import { NavBar } from './components/NavBar';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Cards } from './components/Cards';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import { MainBg } from './components/MainBg';
@@ -17,6 +16,7 @@ import NotFoundPage from './components/NotFoundPage';
 import { MyPosts } from './components/MyPosts';
 import { EditPost } from './components/EditPost';
 import { CardsPagination } from './components/CardsPagination';
+import { UserProfile } from './components/UserProfile';
 
 function App() {
   return (
@@ -117,7 +117,27 @@ function App() {
                 <br />
                 <Container>
                   <Row>
+                    <UserProfile></UserProfile>
+                  </Row>
+                  <br />
+                  <Row>
                     <MyPosts></MyPosts>
+                  </Row>
+                </Container>
+                <Footer></Footer>
+              </>
+            }
+          />
+          <Route
+            path='/user/profile'
+            element={
+              <>
+                <NavBar></NavBar>
+                <MainBg />
+                <br />
+                <Container>
+                  <Row>
+                    <UserProfile></UserProfile>
                   </Row>
                 </Container>
                 <Footer></Footer>
