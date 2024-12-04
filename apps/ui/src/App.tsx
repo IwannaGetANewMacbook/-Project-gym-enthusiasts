@@ -17,7 +17,6 @@ import { MyPosts } from './components/MyPosts';
 import { EditPost } from './components/EditPost';
 import { CardsPagination } from './components/CardsPagination';
 import { UserProfile } from './components/UserProfile';
-import { EditProfile } from './components/EditProfile';
 import { EditProfilePicture } from './components/EditProfilePicture';
 import { EditProfileInfo } from './components/EditProfileInfo';
 
