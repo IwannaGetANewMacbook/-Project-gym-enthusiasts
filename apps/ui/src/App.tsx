@@ -1,17 +1,11 @@
 import './App.css';
-
-import { NavBar } from './components/NavBar';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Row from 'react-bootstrap/Row';
-import Container from 'react-bootstrap/Container';
-import { MainBg } from './components/MainBg';
 import { Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Login } from './components/Login';
 import { Registraion } from './components/Registration';
 import { PostPosts } from './components/PostPosts';
 import { CardsDetail } from './components/CardsDetail';
-import { Footer } from './components/Footer';
 import NotFoundPage from './components/NotFoundPage';
 import { MyPosts } from './components/MyPosts';
 import { EditPost } from './components/EditPost';
@@ -19,6 +13,7 @@ import { CardsPagination } from './components/CardsPagination';
 import { UserProfile } from './components/UserProfile';
 import { EditProfilePicture } from './components/EditProfilePicture';
 import { EditProfileInfo } from './components/EditProfileInfo';
+import { Layout } from './components/Layout';
 
 function App() {
   return (
@@ -32,161 +27,105 @@ function App() {
           <Route
             path='/'
             element={
-              <>
-                <NavBar></NavBar>
-                <MainBg />
-                <br />
-                <Container>
-                  <Row>
-                    {/* <Cards></Cards> */}
-                    <CardsPagination></CardsPagination>
-                  </Row>
-                </Container>
-                <Footer></Footer>
-              </>
+              <Layout>
+                <CardsPagination />
+              </Layout>
             }
           />
+
           <Route
             path='/detail/:id'
             element={
-              <>
-                <NavBar></NavBar>
-                <MainBg />
-                <br />
-                <Container>
-                  <Row>
-                    <CardsDetail></CardsDetail>
-                  </Row>
-                </Container>
-                <Footer></Footer>
-              </>
+              <Layout>
+                <CardsDetail />
+              </Layout>
             }
           />
+
           <Route
             path='/auth/login/email'
             element={
-              <>
-                <NavBar></NavBar>
-                <MainBg />
-                <br />
-                <Login></Login>
-                <Footer></Footer>
-              </>
+              <Layout>
+                <Login />
+              </Layout>
             }
           />
+
           <Route
             path='/auth/register/email'
             element={
-              <>
-                <NavBar></NavBar>
-                <MainBg />
-                <br />
-                <Registraion></Registraion>
-                <Footer></Footer>
-              </>
+              <Layout>
+                <Registraion />
+              </Layout>
             }
           />
+
           <Route
             path='/post'
             element={
-              <>
-                <NavBar></NavBar>
-                <MainBg />
-                <br />
-                <PostPosts></PostPosts>
-                <Footer></Footer>
-              </>
+              <Layout>
+                <PostPosts />
+              </Layout>
             }
           />
+
           <Route
             path='/posts/edit/:postId'
             element={
-              <>
-                <NavBar></NavBar>
-                <MainBg />
-                <br />
-                <EditPost></EditPost>
-                <Footer></Footer>
-              </>
+              <Layout>
+                <EditPost />
+              </Layout>
             }
           />
+
           <Route
             path='posts/myposts/:username'
             element={
-              <>
-                <NavBar></NavBar>
-                <MainBg />
+              <Layout>
+                <UserProfile />
                 <br />
-                <Container>
-                  <Row>
-                    <UserProfile></UserProfile>
-                  </Row>
-                  <br />
-                  <Row>
-                    <MyPosts></MyPosts>
-                  </Row>
-                </Container>
-                <Footer></Footer>
-              </>
+                <MyPosts />
+              </Layout>
             }
           />
+
           <Route
             path='/user/profile'
             element={
-              <>
-                <NavBar></NavBar>
-                <MainBg />
-                <br />
-                <Container>
-                  <Row>
-                    <UserProfile></UserProfile>
-                  </Row>
-                </Container>
-                <Footer></Footer>
-              </>
+              <Layout>
+                <UserProfile />
+              </Layout>
             }
           />
 
           <Route
             path='/user/profile/edit'
             element={
-              <>
-                <NavBar></NavBar>
-                <MainBg />
-                <br />
-                <Container>
-                  <Row>
-                    <EditProfilePicture></EditProfilePicture>
-                    <EditProfileInfo></EditProfileInfo>
-                  </Row>
-                </Container>
-                <Footer></Footer>
-              </>
+              <Layout>
+                <EditProfilePicture></EditProfilePicture>
+                <EditProfileInfo></EditProfileInfo>
+              </Layout>
             }
           />
 
           <Route
             path='/test'
             element={
-              <>
-                <NavBar></NavBar>
-                <MainBg />
+              <Layout>
                 {/* <EditProfile></EditProfile> */}
                 {/* <EditProfilePicture></EditProfilePicture> */}
                 <EditProfileInfo></EditProfileInfo>
-                <br />
-                <Footer></Footer>
-              </>
+              </Layout>
             }
           />
+
           {/* 등록된 Routes 외 모든 경로 처리 */}
           <Route
             path='*'
             element={
-              <>
-                <NotFoundPage></NotFoundPage>
-                <Footer></Footer>
-              </>
+              <Layout>
+                <NotFoundPage />
+              </Layout>
             }
           />
         </Routes>

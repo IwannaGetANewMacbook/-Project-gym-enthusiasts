@@ -36,6 +36,7 @@ export function EditProfilePicture() {
             : null
         );
         setLoading(false); // 데이터 가져오기 완료 시 로딩 상태 변경
+        navigate('');
       } catch (e) {
         console.log(e);
         handleTokenExpiration(navigate); // 토큰 만료 시 처리
@@ -68,6 +69,10 @@ export function EditProfilePicture() {
         // headers: { Authorization: `Bearer ${accessToken}` }, // 인증 헤더 추가
       });
       alert('프로필 사진이 성공적으로 업데이트되었습니다!'); // 성공 시 사용자에게 알림
+
+      // 리렌더링
+      window.location.reload();
+
       setLoading(false);
     } catch (e) {
       console.log('프로필 사진 업데이트 오류:', e); // 업데이트 실패 시 오류 로그

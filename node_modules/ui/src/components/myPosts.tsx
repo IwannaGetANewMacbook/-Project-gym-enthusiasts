@@ -142,7 +142,7 @@ export function MyPosts() {
 
   // html 랜더링
   return (
-    <Container>
+    <Container style={{ marginTop: '40px' }}>
       {/* 카드들을 행으로 표시 */}
       <Row>
         {cards.map((v) => (
