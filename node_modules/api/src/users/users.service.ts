@@ -1,3 +1,4 @@
+import { UpdateProfileDto } from './dto/update.profile.dto';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
@@ -52,13 +53,71 @@ export class UsersService {
   // authService에서 사용할 userRepository 함수들.
 
   async getUserByEmail(email: string) {
-    return this.usersRepository.findOne({ where: { email: email } });
+    return this.usersRepository.findOne({
+      where: { email: email },
+      relations: { posts: true },
+    });
   }
 
   async CheckUserByNickname(username: string) {
     const result = await this.usersRepository.exists({
       where: { nickname: username },
     });
+    return result;
+  }
+
+  async updateUserProfileInfo(
+    nickname: string,
+    updateProfileDto: UpdateProfileDto,
+  ) {
+    // 1) create -> 저장할 객체를 생성한다.
+    // 2) save -> 객체를 저장한다.(create 메서드에서 생성한 객체로 저장)
+
+    // updateProfileDto 구조분해할당
+    const { bio, city, socialLink } = updateProfileDto;
+
+    // create() 함수는 동기식으로 처리됨.
+    await this.usersRepository.update(
+      {
+        nickname: nickname,
+      },
+      { bio, city, socialLink },
+    );
+
+    const result = await this.usersRepository.findOne({
+      where: { nickname: nickname },
+      relations: { posts: true },
+    });
+
+    return result;
+  }
+
+  async updateUserProfilePicture(
+    nickname: string,
+    images?: Array<Express.Multer.File>,
+  ) {
+    // 1) create -> 저장할 객체를 생성한다.
+    // 2) save -> 객체를 저장한다.(create 메서드에서 생성한 객체로 저장)
+
+    // files 배열에서 filename만 추출.
+    const filenames = [];
+    images.forEach((v) => {
+      filenames.push(v.filename);
+    });
+
+    // create() 함수는 동기식으로 처리됨.
+    await this.usersRepository.update(
+      {
+        nickname: nickname,
+      },
+      { images: filenames },
+    );
+
+    const result = await this.usersRepository.findOne({
+      where: { nickname: nickname },
+      relations: { posts: true },
+    });
+
     return result;
   }
 }

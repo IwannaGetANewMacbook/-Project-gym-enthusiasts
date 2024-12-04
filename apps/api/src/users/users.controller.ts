@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
+  Body,
   Controller,
   DefaultValuePipe,
   Delete,
@@ -9,13 +10,20 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Put,
   Query,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Roles } from './decorator/roles.decorator';
 import { RolesEnum } from './const/roles.const';
 import { UsersModel } from './entity/users.entity';
 import { User } from './decorator/user.decorator';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { ImagesTransformInterceptor } from 'src/posts/interceptor/images-transform.interceptor';
+import { CreatePostDTO } from 'src/posts/dto/create.post.dto';
+import { UpdateProfileDto } from './dto/update.profile.dto';
 
 @Controller('users')
 export class UsersController {
@@ -30,6 +38,38 @@ export class UsersController {
   @Roles(RolesEnum.ADMIN)
   getAllUsers() {
     return this.usersService.getAllUsers();
+  }
+
+  @Get('myProfile')
+  getMyProfile(@User() user: UsersModel) {
+    return this.usersService.getUserByEmail(user.email);
+  }
+
+  @Put('updateUserProfileInfo')
+  // FilesInterceptor를 등록을 하면은 moduel.ts 에서 등록한 multer모듈의 세팅이 확인되고 실행되고 이미지 파일을 해당 폴더안으로 넣어줌.
+  // @UseInterceptors(LogInterceptor)
+  updateUserProfileInfo(
+    @User() user: UsersModel,
+    @Body() updateProfileDto: UpdateProfileDto,
+  ) {
+    return this.usersService.updateUserProfileInfo(
+      user.nickname,
+      updateProfileDto,
+    );
+  }
+
+  @Put('updateUserProfilePicture')
+  // FilesInterceptor를 등록을 하면은 moduel.ts 에서 등록한 multer모듈의 세팅이 확인되고 실행되고 이미지 파일을 해당 폴더안으로 넣어줌.
+  @UseInterceptors(FilesInterceptor('image'))
+  // @UseInterceptors(LogInterceptor)
+  updateUserProfile(
+    @User() user: UsersModel,
+    @UploadedFiles() files?: Array<Express.Multer.File>,
+  ) {
+    return this.usersService.updateUserProfilePicture(
+      user.nickname,
+      files ? files : undefined, // 만약 file이 undefined면 undefined 그대로 전달.
+    );
   }
 
   // @Get('follow/me')

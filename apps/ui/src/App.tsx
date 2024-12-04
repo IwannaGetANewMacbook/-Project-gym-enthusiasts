@@ -9,7 +9,7 @@ import { Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Login } from './components/Login';
 import { Registraion } from './components/Registration';
-import { Post } from './components/Post';
+import { PostPosts } from './components/PostPosts';
 import { CardsDetail } from './components/CardsDetail';
 import { Footer } from './components/Footer';
 import NotFoundPage from './components/NotFoundPage';
@@ -17,6 +17,9 @@ import { MyPosts } from './components/MyPosts';
 import { EditPost } from './components/EditPost';
 import { CardsPagination } from './components/CardsPagination';
 import { UserProfile } from './components/UserProfile';
+import { EditProfile } from './components/EditProfile';
+import { EditProfilePicture } from './components/EditProfilePicture';
+import { EditProfileInfo } from './components/EditProfileInfo';
 
 function App() {
   return (
@@ -91,7 +94,7 @@ function App() {
                 <NavBar></NavBar>
                 <MainBg />
                 <br />
-                <Post></Post>
+                <PostPosts></PostPosts>
                 <Footer></Footer>
               </>
             }
@@ -144,12 +147,34 @@ function App() {
               </>
             }
           />
+
+          <Route
+            path='/user/profile/edit'
+            element={
+              <>
+                <NavBar></NavBar>
+                <MainBg />
+                <br />
+                <Container>
+                  <Row>
+                    <EditProfilePicture></EditProfilePicture>
+                    <EditProfileInfo></EditProfileInfo>
+                  </Row>
+                </Container>
+                <Footer></Footer>
+              </>
+            }
+          />
+
           <Route
             path='/test'
             element={
               <>
                 <NavBar></NavBar>
                 <MainBg />
+                {/* <EditProfile></EditProfile> */}
+                {/* <EditProfilePicture></EditProfilePicture> */}
+                <EditProfileInfo></EditProfileInfo>
                 <br />
                 <Footer></Footer>
               </>

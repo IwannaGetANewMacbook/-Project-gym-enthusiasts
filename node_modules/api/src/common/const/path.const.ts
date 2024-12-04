@@ -35,18 +35,18 @@ export const POST_PUBLIC_IMAGE_PATH = join(
 
 //////////////////////////////////////24.11.14 - User의 프로필 사진을 위한 세팅.////////////////////////////////////////////////////
 
-/** user 관련 이미지를 저장할 폴더 이름. */
-export const USER_FOLDER_NAME = 'user';
+/** users 관련 이미지를 저장할 폴더 이름. */
+export const USER_FOLDER_NAME = 'users';
 
 /**
- * user 관련 이미지를 저장할 폴더 (절대경로)
- * -> /{프로젝트의 위치}/public/user
+ * users 관련 이미지를 저장할 폴더 (절대경로)
+ * -> /{프로젝트의 위치}/public/users
  */
 export const USER_IMAGE_PATH = join(PUBLIC_FOLDER_PATH, USER_FOLDER_NAME);
 
 /**
  * 절대경로x -> 이미지의 위치를 get요청에 담아서 보내줄때 사용하는 용도.
- * 예)  /public/user/xxx.jpg
+ * 예)  /public/users/xxx.jpg
  */
 export const USER_PUBLIC_IMAGE_PATH = join(
   PUBLIC_FOLDER_NAME,

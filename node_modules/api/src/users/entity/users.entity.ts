@@ -4,13 +4,15 @@
 
 import { PostsModel } from 'src/posts/entity/posts.entity';
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
-import { RolesEnum } from '../const/roles.const';
+import { RolesEnum, SocialLinksEnum } from '../const/roles.const';
 import { BaseModel } from 'src/common/entity/base.entity';
-import { IsEmail, IsOptional, IsString, Length } from 'class-validator';
-import { Exclude } from 'class-transformer';
+import { IsEmail, IsEnum, IsOptional, IsString, Length } from 'class-validator';
+import { Exclude, Transform } from 'class-transformer';
 import { ChatsModel } from 'src/chats/entity/chat.entity';
 import { MessagesModel } from 'src/chats/messages/entity/messages.entity';
 import { CommentsModel } from 'src/posts/comments/entity/comments.entity';
+import { join } from 'path';
+import { USER_PUBLIC_IMAGE_PATH } from 'src/common/const/path.const';
 // import { UserFollowersModel } from './user-followers.entity';
 
 @Entity()
@@ -56,6 +58,38 @@ export class UsersModel extends BaseModel {
   @Length(0, 150)
   @IsOptional()
   bio: string;
+
+  @Column('text', {
+    nullable: true,
+    array: true,
+  })
+  /**
+   * 백엔드 응답이 나갈때 이미지에 prefix (e.g. localhost:3000/public/post)
+   * 를 추가하기 위한 class-transtormer 함수.
+   */
+  @Transform(({ value }) => {
+    const rename: string[] = [];
+    value &&
+      value.forEach((v) => {
+        v = `/${join(USER_PUBLIC_IMAGE_PATH, v)}`;
+        rename.push(v);
+        return rename;
+      });
+
+    return rename;
+  })
+  images?: string[]; // img파일은 db에 직접 저장하지 않음. -> db에서는 이미지 위치만 저장. -> 그래서 string타입.
+
+  @Column({ nullable: true })
+  @IsString()
+  @Length(0, 150)
+  @IsOptional()
+  city: string;
+
+  @Column({ enum: Object.values(SocialLinksEnum), nullable: true })
+  @IsEnum(SocialLinksEnum)
+  @IsOptional()
+  socialLink: SocialLinksEnum;
 
   @Column({ enum: Object.values(RolesEnum), default: RolesEnum.USER })
   role: RolesEnum;

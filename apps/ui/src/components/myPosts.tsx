@@ -82,6 +82,8 @@ export function MyPosts() {
           },
         });
 
+        response.data.data.reverse();
+
         // post들의 날짜 변경
         const convertedData = convertPostDates(response.data.data);
 

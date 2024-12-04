@@ -1,0 +1,91 @@
+/* Edit Profile CSS for a modern, responsive look */
+
+.editProfileContainer {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.editProfileContainer h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.profilePictureWrapper {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+}
+
+.imagePreview {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #007bff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+button {
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .editProfileContainer {
+    padding: 15px;
+  }
+
+  .editProfileContainer h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .editProfileContainer {
+    padding: 10px;
+  }
+
+  .editProfileContainer h2 {
+    font-size: 1.2rem;
+  }
+
+  .profilePictureWrapper {
+    width: 120px;
+    height: 120px;
+  }
+
+  .imagePreview {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+textarea.formControl {
+  resize: none;
+  font-size: 1rem;
+  color: #333;
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}

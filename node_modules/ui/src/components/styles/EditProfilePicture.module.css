@@ -1,0 +1,87 @@
+/* EditProfilePicture.module.css */
+
+.imagePreview {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #007bff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.imagePreview:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.imagePreviewLabel {
+  display: inline-block;
+}
+
+.text-center {
+  text-align: center;
+}
+
+@media (min-width: 1024px) {
+  .formControl {
+    max-width: 200px;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .imagePreview {
+    width: 150px;
+    height: 150px;
+  }
+
+  .formControl {
+    width: 80%;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .imagePreview {
+    width: 150px;
+    height: 150px;
+  }
+
+  .formControl {
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+.buttonContainer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formControl {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+}

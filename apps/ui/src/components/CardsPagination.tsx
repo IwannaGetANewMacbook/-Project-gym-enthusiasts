@@ -52,10 +52,9 @@ export function CardsPagination() {
             order__createdAt: 'DESC', // 최신 게시물이 제일 위로 오도록 정렬 순서 설정
           },
         });
-
+        response.data.data.reverse();
         // post들의 날짜 변경
         const convertedData = convertPostDates(response.data.data);
-
         // 응답으로 받은 카드 데이터를 설정
         setCards(convertedData);
         // 현재 페이지 번호를 업데이트
