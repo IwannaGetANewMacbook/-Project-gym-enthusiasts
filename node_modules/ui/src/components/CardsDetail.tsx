@@ -14,6 +14,7 @@ import { CardDropdown } from './CardDropdown';
 import { deletePost } from '../common/deletePosts';
 import { convertPostDates } from '../common/convertPostDates';
 import { LoadingSpinner } from './LoadingSpinner';
+import styles from './styles/CardsDetail.module.css';
 
 // 클라이언트 측에서 요청 시 쿠키를 포함하고, 응답 시 서버로부터 전달된 쿠키를 브라우저에 저장할 수 있도록 하는 역할
 // 모든 요청과 응답에 쿠키를 포함할 수 있도록 하기 위하여 전역으로 true로 설정.
@@ -103,8 +104,12 @@ export function CardsDetail() {
               )}
             </div>
             <Card.Body>
-              <Card.Title className='cardTitleFixed'>{v.title}</Card.Title>
-              <Card.Text className='cardBodyFixed'>{v.content}</Card.Text>
+              <Card.Title className={`${styles.cardTitleFixed}`}>
+                {v.title}
+              </Card.Title>
+              <Card.Text className={`${styles.cardBodyFixed}`}>
+                {v.content}
+              </Card.Text>
             </Card.Body>
             <ListGroup className='list-group-flush'>
               {/* <ListGroup.Item>Vestibulum at eros</ListGroup.Item> */}

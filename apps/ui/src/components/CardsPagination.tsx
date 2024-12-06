@@ -9,6 +9,7 @@ import api from '../common/api';
 import { LoadingSpinner } from './LoadingSpinner';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { convertPostDates } from '../common/convertPostDates';
+import styles from './styles/CardsPagination.module.css';
 
 export function CardsPagination() {
   const navigate = useNavigate();
@@ -99,18 +100,26 @@ export function CardsPagination() {
             }}
           >
             <Card style={{ maxWidth: '300px', cursor: 'pointer' }}>
-              <div className='cardImgContainer'>
+              <Card.Header className={styles.cardTitleFixed}>
+                <img
+                  src={`${import.meta.env.VITE_HOST}${v.author.images[0]}`}
+                  alt='User'
+                  className={styles.cardUserImg}
+                />
+                <strong style={{ fontSize: '13px' }}>
+                  {v.author.nickname}
+                </strong>
+              </Card.Header>
+              <div className={styles.cardImgContainer}>
                 <Card.Img
                   variant='top'
                   src={`${import.meta.env.VITE_HOST}${v.images[0]}`}
-                  className='cardImg'
+                  className={styles.cardImg}
                 />
               </div>
               <ListGroup className='list-group-flush'></ListGroup>
-              <Card.Footer>
-                <small className='text-muted'>
-                  <strong>{v.author.nickname}</strong> <div></div> {v.createdAt}
-                </small>
+              <Card.Footer className={styles.cardFooter}>
+                <small className='text-muted'>{v.createdAt}</small>
               </Card.Footer>
             </Card>
             <br />

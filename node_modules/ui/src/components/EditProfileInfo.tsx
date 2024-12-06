@@ -70,7 +70,7 @@ export function EditProfileInfo() {
 
       alert('프로필이 성공적으로 업데이트되었습니다!'); // 성공 시 사용자에게 알림
       setLoading(false);
-      navigate('/user/profile'); // 사용자 프로필 페이지로 이동
+      navigate('/posts/myposts/:username'); // 사용자 프로필 페이지로 이동
     } catch (e) {
       console.log('프로필 업데이트 오류:', e); // 업데이트 실패 시 오류 로그
     }

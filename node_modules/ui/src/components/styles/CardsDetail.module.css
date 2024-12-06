@@ -1,0 +1,13 @@
+/* CardsDetail.module.css */
+
+.cardTitleFixed {
+  width: 100%; /* 또는 원하는 너비 */
+  height: 50px; /* 원하는 높이 */
+  overflow: hidden; /* 내용이 넘칠 경우 숨김 */
+}
+
+.cardBodyFixed {
+  width: 100%; /* 또는 원하는 너비 */
+  height: 150px; /* 원하는 높이 */
+  overflow: auto; /* 내용이 넘칠 경우 스크롤 */
+}
