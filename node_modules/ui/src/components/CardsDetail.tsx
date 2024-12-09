@@ -29,7 +29,7 @@ export function CardsDetail() {
 
   const { id } = useParams();
 
-  const [dataFromServer, setDataFromServer] = useState([]);
+  const [cards, setCards] = useState([]);
 
   const [loading, setLoading] = useState(true);
 
@@ -53,7 +53,7 @@ export function CardsDetail() {
         // post들의 날짜 변경
         const copy = [result.data];
         const convertedData = convertPostDates(copy);
-        setDataFromServer(convertedData);
+        setCards(convertedData);
       } catch (e: any) {
         console.log(e.response?.data.message);
         handleTokenExpiration(navigate);
@@ -70,9 +70,7 @@ export function CardsDetail() {
     deletePost(postId, accessToken)
       .then(() => {
         // 상태 업데이트 하여 삭제된 게시물 제거
-        setDataFromServer(
-          [...dataFromServer].filter((post) => post.id !== postId)
-        );
+        setCards([...cards].filter((post) => post.id !== postId));
         navigate('/');
       })
       .catch((e) => {
@@ -84,44 +82,53 @@ export function CardsDetail() {
     return <LoadingSpinner></LoadingSpinner>;
   }
 
-  return dataFromServer.map((v, i) => {
-    return (
-      <div key={i} className='center-align'>
-        <Col sm={4}>
-          <Card style={{ maxWidth: '300px' }}>
-            <div className='cardImgContainer'>
-              <Card.Img
-                variant='top'
-                src={`${env.VITE_HOST}${v.images[0]}`}
-                className='cardImg'
+  return cards.map((v, i) => (
+    <div key={i} className='center-align'>
+      <Col
+        sm={4}
+        key={v.id}
+        // onClick={() => {
+        //   navigate(`/detail/${v.id}`);
+        // }}
+      >
+        <Card style={{ maxWidth: '300px', cursor: 'pointer' }}>
+          <Card.Header className={styles.cardTitleFixed}>
+            <img
+              src={`${env.VITE_HOST}${v.author.images[0]}`}
+              alt='User'
+              className={styles.cardUserImg}
+            />
+            <strong style={{ fontSize: '13px' }}>{v.author.nickname}</strong>
+          </Card.Header>
+          <div className={styles.cardImgContainer}>
+            <Card.Img
+              variant='top'
+              src={`${import.meta.env.VITE_HOST}${v.images[0]}`}
+              className={styles.cardImg}
+            />
+            {(user?.userNickname === v.author.nickname ||
+              user?.userNickname === 'Admin') && (
+              <CardDropdown
+                postId={v.id}
+                onDelete={() => handleDeletePost(v.id)}
               />
-              {(user?.userNickname === v.author.nickname ||
-                user?.userNickname === 'Admin') && (
-                <CardDropdown
-                  postId={v.id}
-                  onDelete={() => handleDeletePost(v.id)}
-                />
-              )}
-            </div>
-            <Card.Body>
-              <Card.Title className={`${styles.cardTitleFixed}`}>
-                {v.title}
-              </Card.Title>
-              <Card.Text className={`${styles.cardBodyFixed}`}>
-                {v.content}
-              </Card.Text>
-            </Card.Body>
-            <ListGroup className='list-group-flush'>
-              {/* <ListGroup.Item>Vestibulum at eros</ListGroup.Item> */}
-              <ListGroup.Item>작성자: {v.author.nickname}</ListGroup.Item>
-            </ListGroup>
-            <Card.Footer>
-              <small className='text-muted'>{v.createdAt}</small>
-            </Card.Footer>
-          </Card>
-          <br />
-        </Col>
-      </div>
-    );
-  });
+            )}
+          </div>
+          <Card.Body>
+            <Card.Title className={`${styles.cardTitleFixed}`}>
+              {v.title}
+            </Card.Title>
+            <Card.Text className={`${styles.cardBodyFixed}`}>
+              {v.content}
+            </Card.Text>
+          </Card.Body>
+          <ListGroup className='list-group-flush'></ListGroup>
+          <Card.Footer className={styles.cardFooter}>
+            <small className='text-muted'>{v.createdAt}</small>
+          </Card.Footer>
+        </Card>
+        <br />
+      </Col>
+    </div>
+  ));
 }

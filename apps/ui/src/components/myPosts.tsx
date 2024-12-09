@@ -15,11 +15,10 @@ import { handleTokenExpiration } from '../common/handleTokenExpiration';
 import { LoadingSpinner } from './LoadingSpinner';
 import api from '../common/api';
 import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
-import { deletePost } from '../common/deletePosts';
-import { CardDropdown } from './CardDropdown';
 import { convertPostDates } from '../common/convertPostDates';
 import { itemsPerPage } from '../common/const';
 import { Button, Container, Row } from 'react-bootstrap';
+import styles from './styles/CardsPagination.module.css';
 
 // 클라이언트 측에서 요청 시 쿠키를 포함하고, 응답 시 서버로부터 전달된 쿠키를 브라우저에 저장할 수 있도록 하는 역할
 // 모든 요청과 응답에 쿠키를 포함할 수 있도록 하기 위하여 전역으로 true로 설정.
@@ -128,46 +127,39 @@ export function MyPosts() {
     return <NoPosts username={username}></NoPosts>;
   }
 
-  // Handle post deletion
-  const handleDeletePost = (postId: number) => {
-    deletePost(postId, accessToken)
-      .then(() => {
-        // 상태 업데이트 하여 삭제된 게시물 제거
-        setCards([...cards].filter((post) => post.id !== postId));
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  };
-
   // html 랜더링
   return (
     <Container style={{ marginTop: '40px' }}>
       {/* 카드들을 행으로 표시 */}
       <Row>
         {cards.map((v) => (
-          <Col sm={4} key={v.id}>
-            <Card style={{ maxWidth: '300px' }}>
-              <div className='cardImgContainer'>
+          <Col
+            sm={4}
+            key={v.id}
+            onClick={() => {
+              navigate(`/detail/${v.id}`);
+            }}
+          >
+            <Card style={{ maxWidth: '300px', cursor: 'pointer' }}>
+              <Card.Header className={styles.cardTitleFixed}>
+                <img
+                  src={`${import.meta.env.VITE_HOST}${v.author.images[0]}`}
+                  alt='User'
+                  className={styles.cardUserImg}
+                />
+                <strong style={{ fontSize: '13px' }}>
+                  {v.author.nickname}
+                </strong>
+              </Card.Header>
+              <div className={styles.cardImgContainer}>
                 <Card.Img
                   variant='top'
                   src={`${env.VITE_HOST}${v.images[0]}`}
-                  className='cardImg'
+                  className={styles.cardImg}
                 />
-                <CardDropdown
-                  postId={v.id} // 여기서 postId를 전달
-                  onDelete={() => handleDeletePost(v.id)}
-                ></CardDropdown>
               </div>
-              <Card.Body>
-                <Card.Title className='cardTitleFixed'>{v.title}</Card.Title>
-                <Card.Text className='cardBodyFixed'>{v.content}</Card.Text>
-              </Card.Body>
-              <ListGroup className='list-group-flush'>
-                {/* <ListGroup.Item>Vestibulum at eros</ListGroup.Item> */}
-                <ListGroup.Item>작성자: {v.author.nickname}</ListGroup.Item>
-              </ListGroup>
-              <Card.Footer className='d-flex justify-content-between align-items-center'>
+              <ListGroup className='list-group-flush'></ListGroup>
+              <Card.Footer className={styles.cardFooter}>
                 <small className='text-muted'>{v.createdAt}</small>
               </Card.Footer>
             </Card>
