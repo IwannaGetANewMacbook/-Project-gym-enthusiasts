@@ -8,6 +8,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import api from '../common/api';
 import defaultProfile from '../assets/defaultUserProfile.jpg';
+import { LoadingSpinner } from './LoadingSpinner';
 
 // 클라이언트 측에서 요청 시 쿠키를 포함하고, 응답 시 서버로부터 전달된 쿠키를 브라우저에 저장할 수 있도록 하는 역할
 // 모든 요청과 응답에 쿠키를 포함할 수 있도록 하기 위하여 전역으로 true로 설정.
@@ -16,14 +17,20 @@ axios.defaults.withCredentials = true;
 export function Registraion() {
   const env = import.meta.env;
   const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
+
   const [password, setPassword] = useState('');
+
   const [nickname, setNickname] = useState('');
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   const formData = new FormData();
 
   const onClickForSignUp = async () => {
     try {
+      setLoading(true);
       const response = await axios.post(
         `${env.VITE_HOST}/auth/register/email`,
         {
@@ -48,6 +55,8 @@ export function Registraion() {
       console.log('회원가입 중 오류 발생: ', e);
       alert(e.response?.data.message);
       window.location.reload();
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -78,6 +87,10 @@ export function Registraion() {
       );
     }
   };
+
+  if (loading) {
+    return <LoadingSpinner></LoadingSpinner>;
+  }
 
   return (
     <Container>

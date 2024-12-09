@@ -12,7 +12,7 @@ export function EditProfilePicture() {
   const accessToken = window.localStorage.getItem('accessToken');
 
   // 데이터를 로딩 중인지 나타내는 상태
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   // 선택한 프로필 이미지 파일 상태
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -24,6 +24,7 @@ export function EditProfilePicture() {
   checkAccessTokenBeforeRendering(accessToken);
 
   useEffect(() => {
+    setLoading(true);
     // 사용자 데이터를 백엔드에서 가져오는 함수 정의
     const fetchUserData = async () => {
       try {

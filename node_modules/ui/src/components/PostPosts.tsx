@@ -14,6 +14,7 @@ import defaultProfile from '../assets/No-photo.jpg';
 import axios from 'axios';
 import api from '../common/api';
 import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
+import { LoadingSpinner } from './LoadingSpinner';
 
 // 클라이언트 측에서 요청 시 쿠키를 포함하고, 응답 시 서버로부터 전달된 쿠키를 브라우저에 저장할 수 있도록 하는 역할
 // 모든 요청과 응답에 쿠키를 포함할 수 있도록 하기 위하여 전역으로 true로 설정.
@@ -21,8 +22,12 @@ axios.defaults.withCredentials = true;
 
 export function PostPosts() {
   const navigate = useNavigate();
+
   const accessToken = window.localStorage.getItem('accessToken');
+
   const env = import.meta.env;
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [imageFile, setImageFile] = useState<File | null>(null);
 
@@ -83,6 +88,7 @@ export function PostPosts() {
   };
 
   const submitPost = (formData: FormData) => {
+    setLoading(true);
     api
       .post(`${env.VITE_HOST}/posts`, formData, {
         headers: { Authorization: `Bearer ${accessToken}` },
@@ -90,6 +96,7 @@ export function PostPosts() {
       .then((r) => {
         console.log(r.data);
         alert('포스팅 완료!');
+        setLoading(false);
         navigate('/');
       })
       .catch((e) => {
@@ -107,6 +114,10 @@ export function PostPosts() {
   // html 렌더링 전 accessToken 유무 검사
   checkAccessTokenBeforeRendering(accessToken);
 
+  // 데이터를 로딩 중인 경우 로딩 메시지 표시
+  if (loading) {
+    return <LoadingSpinner></LoadingSpinner>;
+  }
   return (
     <Container className='my-5'>
       <Row className='justify-content-center'>

@@ -28,7 +28,7 @@ export function Cards() {
 
   const [dataFromServer, setDataFromServer] = useState([]);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // html 렌더링 전 accessToken 유무 검사
   checkAccessTokenBeforeRendering(accessToken);
@@ -39,6 +39,7 @@ export function Cards() {
      */
     const fetchData = async () => {
       try {
+        setLoading(true);
         const result = await api.get(`/posts`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });

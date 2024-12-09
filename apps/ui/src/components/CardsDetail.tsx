@@ -31,7 +31,7 @@ export function CardsDetail() {
 
   const [cards, setCards] = useState([]);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
@@ -46,6 +46,7 @@ export function CardsDetail() {
     // 데이터 가져오기 함수 정의.
     const fetchData = async () => {
       try {
+        setLoading(true);
         const result = await api.get(`/posts/${id}`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         });

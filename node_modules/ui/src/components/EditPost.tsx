@@ -17,10 +17,11 @@ export function EditPost() {
 
   const [image, setImage] = useState('');
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // 수정을 원하는 post의 데이터를 불러오는 useEffect 함수
   useEffect(() => {
+    setLoading(true);
     const fetchPostData = async () => {
       try {
         const response = await api.get(`/posts/${postId}`, {

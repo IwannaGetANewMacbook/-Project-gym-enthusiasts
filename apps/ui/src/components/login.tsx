@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { LoadingSpinner } from './LoadingSpinner';
 
 // 클라이언트 측에서 요청 시 쿠키를 포함하고, 응답 시 서버로부터 전달된 쿠키를 브라우저에 저장할 수 있도록 하는 역할
 // 모든 요청과 응답에 쿠키를 포함할 수 있도록 하기 위하여 전역으로 true로 설정.
@@ -21,10 +22,13 @@ export function Login() {
 
   const env = import.meta.env;
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const onClickForLogin = async () => {
     const encoded = btoa(`${email}:${password}`);
 
     try {
+      setLoading(true);
       const result = await axios.post(
         `${env.VITE_HOST}/auth/login/email`,
         {},
@@ -44,8 +48,15 @@ export function Login() {
     } catch (e: any) {
       console.log(e);
       alert(e.response?.data.message || '로그인 중 에러가 발생했습니다.');
+    } finally {
+      setLoading(false);
     }
   };
+
+  // 데이터를 로딩 중인 경우 로딩 메시지 표시
+  if (loading) {
+    return <LoadingSpinner></LoadingSpinner>;
+  }
 
   return (
     <Container>

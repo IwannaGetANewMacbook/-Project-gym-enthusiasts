@@ -21,12 +21,13 @@ export function EditProfileInfo() {
   });
 
   // 데이터를 로딩 중인지 나타내는 상태
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   // HTML 렌더링 전에 accessToken 유효성 검사
   checkAccessTokenBeforeRendering(accessToken);
 
   useEffect(() => {
+    setLoading(true);
     // 사용자 데이터를 백엔드에서 가져오는 함수 정의
     const fetchUserData = async () => {
       try {
@@ -42,6 +43,8 @@ export function EditProfileInfo() {
       } catch (e) {
         console.log(e);
         handleTokenExpiration(navigate); // 토큰 만료 시 처리
+      } finally {
+        setLoading(false);
       }
     };
 

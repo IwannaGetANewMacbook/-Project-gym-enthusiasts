@@ -29,7 +29,7 @@ export function CardsPagination() {
     return isNaN(savedPage) ? 1 : savedPage;
   });
   // 데이터 로딩 중을 나타내는 상태
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   // 페이지당 항목 수
   const itemsPerPage = 6;
   // 총 페이지 수를 저장하는 상태

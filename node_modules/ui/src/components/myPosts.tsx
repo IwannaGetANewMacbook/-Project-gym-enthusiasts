@@ -51,7 +51,7 @@ export function MyPosts() {
   });
 
   // 데이터 로딩 중을 나타내는 상태
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   // 총 페이지 수를 저장하는 상태
   const [totalPages, setTotalPages] = useState<number>(1);

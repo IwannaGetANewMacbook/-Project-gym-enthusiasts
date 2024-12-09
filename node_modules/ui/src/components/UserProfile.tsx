@@ -25,7 +25,7 @@ export function UserProfile() {
   const accessToken = window.localStorage.getItem('accessToken');
 
   // 데이터 로딩 중을 나타내는 상태
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [userData, setUserData] = useState(null);
 
@@ -59,8 +59,8 @@ export function UserProfile() {
     fetchData();
   }, []);
 
-  // 서버 요청이 아직 로딩중인 경우 로딩스피너를 표시
-  if (loading) {
+  // API 호출이 완료되고 userData가 유효할 때만 렌더링되도록 설정했습니다.
+  if (loading || !userData) {
     return <LoadingSpinner />;
   }
 
