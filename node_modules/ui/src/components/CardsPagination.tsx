@@ -10,6 +10,7 @@ import { LoadingSpinner } from './LoadingSpinner';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { convertPostDates } from '../common/convertPostDates';
 import styles from './styles/CardsPagination.module.css';
+// import multipleImgs from '../assets/multipleImgs.svg';
 
 export function CardsPagination() {
   const navigate = useNavigate();
@@ -99,7 +100,13 @@ export function CardsPagination() {
               navigate(`/detail/${v.id}`);
             }}
           >
-            <Card style={{ maxWidth: '300px', cursor: 'pointer' }}>
+            <Card
+              style={{
+                maxWidth: '300px',
+                cursor: 'pointer',
+                position: 'relative',
+              }}
+            >
               <Card.Header className={styles.cardTitleFixed}>
                 <img
                   src={`${import.meta.env.VITE_HOST}${v.author.images[0]}`}
@@ -111,6 +118,15 @@ export function CardsPagination() {
                 </strong>
               </Card.Header>
               <div className={styles.cardImgContainer}>
+                {/* 이미지 갯수를 표시하는 UI */}
+                <div className={styles.imageCountBadge}>
+                  <img
+                    src='multipleImg.svg'
+                    alt='Images'
+                    className={styles.imageIcon}
+                  />
+                  {v.images.length}
+                </div>
                 <Card.Img
                   variant='top'
                   src={`${import.meta.env.VITE_HOST}${v.images[0]}`}

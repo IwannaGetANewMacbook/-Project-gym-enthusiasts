@@ -183,6 +183,7 @@ export function PostPosts() {
                       return (
                         <div key={i} className={styles.previewContainer}>
                           <div className={styles.imageWrapper}>
+                            <span className={styles.imageIndex}>{i + 1}</span>
                             <Image
                               src={v}
                               alt={`Preview ${i + 1}`}
