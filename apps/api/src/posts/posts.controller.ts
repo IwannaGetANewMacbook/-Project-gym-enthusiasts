@@ -64,15 +64,15 @@ export class PostsController {
   }
 
   @Post()
-  @UseInterceptors(FilesInterceptor('image'))
+  @UseInterceptors(FilesInterceptor('images', 3))
   // @UseInterceptors(LogInterceptor)
-  @UseInterceptors(ImagesTransformInterceptor)
+  // @UseInterceptors(ImagesTransformInterceptor)
   createPost(
     @User() user: UsersModel,
     @Body() body: CreatePostDTO,
     // @Body('title') title: string,
     // @Body('content') content: string,
-    @UploadedFiles() files?: Array<Express.Multer.File>,
+    @UploadedFiles() files?: Array<Express.Multer.File>, // 다중 파일 수신
   ) {
     return this.postsService.createPost(
       user.id,

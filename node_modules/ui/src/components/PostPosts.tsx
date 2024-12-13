@@ -10,6 +10,7 @@ import {
   Container,
 } from 'react-bootstrap';
 import defaultProfile from '../assets/No-photo.jpg';
+import styles from './styles/PostPosts.module.css';
 
 import axios from 'axios';
 import api from '../common/api';
@@ -29,19 +30,53 @@ export function PostPosts() {
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
 
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   const [title, setTitle] = useState('');
 
   const [content, setContent] = useState('');
 
+  const [btnDisable, SetBtnDisable] = useState(false);
+
+  /**
+   * 이미지 미리보기 삭제기능
+   */
+  const removeImage = (index: number) => {
+    const updatedFiles = imageFiles.filter((_, i) => i !== index);
+    const updatedPreviews = imagePreviews.filter((_, i) => i !== index);
+    setImageFiles(updatedFiles);
+    setImagePreviews(updatedPreviews);
+  };
+
   const handleImgForm = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.currentTarget.files[0];
-    setImageFile(file);
-    if (file) {
-      setImagePreview(URL.createObjectURL(file));
+    const files = Array.from(e.currentTarget.files || []);
+    const maxFileSize = 10 * 1024 * 1024; // 10MB
+
+    /**
+     * 파일 업로드 크기, 갯수 제한 및 검증.
+     */
+    const validFiles = files.filter((v) => {
+      return v.size <= maxFileSize;
+    });
+    if (validFiles.length !== files.length) {
+      SetBtnDisable(true);
+      alert('파일 크기는 10MB 를 초과할 수 없습니다.');
+      return;
+    } else if (validFiles.length > 3) {
+      alert('파일은 총 3장까지만 업로드 가능합니다.');
+      SetBtnDisable(true);
+      return;
+    } else {
+      SetBtnDisable(false);
+    }
+
+    setImageFiles(validFiles);
+
+    if (validFiles) {
+      const previews = validFiles.map((v) => URL.createObjectURL(v));
+      setImagePreviews(previews);
     }
   };
 
@@ -55,36 +90,31 @@ export function PostPosts() {
 
   const handlePost = () => {
     // if a user doesn't upload imgFile, automatically upload default imgFile.
-    if (!imageFile) {
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('content', content);
+
+    // 여러 파일 추가
+    if (imageFiles.length > 0) {
+      imageFiles.forEach((v) => {
+        // 'images' 라는 필드로 배열 전송
+        formData.append('images', v);
+      });
+    } else {
+      // 이미지가 없을 경우 기본 이미지 추가
       fetch(defaultProfile)
         .then((res) => res.blob())
         .then((blob) => {
           const defaultFile = new File([blob], 'defaultProfile.jpg', {
             type: blob.type,
           });
-          setImageFile(defaultFile);
-
-          // Create the form data and post immediately after setting the default image.
-          const formData = new FormData();
-          formData.append('title', title);
-          formData.append('content', content);
-          formData.append('image', defaultFile);
-
+          formData.append('images', defaultFile);
           submitPost(formData);
         })
-        .catch((error) =>
-          console.log('Error fetching default profile image: ', error)
-        );
+        .catch((e) => console.log('Error fetching default profile image: ', e));
+      return;
     }
-    // If a user uploads their imageFile, directly post.
-    else {
-      const formData = new FormData();
-      formData.append('title', title);
-      formData.append('content', content);
-      formData.append('image', imageFile);
-
-      submitPost(formData);
-    }
+    submitPost(formData);
   };
 
   const submitPost = (formData: FormData) => {
@@ -126,12 +156,51 @@ export function PostPosts() {
             <Card.Body>
               <Form>
                 <Form.Group controlId='formFileMultiple' className='mb-3'>
-                  <Form.Label>사진을 올려주세요.</Form.Label>
-                  <Form.Control type='file' multiple onChange={handleImgForm} />
+                  <div className={styles.fileUploadContainer}>
+                    <input
+                      type='file'
+                      id='fileInput'
+                      multiple
+                      onChange={handleImgForm}
+                      style={{ display: 'none' }}
+                    />
+                    <Button
+                      variant='outline-primary'
+                      onClick={() =>
+                        document.getElementById('fileInput')?.click()
+                      }
+                    >
+                      사진 선택
+                    </Button>
+                    <p className='text-muted mt-2'>
+                      최대 3개의 파일을 업로드할 수 있습니다.
+                    </p>
+                  </div>
                 </Form.Group>
-                {imagePreview && (
+                {imagePreviews.length > 0 && (
                   <div className='text-center mb-3'>
-                    <Image src={imagePreview} alt='Preview' fluid rounded />
+                    {imagePreviews.map((v, i) => {
+                      return (
+                        <div key={i} className={styles.previewContainer}>
+                          <div className={styles.imageWrapper}>
+                            <Image
+                              src={v}
+                              alt={`Preview ${i + 1}`}
+                              fluid
+                              className={styles.previewImage}
+                            />
+                          </div>
+                          <Button
+                            variant='danger'
+                            size='sm'
+                            onClick={() => removeImage(i)}
+                            className={styles.removeButton}
+                          >
+                            X
+                          </Button>
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
                 <Form.Group className='mb-3'>
@@ -152,7 +221,12 @@ export function PostPosts() {
                   />
                 </Form.Group>
                 <div className='d-grid'>
-                  <Button variant='primary' type='button' onClick={handlePost}>
+                  <Button
+                    variant='primary'
+                    type='button'
+                    onClick={handlePost}
+                    disabled={btnDisable}
+                  >
                     Post
                   </Button>
                 </div>
