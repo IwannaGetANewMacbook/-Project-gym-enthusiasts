@@ -35,12 +35,14 @@ export class PostsModel extends BaseModel {
   })
   @Transform(({ value }) => {
     const rename: string[] = [];
-    value.forEach((v) => {
-      v = `/${join(POST_PUBLIC_IMAGE_PATH, v)}`;
-      rename.push(v);
-      return rename;
-    });
+    value.map((v, i) => rename.push(`/${join(POST_PUBLIC_IMAGE_PATH, v)}`));
 
+    // const rename: string[] = [];
+    // value.forEach((v) => {
+    //   v = `/${join(POST_PUBLIC_IMAGE_PATH, v)}`;
+    //   rename.push(v);
+    //   return rename;
+    // });
     return value && rename;
   })
   images?: string[]; // img파일은 db에 직접 저장하지 않음. -> db에서는 이미지 위치만 저장. -> 그래서 string타입.
