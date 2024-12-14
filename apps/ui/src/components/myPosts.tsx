@@ -140,7 +140,13 @@ export function MyPosts() {
               navigate(`/detail/${v.id}`);
             }}
           >
-            <Card style={{ maxWidth: '300px', cursor: 'pointer' }}>
+            <Card
+              style={{
+                maxWidth: '300px',
+                cursor: 'pointer',
+                position: 'relative',
+              }}
+            >
               <Card.Header className={styles.cardTitleFixed}>
                 <img
                   src={`${import.meta.env.VITE_HOST}${v.author.images[0]}`}
@@ -152,6 +158,15 @@ export function MyPosts() {
                 </strong>
               </Card.Header>
               <div className={styles.cardImgContainer}>
+                {/* 이미지 갯수를 표시하는 UI */}
+                <div className={styles.imageCountBadge}>
+                  <img
+                    src='/multipleImg.svg'
+                    alt='Images'
+                    className={styles.imageIcon}
+                  />
+                  {v.images.length}
+                </div>
                 <Card.Img
                   variant='top'
                   src={`${env.VITE_HOST}${v.images[0]}`}

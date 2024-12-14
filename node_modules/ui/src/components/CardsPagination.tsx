@@ -10,7 +10,6 @@ import { LoadingSpinner } from './LoadingSpinner';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { convertPostDates } from '../common/convertPostDates';
 import styles from './styles/CardsPagination.module.css';
-// import multipleImgs from '../assets/multipleImgs.svg';
 
 export function CardsPagination() {
   const navigate = useNavigate();
@@ -121,7 +120,7 @@ export function CardsPagination() {
                 {/* 이미지 갯수를 표시하는 UI */}
                 <div className={styles.imageCountBadge}>
                   <img
-                    src='multipleImg.svg'
+                    src='/multipleImg.svg'
                     alt='Images'
                     className={styles.imageIcon}
                   />
