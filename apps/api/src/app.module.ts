@@ -42,6 +42,7 @@ import { AccessTokenGuard } from './auth/guard/bearer-token.guard';
 import { RolesGuard } from './users/guard/roles.guard';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { PUBLIC_FOLDER_PATH } from './common/const/path.const';
+import { SocialLinkModel } from './users/entity/social-link.entity';
 
 @Module({
   imports: [
@@ -69,6 +70,7 @@ import { PUBLIC_FOLDER_PATH } from './common/const/path.const';
         ChatsModel,
         MessagesModel,
         CommentsModel,
+        SocialLinkModel,
       ],
       // synchronize: true -> nestJS에서 작성하는 typeORM코드와 db싱크를 자동으로 맞추겠다!
       // 개발환경에서는 synchronize: true, 프로덕션 환경에서는 synchronize: false

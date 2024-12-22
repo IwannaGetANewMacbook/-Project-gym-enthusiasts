@@ -14,6 +14,7 @@ import { CommentsModel } from '../comments/entity/comments.entity';
 export class PostsModel extends BaseModel {
   @ManyToOne(() => UsersModel, (user) => user.posts, {
     nullable: false,
+    onDelete: 'CASCADE', // 유저 삭제시 유저가 쓴 Post들도 같이 삭제
   })
   author: UsersModel;
 

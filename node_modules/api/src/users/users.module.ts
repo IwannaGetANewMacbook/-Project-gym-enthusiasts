@@ -8,10 +8,11 @@ import { extname } from 'path';
 import * as multer from 'multer';
 import { USER_IMAGE_PATH } from 'src/common/const/path.const';
 import { v4 as uuid } from 'uuid';
+import { SocialLinkModel } from './entity/social-link.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UsersModel]), // file을 다운로드 받을때 여러가지 옵션들을 제공해 줄 수 있는 기능.
+    TypeOrmModule.forFeature([UsersModel, SocialLinkModel]), // file을 다운로드 받을때 여러가지 옵션들을 제공해 줄 수 있는 기능.
     MulterModule.register({
       // limits = 파일 크기 제한
       limits: {

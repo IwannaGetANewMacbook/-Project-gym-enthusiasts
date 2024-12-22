@@ -4,15 +4,22 @@
 
 import { PostsModel } from 'src/posts/entity/posts.entity';
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
-import { RolesEnum, SocialLinksEnum } from '../const/roles.const';
+import { RolesEnum } from '../const/roles.const';
 import { BaseModel } from 'src/common/entity/base.entity';
-import { IsEmail, IsEnum, IsOptional, IsString, Length } from 'class-validator';
+import {
+  ArrayMaxSize,
+  IsEmail,
+  IsOptional,
+  IsString,
+  Length,
+} from 'class-validator';
 import { Exclude, Transform } from 'class-transformer';
 import { ChatsModel } from 'src/chats/entity/chat.entity';
 import { MessagesModel } from 'src/chats/messages/entity/messages.entity';
 import { CommentsModel } from 'src/posts/comments/entity/comments.entity';
 import { join } from 'path';
 import { USER_PUBLIC_IMAGE_PATH } from 'src/common/const/path.const';
+import { SocialLinkModel } from './social-link.entity';
 // import { UserFollowersModel } from './user-followers.entity';
 
 @Entity()
@@ -86,10 +93,12 @@ export class UsersModel extends BaseModel {
   @IsOptional()
   city: string;
 
-  @Column({ enum: Object.values(SocialLinksEnum), nullable: true })
-  @IsEnum(SocialLinksEnum)
   @IsOptional()
-  socialLink: SocialLinksEnum;
+  @OneToMany(() => SocialLinkModel, (socialLink) => socialLink.user, {
+    cascade: true,
+  })
+  @ArrayMaxSize(3)
+  socialLinks: SocialLinkModel[];
 
   @Column({ enum: Object.values(RolesEnum), default: RolesEnum.USER })
   role: RolesEnum;

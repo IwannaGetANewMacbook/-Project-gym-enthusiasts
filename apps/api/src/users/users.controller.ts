@@ -13,6 +13,7 @@ import {
   Put,
   Query,
   UploadedFiles,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
@@ -22,8 +23,11 @@ import { UsersModel } from './entity/users.entity';
 import { User } from './decorator/user.decorator';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ImagesTransformInterceptor } from 'src/posts/interceptor/images-transform.interceptor';
-import { CreatePostDTO } from 'src/posts/dto/create.post.dto';
-import { UpdateProfileDto } from './dto/update.profile.dto';
+import { CreatePostDTO } from 'src/posts/dto/create-post.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
+import { CreateSocialLinkDto } from './dto/create-socialLink.dto';
+import { UpdateSocialLinksDto } from './dto/update-socialLinks.dto';
+import { IsSocialLinkMineOrAdminGuard } from './guard/is-socialLink-mine-or-admin.guard';
 
 @Controller('users')
 export class UsersController {
@@ -52,10 +56,7 @@ export class UsersController {
     @User() user: UsersModel,
     @Body() updateProfileDto: UpdateProfileDto,
   ) {
-    return this.usersService.updateUserProfileInfo(
-      user.nickname,
-      updateProfileDto,
-    );
+    return this.usersService.updateUserProfileInfo(user, updateProfileDto);
   }
 
   @Put('updateUserProfilePicture')
@@ -115,4 +116,44 @@ export class UsersController {
 
   //   return true;
   // }
+
+  /**
+   *
+   * Social Link 관련 API
+   */
+  @Get('mySocialLinks')
+  getMySocialLinks(@User() user: UsersModel) {
+    return this.usersService.getMySocialLinks(user);
+  }
+
+  @Post('socialLinks')
+  createSocialLinks(
+    @User() user: UsersModel,
+    @Body() createSocialLinkDto: CreateSocialLinkDto,
+  ) {
+    return this.usersService.createSocialLinks(user, createSocialLinkDto);
+  }
+
+  @Patch('socialLinks/:socialLinkId')
+  @UseGuards(IsSocialLinkMineOrAdminGuard)
+  updateSocialLinks(
+    @Param('socialLinkId', ParseIntPipe) socialLinkId: number,
+    @User() user: UsersModel,
+    @Body() updateSocialLinksDto: UpdateSocialLinksDto,
+  ) {
+    return this.usersService.updateSocialLinks(
+      socialLinkId,
+      user,
+      updateSocialLinksDto,
+    );
+  }
+
+  @Delete('socialLinks/:socialLinkId')
+  @UseGuards(IsSocialLinkMineOrAdminGuard)
+  deleteSocialLinks(
+    @Param('socialLinkId', ParseIntPipe) socialLinkId: number,
+    @User() user: UsersModel,
+  ) {
+    return this.usersService.deleteSocialLink(socialLinkId, user);
+  }
 }

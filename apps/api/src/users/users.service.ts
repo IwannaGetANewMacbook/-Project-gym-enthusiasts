@@ -1,16 +1,22 @@
-import { UpdateProfileDto } from './dto/update.profile.dto';
+import { UpdateSocialLinksDto } from './dto/update-socialLinks.dto';
+/* eslint-disable prefer-const */
+import { UpdateProfileDto } from './dto/update-profile.dto';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsersModel } from './entity/users.entity';
+import { SocialLinkModel } from './entity/social-link.entity';
+import { CreateSocialLinkDto } from './dto/create-socialLink.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(UsersModel)
     private readonly usersRepository: Repository<UsersModel>,
+    @InjectRepository(SocialLinkModel)
+    private readonly socialLinkRepository: Repository<SocialLinkModel>,
   ) {}
 
   async createUser(user: Pick<UsersModel, 'email' | 'nickname' | 'password'>) {
@@ -49,13 +55,15 @@ export class UsersService {
     return users;
   }
 
-  ///////////////////////////////////////////////////////////////////
-  // authService에서 사용할 userRepository 함수들.
+  /**
+   *
+   * authService에서 사용할 userRepository 함수들.
+   */
 
   async getUserByEmail(email: string) {
     return this.usersRepository.findOne({
       where: { email: email },
-      relations: { posts: true },
+      relations: { posts: true, socialLinks: true },
     });
   }
 
@@ -66,27 +74,34 @@ export class UsersService {
     return result;
   }
 
+  /**
+   *
+   * User information 관련 API
+   */
+
   async updateUserProfileInfo(
-    nickname: string,
+    user: UsersModel,
     updateProfileDto: UpdateProfileDto,
   ) {
     // 1) create -> 저장할 객체를 생성한다.
     // 2) save -> 객체를 저장한다.(create 메서드에서 생성한 객체로 저장)
 
     // updateProfileDto 구조분해할당
-    const { bio, city, socialLink } = updateProfileDto;
+    const { bio, city } = updateProfileDto;
 
     // create() 함수는 동기식으로 처리됨.
     await this.usersRepository.update(
       {
-        nickname: nickname,
+        id: user.id,
       },
-      { bio, city, socialLink },
+      { bio, city },
     );
 
+    // await this.socialLinkRepository.create()
+
     const result = await this.usersRepository.findOne({
-      where: { nickname: nickname },
-      relations: { posts: true },
+      where: { id: user.id },
+      relations: { posts: true, socialLinks: true },
     });
 
     return result;
@@ -119,5 +134,75 @@ export class UsersService {
     });
 
     return result;
+  }
+
+  /**
+   *
+   * Social Link 관련 API
+   */
+  async getMySocialLinks(user: UsersModel) {
+    const result = await this.socialLinkRepository.find({
+      where: { user: { id: user.id } },
+    });
+
+    if (result.length === 0) {
+      return 'no Social Links';
+    }
+
+    return result;
+  }
+
+  async createSocialLinks(
+    user: UsersModel,
+    createSocialLinkDto: CreateSocialLinkDto,
+  ) {
+    const { title, url } = createSocialLinkDto;
+
+    const newSL = this.socialLinkRepository.create({
+      title,
+      url,
+      user: { id: user.id },
+    });
+
+    return this.socialLinkRepository.save(newSL);
+  }
+
+  async updateSocialLinks(
+    socialLinkId: number,
+    user: UsersModel,
+    updateSocialLinksDto: UpdateSocialLinksDto,
+  ) {
+    const { title, url } = updateSocialLinksDto;
+
+    await this.socialLinkRepository.update(
+      {
+        user: { id: user.id },
+        id: socialLinkId,
+      },
+      { title, url },
+    );
+
+    const result = await this.socialLinkRepository.findOne({
+      where: { id: socialLinkId, user: { id: user.id } },
+    });
+
+    return result;
+  }
+
+  async deleteSocialLink(socialLinkId: number, user: UsersModel) {
+    const result = await this.socialLinkRepository.delete({
+      user: { id: user.id },
+      id: socialLinkId,
+    });
+
+    return `${user.nickname}의 소셜링크 id: ${socialLinkId} 삭제완료.\n ${result.affected}개의 row 삭제됨.`;
+  }
+
+  // 자기자신의 Socail Link인지 아닌지 확인하는 API
+  async isSocialLinkMine(socialLinkId: number, userId: number) {
+    return this.socialLinkRepository.exists({
+      where: { id: socialLinkId, user: { id: userId } },
+      relations: { user: true },
+    });
   }
 }
