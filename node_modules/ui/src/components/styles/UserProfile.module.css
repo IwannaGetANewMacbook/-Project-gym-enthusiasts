@@ -54,14 +54,6 @@
   margin-top: 10px;
 }
 
-.profileDetails {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
-}
-
 .profileStats {
   display: flex;
   justify-content: space-around;
@@ -85,16 +77,42 @@
   color: #888;
 }
 
-.location {
-  margin-top: 10px;
+.profileDetails {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+/* Flexbox 설정: 왼쪽과 오른쪽 섹션의 수평 정렬 */
+.profileDetailsRow {
+  display: flex;
+  justify-content: space-between; /* 왼쪽, 오른쪽 끝으로 배치 */
+  align-items: center; /* 상하 중앙 정렬 */
+}
+
+/* 왼쪽 정보 섹션 스타일 */
+.leftInfo {
+  text-align: left; /* 텍스트 왼쪽 정렬 */
+  flex: 1; /* 남은 공간 차지 */
+}
+
+.location,
+.joinDate {
+  margin: 5px 0;
   font-size: 1rem;
   color: #555;
 }
 
-.joinDate {
-  margin-top: 5px;
-  font-size: 0.9rem;
-  color: #888;
+/* 오른쪽 소셜 링크 섹션 스타일 */
+.rightLinks {
+  text-align: left; /* 텍스트 오른쪽 정렬 */
+  flex: 0.5; /* 남은 공간 차지 */
+}
+
+.socialLinks {
+  padding: 10px 0;
 }
 
 .editProfileButton {
@@ -102,4 +120,50 @@
   padding: 0.5rem 1rem;
   border-radius: 5px;
   margin-top: 15px;
+}
+
+.socialLinks a {
+  display: block;
+  font-size: 1rem;
+  color: #007bff;
+  text-decoration: none;
+  margin-bottom: 8px;
+}
+
+.socialLinks a:hover {
+  text-decoration: underline;
+}
+
+.socialLinkItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.linkIcon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px; /* 텍스트와 아이콘 사이 간격 */
+  margin-bottom: 10px;
+}
+
+/* Manage Social Links 버튼 스타일 */
+.manageButton {
+  margin-top: 10px;
+  font-size: 0.85rem; /* 글자 크기를 작게 */
+  padding: 5px 10px; /* 버튼 크기 조정 */
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .profileDetailsRow {
+    flex-direction: column; /* 세로로 배치 */
+  }
+
+  .leftInfo,
+  .rightLinks {
+    flex: unset; /* 기본 크기로 변경 */
+    text-align: left; /* 작은 화면에서는 왼쪽 정렬 */
+    margin-bottom: 15px;
+  }
 }

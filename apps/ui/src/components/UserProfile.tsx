@@ -1,21 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { Container, Row, Col, Image, Button } from 'react-bootstrap';
 import styles from './styles/UserProfile.module.css'; // Import CSS Module
 import { useEffect, useState } from 'react';
-import {
-  FaFacebook,
-  FaTwitter,
-  FaInstagram,
-  FaLinkedin,
-  FaWhatsapp,
-  FaCamera,
-} from 'react-icons/fa';
+
 import { useNavigate } from 'react-router-dom';
 import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
 import api from '../common/api';
 import { handleTokenExpiration } from '../common/handleTokenExpiration';
 import { LoadingSpinner } from './LoadingSpinner';
+import linkIcon from '../assets/link.svg';
 
 export function UserProfile() {
   const env = import.meta.env;
@@ -98,11 +93,50 @@ export function UserProfile() {
             </div>
           </div>
           <div className={`${styles.profileDetails} mt-4`}>
-            <h5>Location</h5>
-            <p className={styles.location}>{`${userData.city}`}</p>
-            <h6>Public Email</h6>
-            <p>{userData.email}</p>
-            <p className={styles.joinDate}>{userData.createdAt} 가입</p>
+            <Row className={`${styles.profileDetailsRow}`}>
+              {/* 왼쪽 정보 섹션 */}
+              <Col md={6} className={styles.leftInfo}>
+                <h5>Location</h5>
+                <p className={styles.location}>{`${userData.city}`}</p>
+                <h6>Public Email</h6>
+                <p>{userData.email}</p>
+                <p className={styles.joinDate}>{userData.createdAt} 가입</p>
+              </Col>
+
+              {/* 오른쪽 소셜 링크 섹션 */}
+              <Col md={6} className={styles.rightLinks}>
+                <div className={`${styles.socialLinks}`}>
+                  <h5>Social Links</h5>
+                  {userData.socialLinks && userData.socialLinks.length > 0 ? (
+                    userData.socialLinks.map((link: any) => (
+                      <div key={link.id} className={styles.socialLinkItem}>
+                        <img
+                          src={linkIcon}
+                          alt='Link Icon'
+                          className={styles.linkIcon}
+                        />
+                        <a
+                          href={link.url}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                        >
+                          {link.title}
+                        </a>
+                      </div>
+                    ))
+                  ) : (
+                    <p>No social links available.</p>
+                  )}
+                  <Button
+                    variant='outline-success'
+                    className={styles.manageButton}
+                    onClick={() => navigate('/user/socialLinks/manage')}
+                  >
+                    Edit Social Links
+                  </Button>
+                </div>
+              </Col>
+            </Row>
           </div>
         </Col>
       </Row>
