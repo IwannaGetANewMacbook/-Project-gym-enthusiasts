@@ -30,7 +30,8 @@ export function EditSocialLink() {
     const fetchSocialLinks = async () => {
       try {
         const response = await api.get('/users/mySocialLinks');
-        setSocialLinks(response.data || []);
+        // 응답 데이터가 배열인지 확인 후 배열인경우 response.data를 사용하고, 아닌경우 빈 배열을 사용
+        setSocialLinks(Array.isArray(response.data) ? response.data : []);
       } catch (e) {
         console.log(e);
         handleTokenExpiration(navigate);
@@ -168,46 +169,51 @@ export function EditSocialLink() {
         <Col xs={12} md={8} lg={6}>
           <h2 className='text-center mb-4'>Edit Social Links</h2>
           <Form>
-            {socialLinks.map((link, index) => (
-              <Form.Group key={index} className='mb-3 position-relative'>
-                <Form.Label>Social Link {index + 1}</Form.Label>
-                <Form.Control
-                  type='text'
-                  placeholder='Title'
-                  value={link.title}
-                  onChange={(e) =>
-                    handleInputChange(index, 'title', e.target.value)
-                  }
-                  className='mb-2'
-                />
-                <Form.Control
-                  type='url'
-                  placeholder='URL'
-                  value={link.url}
-                  onChange={(e) =>
-                    handleInputChange(index, 'url', e.target.value)
-                  }
-                />
-                {/* X 버튼 */}
-                <Button
-                  variant='danger'
-                  size='sm'
-                  className={`${styles.removeButton} position-absolute`}
-                  style={{ top: '10px', right: '10px' }}
-                  onClick={() => removeSocialLink(index)}
-                >
-                  X
-                </Button>
-              </Form.Group>
-            ))}
+            {/* && 연산자를 씀으로써, socialLinks가 배열인지 확인한 후에만 .map()을 호출하도록 보장 */}
+            {Array.isArray(socialLinks) &&
+              socialLinks.map((link, index) => (
+                <Form.Group key={index} className='mb-3 position-relative'>
+                  <Form.Label>Social Link {index + 1}</Form.Label>
+                  <Form.Control
+                    type='text'
+                    placeholder='Title'
+                    value={link.title}
+                    onChange={(e) =>
+                      handleInputChange(index, 'title', e.target.value)
+                    }
+                    className='mb-2'
+                  />
+                  <Form.Control
+                    type='url'
+                    placeholder='URL'
+                    value={link.url}
+                    onChange={(e) =>
+                      handleInputChange(index, 'url', e.target.value)
+                    }
+                  />
+                  {/* X 버튼 */}
+                  <Button
+                    variant='danger'
+                    size='sm'
+                    className={`${styles.removeButton} position-absolute`}
+                    style={{ top: '10px', right: '10px' }}
+                    onClick={() => removeSocialLink(index)}
+                  >
+                    X
+                  </Button>
+                </Form.Group>
+              ))}
             {/* 추가 버튼 */}
-            <Button
-              variant='outline-primary'
-              className='mb-3'
-              onClick={addSocialLink}
-            >
-              Add Social Link
-            </Button>
+            {socialLinks.length < 3 && (
+              <Button
+                variant='outline-primary'
+                className='mb-3'
+                onClick={addSocialLink}
+              >
+                Add Social Link
+              </Button>
+            )}
+
             {/* 저장 버튼 */}
             <div className='d-grid'>
               <Button variant='primary' onClick={handleSaveChanges}>
