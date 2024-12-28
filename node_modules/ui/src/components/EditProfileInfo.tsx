@@ -17,7 +17,6 @@ export function EditProfileInfo() {
   const [userData, setUserData] = useState({
     bio: '',
     city: '',
-    socialLink: '',
   });
 
   // 데이터를 로딩 중인지 나타내는 상태
@@ -36,7 +35,6 @@ export function EditProfileInfo() {
         setUserData({
           bio: response.data.bio || '',
           city: response.data.city || '',
-          socialLink: response.data.socialLink || '',
         });
 
         setLoading(false); // 데이터 가져오기 완료 시 로딩 상태 변경
@@ -113,18 +111,6 @@ export function EditProfileInfo() {
                 value={userData.city}
                 onChange={handleInputChange}
                 placeholder='도시를 입력해주세요'
-              />
-            </Form.Group>
-
-            {/* Social Link 필드 */}
-            <Form.Group controlId='formSocialLink' className='mb-3'>
-              <Form.Label>Social Link</Form.Label>
-              <Form.Control
-                type='text'
-                name='socialLink'
-                value={userData.socialLink}
-                onChange={handleInputChange}
-                placeholder='소셜 미디어 링크를 입력해주세요'
               />
             </Form.Group>
 

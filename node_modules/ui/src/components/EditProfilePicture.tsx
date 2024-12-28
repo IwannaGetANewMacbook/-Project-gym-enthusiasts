@@ -45,6 +45,7 @@ export function EditProfilePicture() {
     };
 
     fetchUserData(); // 사용자 데이터 가져오기 함수 호출
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 프로필 이미지 선택 시 호출되는 함수

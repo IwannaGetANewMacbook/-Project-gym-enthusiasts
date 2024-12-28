@@ -14,6 +14,7 @@ import { UserProfile } from './components/UserProfile';
 import { EditProfilePicture } from './components/EditProfilePicture';
 import { EditProfileInfo } from './components/EditProfileInfo';
 import { Layout } from './components/Layout';
+import { EditSocialLink } from './components/EditSocialLink';
 
 function App() {
   return (
@@ -94,6 +95,15 @@ function App() {
             element={
               <Layout>
                 <UserProfile />
+              </Layout>
+            }
+          />
+
+          <Route
+            path='/user/profile/edit/socialLinks'
+            element={
+              <Layout>
+                <EditSocialLink></EditSocialLink>
               </Layout>
             }
           />

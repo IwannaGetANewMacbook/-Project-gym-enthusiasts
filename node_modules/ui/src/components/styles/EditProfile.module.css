@@ -43,6 +43,12 @@ button {
   margin-top: 10px;
 }
 
+.removeButton {
+  font-size: 0.8rem;
+  padding: 0 6px;
+  border-radius: 50%;
+}
+
 @media (max-width: 768px) {
   .editProfileContainer {
     padding: 15px;

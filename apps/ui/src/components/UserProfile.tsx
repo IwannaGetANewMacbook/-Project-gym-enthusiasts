@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import { Container, Row, Col, Image, Button } from 'react-bootstrap';
@@ -130,7 +129,7 @@ export function UserProfile() {
                   <Button
                     variant='outline-success'
                     className={styles.manageButton}
-                    onClick={() => navigate('/user/socialLinks/manage')}
+                    onClick={() => navigate('/user/profile/edit/socialLinks')}
                   >
                     Edit Social Links
                   </Button>

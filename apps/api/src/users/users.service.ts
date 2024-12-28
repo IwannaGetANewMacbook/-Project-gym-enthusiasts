@@ -64,6 +64,7 @@ export class UsersService {
     return this.usersRepository.findOne({
       where: { email: email },
       relations: { posts: true, socialLinks: true },
+      order: { socialLinks: { id: 'ASC' } },
     });
   }
 
@@ -143,7 +144,10 @@ export class UsersService {
   async getMySocialLinks(user: UsersModel) {
     const result = await this.socialLinkRepository.find({
       where: { user: { id: user.id } },
+      order: { id: 'ASC' },
     });
+
+    console.log(result);
 
     if (result.length === 0) {
       return 'no Social Links';

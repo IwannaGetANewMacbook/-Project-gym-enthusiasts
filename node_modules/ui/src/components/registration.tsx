@@ -49,8 +49,6 @@ export function Registraion() {
       // 프로필 업로드가 실패해도 다음 코드가 실행되도록 함.
       await uploadDefaultProfilePic();
       navigate('/');
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       console.log('회원가입 중 오류 발생: ', e);
       alert(e.response?.data.message);
