@@ -9,6 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UsersModel } from './entity/users.entity';
 import { SocialLinkModel } from './entity/social-link.entity';
 import { CreateSocialLinkDto } from './dto/create-socialLink.dto';
+import { MAX_SOCIAL_LINK } from './const/max.social.link';
 
 @Injectable()
 export class UsersService {
@@ -147,8 +148,6 @@ export class UsersService {
       order: { id: 'ASC' },
     });
 
-    console.log(result);
-
     if (result.length === 0) {
       return 'no Social Links';
     }
@@ -162,6 +161,9 @@ export class UsersService {
   ) {
     const { title, url } = createSocialLinkDto;
 
+    await this.checkSocialLinkCount(user.id);
+
+    // 3. 개수 제한에 걸리지 않았다면, 새로운 Social Link 생성.
     const newSL = this.socialLinkRepository.create({
       title,
       url,
@@ -177,6 +179,8 @@ export class UsersService {
     updateSocialLinksDto: UpdateSocialLinksDto,
   ) {
     const { title, url } = updateSocialLinksDto;
+
+    await this.checkSocialLinkCount(user.id);
 
     await this.socialLinkRepository.update(
       {
@@ -208,5 +212,23 @@ export class UsersService {
       where: { id: socialLinkId, user: { id: userId } },
       relations: { user: true },
     });
+  }
+
+  // 유저의 소셜링크 갯수 확인하는 함수
+  async checkSocialLinkCount(userId: number) {
+    // 1. 갯수제한 검사
+    const links = await this.socialLinkRepository.find({
+      where: {
+        user: { id: userId },
+      },
+    });
+
+    if (links.length > MAX_SOCIAL_LINK - 1) {
+      throw new BadRequestException(
+        `400 BadRequest\nSocial Links 는 최대 ${MAX_SOCIAL_LINK}개까지만 등록가능합니다.`,
+      );
+    }
+
+    return true;
   }
 }
