@@ -89,30 +89,31 @@
 .profileDetailsRow {
   display: flex;
   justify-content: space-between; /* 왼쪽, 오른쪽 끝으로 배치 */
-  align-items: center; /* 상하 중앙 정렬 */
+  align-items: stretch; /* 열의 높이를 동일하게 유지 */
 }
 
-/* 왼쪽 정보 섹션 스타일 */
-.leftInfo {
-  text-align: left; /* 텍스트 왼쪽 정렬 */
-  flex: 1; /* 남은 공간 차지 */
+.joinDate {
+  font-size: 1rem;
+  color: #555;
 }
 
-.location,
 .joinDate {
   margin: 5px 0;
   font-size: 1rem;
   color: #555;
 }
 
-/* 오른쪽 소셜 링크 섹션 스타일 */
+/* Col 요소의 최소 높이 설정 */
+.leftInfo,
 .rightLinks {
-  text-align: left; /* 텍스트 오른쪽 정렬 */
-  flex: 0.5; /* 남은 공간 차지 */
+  display: flex; /* 내부 요소 수직 정렬을 위해 Flexbox 사용 */
+  flex-direction: column; /* 세로 정렬 */
+  justify-content: space-between; /* 위-아래 간격 고정 */
+  min-height: 250px; /* 최소 높이 설정 (필요에 따라 조정 가능) */
 }
 
 .socialLinks {
-  padding: 10px 0;
+  margin-bottom: 20px; /* 하단 버튼과의 간격을 위해 여백 추가 */
 }
 
 .editProfileButton {
@@ -149,9 +150,18 @@
 
 /* Manage Social Links 버튼 스타일 */
 .manageButton {
-  margin-top: 10px;
-  font-size: 0.85rem; /* 글자 크기를 작게 */
-  padding: 5px 10px; /* 버튼 크기 조정 */
+  display: block;
+  margin: 0 auto; /* 버튼을 가운데 정렬 */
+}
+
+.stickyHeader {
+  position: relative; /* 기본 배치 */
+  top: 0; /* 부모 컨테이너의 상단 */
+  margin-bottom: 15px; /* 아래 내용과 간격 */
+  font-size: 1.2rem; /* 제목 크기 조정 */
+  font-weight: bold;
+  border-bottom: 1px solid #ddd; /* 구분선 추가 */
+  padding-bottom: 10px; /* 구분선과 여백 */
 }
 
 /* 반응형 스타일 */

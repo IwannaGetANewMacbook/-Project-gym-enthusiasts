@@ -1,9 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-
 import { Container, Row, Col, Image, Button } from 'react-bootstrap';
 import styles from './styles/UserProfile.module.css'; // Import CSS Module
 import { useEffect, useState } from 'react';
-
 import { useNavigate } from 'react-router-dom';
 import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
 import api from '../common/api';
@@ -95,17 +93,17 @@ export function UserProfile() {
             <Row className={`${styles.profileDetailsRow}`}>
               {/* 왼쪽 정보 섹션 */}
               <Col md={6} className={styles.leftInfo}>
-                <h5>Location</h5>
+                <h5 className={styles.stickyHeader}>Location</h5>
                 <p className={styles.location}>{`${userData.city}`}</p>
-                <h6>Public Email</h6>
+                <h6 className={styles.stickyHeader}>Public Email</h6>
                 <p>{userData.email}</p>
                 <p className={styles.joinDate}>{userData.createdAt} 가입</p>
               </Col>
 
               {/* 오른쪽 소셜 링크 섹션 */}
               <Col md={6} className={styles.rightLinks}>
+                <h5 className={styles.stickyHeader}>Social Links</h5>
                 <div className={`${styles.socialLinks}`}>
-                  <h5>Social Links</h5>
                   {userData.socialLinks && userData.socialLinks.length > 0 ? (
                     userData.socialLinks.map((link: any) => (
                       <div key={link.id} className={styles.socialLinkItem}>
@@ -126,14 +124,14 @@ export function UserProfile() {
                   ) : (
                     <p>No social links available.</p>
                   )}
-                  <Button
-                    variant='outline-success'
-                    className={styles.manageButton}
-                    onClick={() => navigate('/user/profile/edit/socialLinks')}
-                  >
-                    Edit Social Links
-                  </Button>
                 </div>
+                <Button
+                  variant='outline-success'
+                  className={styles.manageButton}
+                  onClick={() => navigate('/user/profile/edit/socialLinks')}
+                >
+                  Edit Social Links
+                </Button>
               </Col>
             </Row>
           </div>
