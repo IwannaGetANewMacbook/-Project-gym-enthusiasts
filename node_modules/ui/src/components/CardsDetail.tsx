@@ -102,6 +102,10 @@ export function CardsDetail() {
                 alignItems: 'center',
                 gap: '10px',
               }}
+              onClick={(e) => {
+                e.stopPropagation();
+                console.log('test1');
+              }}
             >
               <img
                 src={`${env.VITE_HOST}${v.author.images[0]}`}

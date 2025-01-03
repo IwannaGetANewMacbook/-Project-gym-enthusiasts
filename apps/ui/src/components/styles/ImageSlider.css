@@ -30,3 +30,7 @@
 .slick-dots li.slick-active button:before {
   color: red !important; /* 활성화된 네비게이션 점 색상 */
 }
+
+.slick {
+  font-family: Arial, sans-serif !important;
+}

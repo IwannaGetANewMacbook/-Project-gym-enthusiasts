@@ -92,29 +92,33 @@ export function CardsPagination() {
       {/* 카드들을 행으로 표시 */}
       <Row>
         {cards.map((v) => (
-          <Col
-            sm={4}
-            key={v.id}
-            onClick={() => {
-              navigate(`/detail/${v.id}`);
-            }}
-          >
+          <Col sm={4} key={v.id}>
             <Card
               style={{
                 maxWidth: '300px',
                 cursor: 'pointer',
                 position: 'relative',
               }}
+              onClick={() => {
+                navigate(`/detail/${v.id}`);
+              }}
             >
               <Card.Header className={styles.cardTitleFixed}>
-                <img
-                  src={`${import.meta.env.VITE_HOST}${v.author.images[0]}`}
-                  alt='User'
-                  className={styles.cardUserImg}
-                />
-                <strong style={{ fontSize: '13px' }}>
-                  {v.author.nickname}
-                </strong>
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    console.log('test');
+                  }}
+                >
+                  <img
+                    src={`${import.meta.env.VITE_HOST}${v.author.images[0]}`}
+                    alt='User'
+                    className={styles.cardUserImg}
+                  />
+                  <strong style={{ fontSize: '13px', marginLeft: '10px' }}>
+                    {v.author.nickname}
+                  </strong>
+                </div>
               </Card.Header>
               <div className={styles.cardImgContainer}>
                 {/* 이미지 갯수를 표시하는 UI */}

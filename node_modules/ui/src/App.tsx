@@ -80,7 +80,7 @@ function App() {
           />
 
           <Route
-            path='posts/myposts/:username'
+            path='posts/myProfile'
             element={
               <Layout>
                 <UserProfile />
