@@ -1,0 +1,32 @@
+.imageSlider {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover; /* 이미지를 컨테이너에 맞게 자름 */
+}
+
+/* Slick Slider 기본 스타일 설정 */
+.slick-arrow {
+  z-index: 10 !important; /* 화살표가 다른 요소 위에 표시되도록 설정 */
+  background: rgba(0, 0, 0, 0.5) !important; /* 반투명 배경 */
+  color: black !important;
+  border-radius: 50% !important;
+  width: 30px !important;
+  height: 30px !important;
+}
+
+.slick-prev {
+  left: 10px !important; /* 왼쪽 화살표 위치 */
+}
+
+.slick-next {
+  right: 10px !important; /* 오른쪽 화살표 위치 */
+}
+
+.slick-dots li button:before {
+  color: rgba(255, 0, 0, 0.5) !important; /* 네비게이션 점 색상 변경 */
+}
+
+.slick-dots li.slick-active button:before {
+  color: red !important; /* 활성화된 네비게이션 점 색상 */
+}

@@ -16,13 +16,19 @@ export function CardDropdown({
     <Dropdown
       align='end'
       className='card-dropdown'
-      style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1 }}
+      style={{
+        position: 'absolute',
+        top: '10px',
+        right: '10px',
+        zIndex: 1,
+        marginTop: '-20px',
+      }}
     >
       <Dropdown.Toggle
         variant='light'
         bsPrefix='btn btn-link'
         id='dropdown-basic'
-        style={{ color: 'white', fontSize: '1.5em' }}
+        style={{ color: 'black', fontSize: '1.5em' }}
       >
         &#8942;
       </Dropdown.Toggle>

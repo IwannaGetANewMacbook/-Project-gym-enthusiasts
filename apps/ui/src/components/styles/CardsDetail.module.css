@@ -1,5 +1,3 @@
-/* CardsDetail.module.css */
-
 .cardImgContainer {
   width: 100%; /* 원하는 너비 */
   padding-top: 133.33%; /* 3:4 비율을 유지하기 위해 컨테이너의 높이를 너비의 75%로 설정 */
@@ -13,15 +11,13 @@
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* 이미지를 컨테이너에 맞게 잘라서 꽉 채웁니다 */
+  object-fit: cover; /* 이미지를 컨테이너에 맞게 잘라서 꽉 채움 */
 }
 
 .cardTitleFixed {
-  width: 100%; /* 또는 원하는 너비 */
-  height: 40px; /* 원하는 높이 */
-  overflow: hidden; /* 내용이 넘칠 경우 숨김 */
   display: flex;
-  align-items: center;
+  justify-content: space-between; /* nickname과 dropdown을 양쪽 끝으로 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
   padding: 10px;
   gap: 10px;
 }
@@ -45,6 +41,4 @@
   padding: 10px;
   font-size: 0.9rem;
   color: #6c757d;
-  display: flex;
-  justify-content: space-between;
 }

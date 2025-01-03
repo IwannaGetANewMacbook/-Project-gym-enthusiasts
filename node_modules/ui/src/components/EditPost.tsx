@@ -4,18 +4,20 @@ import { Card, Button, Form, Row, Col, Container } from 'react-bootstrap';
 import api from '../common/api';
 import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
 import { LoadingSpinner } from './LoadingSpinner';
+import { ImageSlider } from './ImageSlider';
 
 export function EditPost() {
   const { postId } = useParams();
   const navigate = useNavigate();
   const accessToken = window.localStorage.getItem('accessToken');
   const user = JSON.parse(window.localStorage.getItem('user'));
+  const env = import.meta.env;
 
   const [title, setTitle] = useState('');
 
   const [content, setContent] = useState('');
 
-  const [image, setImage] = useState('');
+  const [images, setImages] = useState<string[]>([]); // 여러 이미지 지원
 
   const [loading, setLoading] = useState(false);
 
@@ -42,7 +44,7 @@ export function EditPost() {
 
         setTitle(post.title);
         setContent(post.content);
-        setImage(post.images[0]);
+        setImages(post.images);
       } catch (e) {
         console.error('게시물을 불러오는 중 오류 발생', e);
         navigate('/');
@@ -78,14 +80,16 @@ export function EditPost() {
         <Col xs={12} md={8} lg={6}>
           <Card className='shadow-sm'>
             <div className='cardImgContainer'>
-              {image ? (
-                <Card.Img
-                  variant='top'
-                  src={`${import.meta.env.VITE_HOST}${image}`}
-                  className='cardImg'
+              {images.length > 1 ? (
+                <ImageSlider
+                  images={images.map((image) => `${env.VITE_HOST}${image}`)}
                 />
               ) : (
-                <p>No image available</p>
+                <Card.Img
+                  variant='top'
+                  src={`${env.VITE_HOST}${images[0]}`}
+                  className='cardImg'
+                />
               )}
             </div>
             <Card.Body>

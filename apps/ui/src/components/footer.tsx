@@ -51,7 +51,7 @@ export function Footer() {
           </Row>
           <hr className='bg-light' />
           <div className='text-center'>
-            <p className='mb-0'>© 2024 Suhyeon Kim. All Rights Reserved.</p>
+            <p className='mb-0'>© 2025 Suhyeon Kim. All Rights Reserved.</p>
           </div>
         </Container>
       </footer>

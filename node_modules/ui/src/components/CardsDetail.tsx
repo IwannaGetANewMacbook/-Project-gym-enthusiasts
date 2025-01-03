@@ -14,6 +14,7 @@ import { deletePost } from '../common/deletePosts';
 import { convertPostDates } from '../common/convertPostDates';
 import { LoadingSpinner } from './LoadingSpinner';
 import styles from './styles/CardsDetail.module.css';
+import { ImageSlider } from './ImageSlider';
 
 // 클라이언트 측에서 요청 시 쿠키를 포함하고, 응답 시 서버로부터 전달된 쿠키를 브라우저에 저장할 수 있도록 하는 역할
 // 모든 요청과 응답에 쿠키를 포함할 수 있도록 하기 위하여 전역으로 true로 설정.
@@ -87,33 +88,58 @@ export function CardsDetail() {
       <Col
         sm={4}
         key={v.id}
+        className='mb-4'
+        style={{ margin: '0 auto' }}
         // onClick={() => {
         //   navigate(`/detail/${v.id}`);
         // }}
       >
-        <Card style={{ maxWidth: '300px', cursor: 'pointer' }}>
+        <Card style={{ maxWidth: '600px', cursor: 'pointer' }}>
           <Card.Header className={styles.cardTitleFixed}>
-            <img
-              src={`${env.VITE_HOST}${v.author.images[0]}`}
-              alt='User'
-              className={styles.cardUserImg}
-            />
-            <strong style={{ fontSize: '13px' }}>{v.author.nickname}</strong>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+              }}
+            >
+              <img
+                src={`${env.VITE_HOST}${v.author.images[0]}`}
+                alt='User'
+                className={styles.cardUserImg}
+              />
+              <strong style={{ fontSize: '13px' }}>{v.author.nickname}</strong>
+              {(user?.userNickname === v.author.nickname ||
+                user?.userNickname === 'Admin') && (
+                <CardDropdown
+                  postId={v.id}
+                  onDelete={() => handleDeletePost(v.id)}
+                />
+              )}
+            </div>
           </Card.Header>
-          <div className={styles.cardImgContainer}>
-            <Card.Img
+          {/* <div className={styles.cardImgContainer}> */}
+          {v.images.length > 1 ? (
+            <ImageSlider
+              images={v.images.map(
+                (img: string) => `${import.meta.env.VITE_HOST}${img}`
+              )}
+            />
+          ) : (
+            <div className={styles.cardImgContainer}>
+              <Card.Img
+                variant='top'
+                src={`${import.meta.env.VITE_HOST}${v.images[0]}`}
+                className={styles.cardImg}
+              />
+            </div>
+          )}
+          {/* <Card.Img
               variant='top'
               src={`${import.meta.env.VITE_HOST}${v.images[0]}`}
               className={styles.cardImg}
-            />
-            {(user?.userNickname === v.author.nickname ||
-              user?.userNickname === 'Admin') && (
-              <CardDropdown
-                postId={v.id}
-                onDelete={() => handleDeletePost(v.id)}
-              />
-            )}
-          </div>
+            /> */}
+          {/* </div> */}
           <Card.Body>
             <Card.Title className={`${styles.cardTitleFixed}`}>
               {v.title}
