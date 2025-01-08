@@ -69,6 +69,14 @@ export class UsersService {
     });
   }
 
+  async getUserByUsername(username: string) {
+    return this.usersRepository.findOne({
+      where: { nickname: username },
+      relations: { posts: true, socialLinks: true },
+      order: { socialLinks: { id: 'ASC' } },
+    });
+  }
+
   async CheckUserByNickname(username: string) {
     const result = await this.usersRepository.exists({
       where: { nickname: username },

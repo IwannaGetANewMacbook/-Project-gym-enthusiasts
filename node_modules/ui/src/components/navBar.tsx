@@ -11,6 +11,8 @@ export function NavBar() {
 
   const userInfo = JSON.parse(localStorage.getItem('user'));
 
+  const userNickname = userInfo?.userNickname;
+
   const token = localStorage.getItem('accessToken');
 
   return (
@@ -43,7 +45,7 @@ export function NavBar() {
             {token ? (
               <Nav.Link
                 onClick={() => {
-                  navigate('/posts/myProfile');
+                  navigate(`/user/profile/${userNickname}`);
                 }}
               >
                 MyProfile

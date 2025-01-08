@@ -49,6 +49,14 @@ export class UsersController {
     return this.usersService.getUserByEmail(user.email);
   }
 
+  @Get('profile/:username')
+  getUserByUsername(
+    @User() user: UsersModel,
+    @Param('username') username: string,
+  ) {
+    return this.usersService.getUserByUsername(username);
+  }
+
   @Put('updateUserProfileInfo')
   // FilesInterceptor를 등록을 하면은 moduel.ts 에서 등록한 multer모듈의 세팅이 확인되고 실행되고 이미지 파일을 해당 폴더안으로 넣어줌.
   // @UseInterceptors(LogInterceptor)

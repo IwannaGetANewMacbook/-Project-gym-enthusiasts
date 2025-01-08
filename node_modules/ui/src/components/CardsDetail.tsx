@@ -133,7 +133,7 @@ export function CardsDetail() {
             <div className={styles.cardImgContainer}>
               <Card.Img
                 variant='top'
-                src={`${import.meta.env.VITE_HOST}${v.images[0]}`}
+                src={`${env.VITE_HOST}${v.images[0]}`}
                 className={styles.cardImg}
               />
             </div>

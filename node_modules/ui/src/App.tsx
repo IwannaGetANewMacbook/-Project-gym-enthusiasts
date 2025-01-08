@@ -7,7 +7,6 @@ import { Registraion } from './components/Registration';
 import { PostPosts } from './components/PostPosts';
 import { CardsDetail } from './components/CardsDetail';
 import NotFoundPage from './components/NotFoundPage';
-import { MyPosts } from './components/MyPosts';
 import { EditPost } from './components/EditPost';
 import { CardsPagination } from './components/CardsPagination';
 import { UserProfile } from './components/UserProfile';
@@ -15,6 +14,7 @@ import { EditProfilePicture } from './components/EditProfilePicture';
 import { EditProfileInfo } from './components/EditProfileInfo';
 import { Layout } from './components/Layout';
 import { EditSocialLink } from './components/EditSocialLink';
+import { GetUserPosts } from './components/GetUserPosts';
 
 function App() {
   return (
@@ -80,21 +80,12 @@ function App() {
           />
 
           <Route
-            path='posts/myProfile'
+            path='/user/profile/:username'
             element={
               <Layout>
                 <UserProfile />
                 <br />
-                <MyPosts />
-              </Layout>
-            }
-          />
-
-          <Route
-            path='/user/profile'
-            element={
-              <Layout>
-                <UserProfile />
+                <GetUserPosts />
               </Layout>
             }
           />

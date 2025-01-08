@@ -7,10 +7,17 @@ import { useNavigate } from 'react-router-dom';
 import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
 import { handleTokenExpiration } from '../common/handleTokenExpiration';
 import { LoadingSpinner } from './LoadingSpinner';
+import { extractAccessTokenFromLocalStorage } from '../common/extratAccessTokenFromLocalStorage';
+import { extractUserFromLocalStorage } from '../common/extractUserFromLocalStorage';
 
 export function EditSocialLink() {
   const navigate = useNavigate();
-  const accessToken = window.localStorage.getItem('accessToken');
+
+  const accessToken = extractAccessTokenFromLocalStorage();
+
+  const user = extractUserFromLocalStorage();
+
+  const username = user.userNickname;
 
   // 초기 상태 설정 (새로 추가되는 social link은 id가 없기 때때문에 id는 optional로 설정)
   const [socialLinks, setSocialLinks] = useState<
@@ -148,7 +155,7 @@ export function EditSocialLink() {
       );
 
       alert(`Social Links가 성공적으로 업데이트 되었습니다.`);
-      navigate('/user/profile');
+      navigate(`/user/profile/${username}`);
     } catch (e: any) {
       alert(e.response.data.message);
       console.log('Social Links 업데이트 실패', e);

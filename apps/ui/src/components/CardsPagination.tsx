@@ -107,7 +107,7 @@ export function CardsPagination() {
                 <div
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log('test');
+                    navigate(`/user/profile/${v.author.nickname}`);
                   }}
                 >
                   <img

@@ -1,25 +1,32 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { Container, Row, Col, Image, Button } from 'react-bootstrap';
 import styles from './styles/UserProfile.module.css'; // Import CSS Module
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
 import api from '../common/api';
 import { handleTokenExpiration } from '../common/handleTokenExpiration';
 import { LoadingSpinner } from './LoadingSpinner';
 import linkIcon from '../assets/link.svg';
+import { extractAccessTokenFromLocalStorage } from '../common/extratAccessTokenFromLocalStorage';
+import { extractUserFromLocalStorage } from '../common/extractUserFromLocalStorage';
 
 export function UserProfile() {
   const env = import.meta.env;
 
   const navigate = useNavigate();
 
-  const accessToken = window.localStorage.getItem('accessToken');
+  const accessToken = extractAccessTokenFromLocalStorage();
+
+  const user = extractUserFromLocalStorage();
 
   // 데이터 로딩 중을 나타내는 상태
   const [loading, setLoading] = useState<boolean>(false);
 
   const [userData, setUserData] = useState(null);
+
+  const { username } = useParams();
+
+  const isMyProfile = username === user.userNickname;
 
   // html 렌더링 전 accessToken 유무 검사
   checkAccessTokenBeforeRendering(accessToken);
@@ -29,7 +36,9 @@ export function UserProfile() {
     const fetchData = async () => {
       setLoading(true); // 데이터 가져오기 시작 시 로딩 시작
       try {
-        const response = await api.get('/users/myProfile');
+        const targetUsername = isMyProfile ? user.userNickname : username;
+
+        const response = await api.get(`/users/profile/${targetUsername}`);
 
         // 기존의 createdAt 형식에서 시간 부분을 제외하고 createdAt 재구성.
         response.data.createdAt = new Date(
@@ -49,7 +58,7 @@ export function UserProfile() {
     };
 
     fetchData();
-  }, []);
+  }, [username, isMyProfile, navigate, user.userNickname]);
 
   // API 호출이 완료되고 userData가 유효할 때만 렌더링되도록 설정했습니다.
   if (loading || !userData) {
@@ -75,13 +84,15 @@ export function UserProfile() {
             <h3 className={styles.nickname}>{userData.nickname}</h3>
             <p className={styles.bio}>{userData.bio}</p>
             {/* 프로필 편집 버튼 추가 */}
-            <Button
-              variant='outline-primary'
-              className={`${styles.editProfileButton} mt-3`}
-              onClick={() => navigate('/user/profile/edit')}
-            >
-              Edit Profile
-            </Button>
+            {isMyProfile && (
+              <Button
+                variant='outline-primary'
+                className={`${styles.editProfileButton} mt-3`}
+                onClick={() => navigate('/user/profile/edit')}
+              >
+                Edit Profile
+              </Button>
+            )}
           </div>
           <div className={styles.profileStats}>
             <div className={styles.profileStat}>
@@ -125,13 +136,16 @@ export function UserProfile() {
                     <p>No social links available.</p>
                   )}
                 </div>
-                <Button
-                  variant='outline-success'
-                  className={styles.manageButton}
-                  onClick={() => navigate('/user/profile/edit/socialLinks')}
-                >
-                  Edit Social Links
-                </Button>
+                {/* 소셜 링크 편집 버튼 */}
+                {isMyProfile && (
+                  <Button
+                    variant='outline-success'
+                    className={styles.manageButton}
+                    onClick={() => navigate('/user/profile/edit/socialLinks')}
+                  >
+                    Edit Social Links
+                  </Button>
+                )}
               </Col>
             </Row>
           </div>
