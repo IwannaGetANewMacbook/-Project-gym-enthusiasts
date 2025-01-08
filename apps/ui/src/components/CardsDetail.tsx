@@ -106,7 +106,7 @@ export function CardsDetail() {
               }}
               onClick={(e) => {
                 e.stopPropagation();
-                console.log('test1');
+                navigate(`/user/profile/${v.author.nickname}`);
               }}
             >
               <img
