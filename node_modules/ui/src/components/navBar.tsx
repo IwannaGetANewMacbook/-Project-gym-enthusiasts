@@ -5,13 +5,14 @@ import Navbar from 'react-bootstrap/Navbar';
 import { NavLogout } from './NavLogout';
 import { NavLogin } from './NavLogin';
 import { useNavigate } from 'react-router-dom';
+import { extractUserFromLocalStorage } from '../common/extractUserFromLocalStorage';
 
 export function NavBar() {
   const navigate = useNavigate();
 
-  const userInfo = JSON.parse(localStorage.getItem('user'));
+  const user = extractUserFromLocalStorage();
 
-  const userNickname = userInfo?.userNickname;
+  const username = user?.userNickname;
 
   const token = localStorage.getItem('accessToken');
 
@@ -38,14 +39,14 @@ export function NavBar() {
                   navigate('/post');
                 }}
               >
-                Post
+                Upload
               </Nav.Link>
             ) : null}
 
             {token ? (
               <Nav.Link
                 onClick={() => {
-                  navigate(`/user/profile/${userNickname}`);
+                  navigate(`/user/profile/${username}`);
                 }}
               >
                 MyProfile
@@ -72,7 +73,7 @@ export function NavBar() {
       <Nav className='me-auto text-center user-info-nav'>
         <div className='d-flex align-items-center'>
           {localStorage.getItem('user') ? (
-            <span className='me-3 text-nowrap'>{userInfo.userNickname}님</span>
+            <span className='me-3 text-nowrap'>{username}님</span>
           ) : null}
 
           {token ? <NavLogout></NavLogout> : null}

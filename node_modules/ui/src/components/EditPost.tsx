@@ -5,12 +5,18 @@ import api from '../common/api';
 import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
 import { LoadingSpinner } from './LoadingSpinner';
 import { ImageSlider } from './ImageSlider';
+import { extractUserFromLocalStorage } from '../common/extractUserFromLocalStorage';
+import { extractAccessTokenFromLocalStorage } from '../common/extratAccessTokenFromLocalStorage';
 
 export function EditPost() {
   const { postId } = useParams();
+
   const navigate = useNavigate();
-  const accessToken = window.localStorage.getItem('accessToken');
-  const user = JSON.parse(window.localStorage.getItem('user'));
+
+  const accessToken = extractAccessTokenFromLocalStorage();
+
+  const user = extractUserFromLocalStorage();
+
   const env = import.meta.env;
 
   const [title, setTitle] = useState('');

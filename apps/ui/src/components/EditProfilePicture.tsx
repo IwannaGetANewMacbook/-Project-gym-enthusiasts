@@ -6,10 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
 import { handleTokenExpiration } from '../common/handleTokenExpiration';
 import { LoadingSpinner } from './LoadingSpinner';
+import { extractAccessTokenFromLocalStorage } from '../common/extratAccessTokenFromLocalStorage';
 
 export function EditProfilePicture() {
   const navigate = useNavigate();
-  const accessToken = window.localStorage.getItem('accessToken');
+
+  const accessToken = extractAccessTokenFromLocalStorage();
 
   // 데이터를 로딩 중인지 나타내는 상태
   const [loading, setLoading] = useState<boolean>(false);

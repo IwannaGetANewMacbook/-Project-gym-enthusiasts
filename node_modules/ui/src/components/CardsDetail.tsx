@@ -15,6 +15,8 @@ import { convertPostDates } from '../common/convertPostDates';
 import { LoadingSpinner } from './LoadingSpinner';
 import styles from './styles/CardsDetail.module.css';
 import { ImageSlider } from './ImageSlider';
+import { extractAccessTokenFromLocalStorage } from '../common/extratAccessTokenFromLocalStorage';
+import { extractUserFromLocalStorage } from '../common/extractUserFromLocalStorage';
 
 // 클라이언트 측에서 요청 시 쿠키를 포함하고, 응답 시 서버로부터 전달된 쿠키를 브라우저에 저장할 수 있도록 하는 역할
 // 모든 요청과 응답에 쿠키를 포함할 수 있도록 하기 위하여 전역으로 true로 설정.
@@ -23,7 +25,9 @@ axios.defaults.withCredentials = true;
 export function CardsDetail() {
   const navigate = useNavigate();
 
-  const accessToken = window.localStorage.getItem('accessToken');
+  const accessToken = extractAccessTokenFromLocalStorage();
+
+  const user = extractUserFromLocalStorage();
 
   const env = import.meta.env;
 
@@ -32,8 +36,6 @@ export function CardsDetail() {
   const [cards, setCards] = useState([]);
 
   const [loading, setLoading] = useState(false);
-
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   // html 렌더링 전 accessToken 유무 검사
   checkAccessTokenBeforeRendering(accessToken);
