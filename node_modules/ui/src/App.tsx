@@ -15,6 +15,7 @@ import { EditProfileInfo } from './components/EditProfileInfo';
 import { Layout } from './components/Layout';
 import { EditSocialLink } from './components/EditSocialLink';
 import { GetUserPosts } from './components/GetUserPosts';
+import { AuthRedirect } from './components/AuthRedirect';
 
 function App() {
   return (
@@ -43,21 +44,27 @@ function App() {
             }
           />
 
+          {/* 로그인 페이지로 접속 시, 기존 로그인 유무에따라 redirect 수행*/}
           <Route
             path='/auth/login/email'
             element={
-              <Layout>
-                <Login />
-              </Layout>
+              <AuthRedirect redirectTo='/'>
+                <Layout>
+                  <Login />
+                </Layout>
+              </AuthRedirect>
             }
           />
 
+          {/* 회원가입입 페이지로 접속 시, 기존 로그인 유무에따라 redirect 수행*/}
           <Route
             path='/auth/register/email'
             element={
-              <Layout>
-                <Registraion />
-              </Layout>
+              <AuthRedirect redirectTo='/'>
+                <Layout>
+                  <Registraion />
+                </Layout>
+              </AuthRedirect>
             }
           />
 
