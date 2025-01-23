@@ -75,6 +75,8 @@ import { SocialLinkModel } from './users/entity/social-link.entity';
       // synchronize: true -> nestJS에서 작성하는 typeORM코드와 db싱크를 자동으로 맞추겠다!
       // 개발환경에서는 synchronize: true, 프로덕션 환경에서는 synchronize: false
       synchronize: true,
+      ssl:
+        process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false, // 이 부분 추가
     }),
     CommonModule,
     UsersModule,
