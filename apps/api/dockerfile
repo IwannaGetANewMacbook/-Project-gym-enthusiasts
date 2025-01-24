@@ -4,23 +4,26 @@ FROM node:18-alpine
 # 2. 작업 디렉토리 설정
 WORKDIR /app
 
-# 3. package.json 및 package-lock.json 복사 후 의존성 설치
+# 3. package.json 및 package-lock.json 복사
 COPY package*.json ./
 
-# 4. npm 설치 (프로덕션 모드)
-RUN npm install --only=production
+# 4. NestJS CLI 설치 보장 (중요!)
+RUN npm install -g @nestjs/cli
 
-# 5. 모든 소스 코드 복사
+# 5. npm 설치 (모든 dependencies 포함)
+RUN npm install
+
+# 6. 모든 코드 복사
 COPY . .
 
-# 6. NestJS 빌드 실행 (dist 폴더 생성)
+# 7. NestJS 빌드 실행
 RUN npm run build
 
-# 7. 환경 변수 설정
+# 8. 환경 변수 설정
 ENV NODE_ENV=production
 
-# 8. 포트 설정
+# 9. 포트 설정
 EXPOSE 3000
 
-# 9. 앱 실행
+# 10. 앱 실행
 CMD ["node", "dist/main"]
