@@ -11,7 +11,6 @@ import {
 } from 'react-bootstrap';
 import defaultProfile from '../assets/No-photo.jpg';
 import styles from './styles/PostPosts.module.css';
-
 import axios from 'axios';
 import api from '../common/api';
 import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
