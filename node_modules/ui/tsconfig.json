@@ -5,12 +5,11 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
     "baseUrl": "./src",
     "paths": {
-      "@components/*": ["components/*"],
-      "@common/*": ["common/*"]
-    }
+      "@components/*": ["components/*"]
+    },
+    "moduleResolution": "Node",
+    "forceConsistentCasingInFileNames": true
   }
 }
