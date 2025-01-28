@@ -13,8 +13,8 @@ import defaultProfile from '../assets/No-photo.jpg';
 import styles from './styles/PostPosts.module.css';
 import axios from 'axios';
 import api from '../common/api';
-import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
 import { LoadingSpinner } from './LoadingSpinner';
+import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
 import { extractAccessTokenFromLocalStorage } from '../common/extratAccessTokenFromLocalStorage';
 
 // 클라이언트 측에서 요청 시 쿠키를 포함하고, 응답 시 서버로부터 전달된 쿠키를 브라우저에 저장할 수 있도록 하는 역할
