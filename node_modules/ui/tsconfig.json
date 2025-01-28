@@ -9,7 +9,7 @@
     "moduleResolution": "node",
     "baseUrl": "./src",
     "paths": {
-      "@components/*": ["src/components/*"]
+      "@components/*": ["components/*"]
     }
   }
 }
