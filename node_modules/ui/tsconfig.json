@@ -5,6 +5,7 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "baseUrl": "./src",
     "paths": {
