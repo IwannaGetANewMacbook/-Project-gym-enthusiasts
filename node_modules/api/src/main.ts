@@ -6,7 +6,7 @@ import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: true, // 또는 특정 도메인만 허용
+    origin: 'https://myproject-ui.onrender.com', // 또는 특정 도메인만 허용
     credentials: true,
   });
 
