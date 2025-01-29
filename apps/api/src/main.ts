@@ -8,6 +8,8 @@ async function bootstrap() {
   app.enableCors({
     origin: 'https://myproject-ui.onrender.com', // 또는 특정 도메인만 허용
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
   // cookie-parser 미들웨어 사용
