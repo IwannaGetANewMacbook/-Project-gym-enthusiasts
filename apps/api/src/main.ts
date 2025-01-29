@@ -2,8 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
-import * as cors from 'cors';
-import * as express from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,13 +9,6 @@ async function bootstrap() {
     origin: true, // 또는 특정 도메인만 허용
     credentials: true,
   });
-
-  // Express 사용하여 CORS 설정
-  app.use(
-    cors({ origin: 'https://myproject-ui.onrender.com', credentials: true }),
-  );
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
 
   // cookie-parser 미들웨어 사용
   app.use(cookieParser());
