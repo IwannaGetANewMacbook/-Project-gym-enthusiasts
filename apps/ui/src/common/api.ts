@@ -44,7 +44,7 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshError) {
         // 토큰 갱신 실패 시 처리 로직
-        console.error('토큰 갱신에 실패했습니다.', refreshError);
+        console.error('토큰 갱신에 실패했습니다1111.', refreshError);
 
         // 로그아웃 요청 보내기 (서버 측에서 refreshToken 삭제)
         try {
