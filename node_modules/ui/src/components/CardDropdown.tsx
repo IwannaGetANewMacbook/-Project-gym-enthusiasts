@@ -23,6 +23,7 @@ export function CardDropdown({
         zIndex: 1,
         marginTop: '-20px',
       }}
+      onClick={(e) => e.stopPropagation()}
     >
       <Dropdown.Toggle
         variant='light'
