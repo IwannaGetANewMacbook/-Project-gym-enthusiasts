@@ -11,8 +11,6 @@ import { extractAccessTokenFromLocalStorage } from '../common/extratAccessTokenF
 import { extractUserFromLocalStorage } from '../common/extractUserFromLocalStorage';
 
 export function UserProfile() {
-  const env = import.meta.env;
-
   const navigate = useNavigate();
 
   const accessToken = extractAccessTokenFromLocalStorage();

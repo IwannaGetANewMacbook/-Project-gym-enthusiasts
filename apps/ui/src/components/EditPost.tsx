@@ -17,8 +17,6 @@ export function EditPost() {
 
   const user = extractUserFromLocalStorage();
 
-  const env = import.meta.env;
-
   const [title, setTitle] = useState('');
 
   const [content, setContent] = useState('');

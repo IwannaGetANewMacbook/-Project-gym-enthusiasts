@@ -26,8 +26,6 @@ import { extractAccessTokenFromLocalStorage } from '../common/extratAccessTokenF
 axios.defaults.withCredentials = true;
 
 export function GetUserPosts() {
-  const env = import.meta.env;
-
   const navigate = useNavigate();
 
   const accessToken = extractAccessTokenFromLocalStorage();
