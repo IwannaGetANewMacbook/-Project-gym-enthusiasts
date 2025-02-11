@@ -76,7 +76,7 @@ export function UserProfile() {
               className={`${styles.profilePictureWrapper} position-relative d-inline-block`}
             >
               <Image
-                src={`${env.VITE_HOST}${userData.images[0]}`}
+                src={`${userData.images[0]}`}
                 roundedCircle
                 className={`${styles.profilePicture} mb-3`}
               />

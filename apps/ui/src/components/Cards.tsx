@@ -76,7 +76,7 @@ export function Cards() {
           <div className='cardImgContainer'>
             <Card.Img
               variant='top'
-              src={`${env.VITE_HOST}${v.images[0]}`}
+              src={`${v.images[0]}`}
               className='cardImg'
             />
           </div>

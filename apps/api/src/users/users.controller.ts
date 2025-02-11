@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
+  BadRequestException,
   Body,
   Controller,
   DefaultValuePipe,
@@ -22,16 +23,19 @@ import { RolesEnum } from './const/roles.const';
 import { UsersModel } from './entity/users.entity';
 import { User } from './decorator/user.decorator';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { ImagesTransformInterceptor } from 'src/posts/interceptor/images-transform.interceptor';
 import { CreatePostDTO } from 'src/posts/dto/create-post.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { CreateSocialLinkDto } from './dto/create-socialLink.dto';
 import { UpdateSocialLinksDto } from './dto/update-socialLinks.dto';
 import { IsSocialLinkMineOrAdminGuard } from './guard/is-socialLink-mine-or-admin.guard';
+import { CloudinaryPathEnum, CloudinaryService } from 'src/cloudinary.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly cloudinaryService: CloudinaryService,
+  ) {}
 
   @Get()
   /**
@@ -69,16 +73,34 @@ export class UsersController {
 
   @Put('updateUserProfilePicture')
   // FilesInterceptor를 등록을 하면은 moduel.ts 에서 등록한 multer모듈의 세팅이 확인되고 실행되고 이미지 파일을 해당 폴더안으로 넣어줌.
-  @UseInterceptors(FilesInterceptor('image'))
+  @UseInterceptors(FilesInterceptor('images', 1))
   // @UseInterceptors(LogInterceptor)
-  updateUserProfile(
+  async updateUserProfile(
     @User() user: UsersModel,
     @UploadedFiles() files?: Array<Express.Multer.File>,
   ) {
-    return this.usersService.updateUserProfilePicture(
-      user.nickname,
-      files ? files : undefined, // 만약 file이 undefined면 undefined 그대로 전달.
-    );
+    try {
+      // 1. cloudinary에 이미지 업로드 및 URL 가져오기
+      const uploadResults = await this.cloudinaryService.uploadImage(
+        files,
+        CloudinaryPathEnum.user,
+      );
+      const imageUrls = uploadResults.map((result) => result.secure_url); // 이미지 URL만 추출
+
+      // 2. 이미지 URL과 개시글 정보를 함께 저장
+      return await this.usersService.updateUserProfilePicture(
+        user.nickname,
+        imageUrls,
+      );
+    } catch (e) {
+      console.log('Error uploading image:', e);
+      throw new BadRequestException('Failed to upload image');
+    }
+
+    // return this.usersService.updateUserProfilePicture(
+    //   user.nickname,
+    //   files ? files : undefined, // 만약 file이 undefined면 undefined 그대로 전달.
+    // );
   }
 
   // @Get('follow/me')

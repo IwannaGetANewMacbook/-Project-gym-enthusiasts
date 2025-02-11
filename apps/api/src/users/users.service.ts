@@ -117,25 +117,22 @@ export class UsersService {
     return result;
   }
 
-  async updateUserProfilePicture(
-    nickname: string,
-    images?: Array<Express.Multer.File>,
-  ) {
+  async updateUserProfilePicture(nickname: string, images?: string[]) {
     // 1) create -> 저장할 객체를 생성한다.
     // 2) save -> 객체를 저장한다.(create 메서드에서 생성한 객체로 저장)
 
-    // files 배열에서 filename만 추출.
-    const filenames = [];
-    images.forEach((v) => {
-      filenames.push(v.filename);
-    });
+    // // files 배열에서 filename만 추출.
+    // const filenames = [];
+    // images.forEach((v) => {
+    //   filenames.push(v.filename);
+    // });
 
     // create() 함수는 동기식으로 처리됨.
     await this.usersRepository.update(
       {
         nickname: nickname,
       },
-      { images: filenames },
+      { images: images },
     );
 
     const result = await this.usersRepository.findOne({

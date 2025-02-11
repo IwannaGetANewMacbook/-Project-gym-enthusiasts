@@ -111,7 +111,7 @@ export function CardsDetail() {
               }}
             >
               <img
-                src={`${env.VITE_HOST}${v.author.images[0]}`}
+                src={`${v.author.images[0]}`}
                 alt='User'
                 className={styles.cardUserImg}
               />
@@ -127,23 +127,19 @@ export function CardsDetail() {
           </Card.Header>
           {/* <div className={styles.cardImgContainer}> */}
           {v.images.length > 1 ? (
-            <ImageSlider
-              images={v.images.map(
-                (img: string) => `${import.meta.env.VITE_HOST}${img}`
-              )}
-            />
+            <ImageSlider images={v.images.map((img: string) => `${img}`)} />
           ) : (
             <div className={styles.cardImgContainer}>
               <Card.Img
                 variant='top'
-                src={`${env.VITE_HOST}${v.images[0]}`}
+                src={`${v.images[0]}`}
                 className={styles.cardImg}
               />
             </div>
           )}
           {/* <Card.Img
               variant='top'
-              src={`${import.meta.env.VITE_HOST}${v.images[0]}`}
+              src={`${v.images[0]}`}
               className={styles.cardImg}
             /> */}
           {/* </div> */}

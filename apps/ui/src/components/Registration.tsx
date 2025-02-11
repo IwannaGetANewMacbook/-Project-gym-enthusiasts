@@ -66,7 +66,7 @@ export function Registraion() {
         type: blob.type,
       });
 
-      formData.append('image', defaultFile);
+      formData.append('images', defaultFile);
 
       const result = await api.put(
         `/users/updateUserProfilePicture`,

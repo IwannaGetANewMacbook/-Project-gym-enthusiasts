@@ -111,7 +111,7 @@ export function CardsPagination() {
                   }}
                 >
                   <img
-                    src={`${import.meta.env.VITE_HOST}${v.author.images[0]}`}
+                    src={`${v.author.images[0]}`}
                     alt='User'
                     className={styles.cardUserImg}
                   />
@@ -132,7 +132,7 @@ export function CardsPagination() {
                 </div>
                 <Card.Img
                   variant='top'
-                  src={`${import.meta.env.VITE_HOST}${v.images[0]}`}
+                  src={`${v.images[0]}`}
                   className={styles.cardImg}
                 />
               </div>

@@ -40,17 +40,14 @@ import { CommentsModel } from './posts/comments/entity/comments.entity';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AccessTokenGuard } from './auth/guard/bearer-token.guard';
 import { RolesGuard } from './users/guard/roles.guard';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { PUBLIC_FOLDER_PATH } from './common/const/path.const';
 import { SocialLinkModel } from './users/entity/social-link.entity';
+import { MulterModule } from '@nestjs/platform-express';
+import { CloudinaryService } from './cloudinary.service';
+// import { ImageController } from './image.controller';
 
 @Module({
   imports: [
-    ServeStaticModule.forRoot({
-      // 파일들을 serving할 가장 최상단의 폴더(절대 경로)
-      rootPath: PUBLIC_FOLDER_PATH, // => http://localhost:3000/posts/dwd.jpg
-      serveRoot: '/public', // => http://localhost:3000/public/posts/dwd.jpg
-    }),
+    MulterModule.register(),
     TestModule,
     ConfigModule.forRoot({
       envFilePath: '.env',
@@ -106,6 +103,7 @@ import { SocialLinkModel } from './users/entity/social-link.entity';
       provide: APP_GUARD,
       useClass: RolesGuard,
     },
+    CloudinaryService,
   ],
 })
 export class AppModule implements NestModule {

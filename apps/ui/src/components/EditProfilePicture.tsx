@@ -34,9 +34,7 @@ export function EditProfilePicture() {
 
         // 사용자 이미지가 있는 경우 이미지 미리보기 URL 설정
         setImagePreview(
-          response.data.images
-            ? `${import.meta.env.VITE_HOST}${response.data.images[0]}`
-            : null
+          response.data.images ? `${response.data.images[0]}` : null
         );
         setLoading(false); // 데이터 가져오기 완료 시 로딩 상태 변경
         navigate('');
@@ -65,7 +63,7 @@ export function EditProfilePicture() {
       setLoading(true);
       const formData = new FormData();
       if (imageFile) {
-        formData.append('image', imageFile); // 이미지 파일이 있는 경우 추가
+        formData.append('images', imageFile); // 이미지 파일이 있는 경우 추가
       }
 
       // 백엔드에 PUT 요청을 보내서 프로필 사진 업데이트
@@ -80,6 +78,8 @@ export function EditProfilePicture() {
       setLoading(false);
     } catch (e) {
       console.log('프로필 사진 업데이트 오류:', e); // 업데이트 실패 시 오류 로그
+    } finally {
+      setLoading(false); // 로딩 상태 변경
     }
   };
 

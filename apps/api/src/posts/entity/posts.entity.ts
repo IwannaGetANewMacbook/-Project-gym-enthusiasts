@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Transform } from 'class-transformer';
-import { IsString } from 'class-validator';
+import { IsArray, IsOptional, IsString } from 'class-validator';
 import { join } from 'path';
-import { POST_PUBLIC_IMAGE_PATH } from 'src/common/const/path.const';
 import { BaseModel } from 'src/common/entity/base.entity';
 import { UsersModel } from 'src/users/entity/users.entity';
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
@@ -34,18 +33,20 @@ export class PostsModel extends BaseModel {
     nullable: true,
     array: true,
   })
-  @Transform(({ value }) => {
-    const rename: string[] = [];
-    value.map((v, i) => rename.push(`/${join(POST_PUBLIC_IMAGE_PATH, v)}`));
+  @IsOptional()
+  @IsArray()
+  // @Transform(({ value }) => {
+  //   const rename: string[] = [];
+  //   value.map((v, i) => rename.push(`/${join(POST_PUBLIC_IMAGE_PATH, v)}`));
 
-    // const rename: string[] = [];
-    // value.forEach((v) => {
-    //   v = `/${join(POST_PUBLIC_IMAGE_PATH, v)}`;
-    //   rename.push(v);
-    //   return rename;
-    // });
-    return value && rename;
-  })
+  //   // const rename: string[] = [];
+  //   // value.forEach((v) => {
+  //   //   v = `/${join(POST_PUBLIC_IMAGE_PATH, v)}`;
+  //   //   rename.push(v);
+  //   //   return rename;
+  //   // });
+  //   return value && rename;
+  // })
   images?: string[]; // img파일은 db에 직접 저장하지 않음. -> db에서는 이미지 위치만 저장. -> 그래서 string타입.
 
   @Column()

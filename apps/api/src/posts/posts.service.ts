@@ -154,23 +154,23 @@ export class PostsService {
     authorId: number,
     title: string,
     content: string,
-    images?: Array<Express.Multer.File>,
+    images?: string[],
   ) {
     // 1) create -> 저장할 객체를 생성한다.
     // 2) save -> 객체를 저장한다.(create 메서드에서 생성한 객체로 저장)
 
-    // files 배열에서 filename만 추출.
-    const filenames = [];
-    images.forEach((v) => {
-      filenames.push(v.filename);
-    });
+    // // files 배열에서 filename만 추출.
+    // const filenames = [];
+    // images.forEach((v) => {
+    //   filenames.push(v);
+    // });
 
     // create() 함수는 동기식으로 처리됨.
     const post = this.postsRepository.create({
       author: { id: authorId },
       title: title,
       content: content,
-      images: filenames,
+      images: images,
       likeCount: 0,
       commentCount: 0,
     });

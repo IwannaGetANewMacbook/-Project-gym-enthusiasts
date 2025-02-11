@@ -87,13 +87,11 @@ export function EditPost() {
           <Card className='shadow-sm'>
             <div className='cardImgContainer'>
               {images.length > 1 ? (
-                <ImageSlider
-                  images={images.map((image) => `${env.VITE_HOST}${image}`)}
-                />
+                <ImageSlider images={images.map((image) => `${image}`)} />
               ) : (
                 <Card.Img
                   variant='top'
-                  src={`${env.VITE_HOST}${images[0]}`}
+                  src={`${images[0]}`}
                   className='cardImg'
                 />
               )}
