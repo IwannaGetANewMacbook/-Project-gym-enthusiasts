@@ -64,7 +64,7 @@ export class AuthController {
       httpOnly: true,
       // secure 옵션이 true로 설정되면 HTTPS 연결에서만 쿠키가 전송됨.
       // 개발환경에선 false, production환경에선 true.
-      secure: this.secureCookie,
+      secure: true,
       // strict => 동일한 사이트에서만 쿠키가 전송됨.  CSRF 공격을 방지하기 위해 크로스 사이트 쿠키 전송 제한.
       // lax => 약간의 크로스 사이트 요청에 쿠키가 전송.
       // none => 모든 종류의 크로스사이트 요청에서 쿠키가 전송됨. 이 경우 secure옵션이 "true"여야함.
