@@ -6,18 +6,10 @@ import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    /**
-     * For Deployement
-     */
-    origin: 'https://myproject-ui.onrender.com',
-    // methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    origin: ['http://localhost:5173', 'https://myproject-ui.onrender.com'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: ['Content-Type', 'Authorization'],
-    exposedHeaders: ['Authorization'],
-
-    /**
-     * ForLocal
-     */
-    // origin: 'http://localhost:5173', // 또는 특정 도메인만 허용
+    exposedHeaders: ['Authorization', 'X-Token'],
 
     credentials: true,
   });
