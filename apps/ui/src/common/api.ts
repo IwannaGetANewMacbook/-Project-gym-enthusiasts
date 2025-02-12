@@ -61,8 +61,8 @@ api.interceptors.response.use(
         }
 
         // 로컬 스토리지를 비우고 로인 페이지로 이동
-        window.localStorage.clear();
-        window.location.href = '/auth/login/email';
+        // window.localStorage.clear();
+        // window.location.href = '/auth/login/email';
       }
     }
     return Promise.reject(error);
