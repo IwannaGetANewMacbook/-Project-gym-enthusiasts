@@ -36,7 +36,9 @@ export class BearerTokenGuard implements CanActivate {
 
     const rawToken = req.headers['authorization'];
     if (!rawToken) {
-      throw new UnauthorizedException('401 Not Extant Token');
+      throw new UnauthorizedException(
+        '401 Not Extant Token From bearer-token.guard.ts',
+      );
     }
 
     const token = this.authService.extractTokenFromHeader(rawToken, true);
