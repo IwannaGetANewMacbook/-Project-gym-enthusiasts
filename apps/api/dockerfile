@@ -1,5 +1,5 @@
 # 1. Node.js 최신 Alpine 버전 사용
-FROM node:20-alpine
+FROM node:18-alpine
 
 # 2. 작업 디렉토리 설정
 WORKDIR /app
@@ -20,7 +20,7 @@ COPY . .
 RUN npm run build
 
 # 8. 환경 변수 설정
-# ENV NODE_ENV=production
+ENV NODE_ENV=production
 
 # 9. 포트 설정
 EXPOSE 3000

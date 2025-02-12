@@ -24,8 +24,7 @@ export class AuthController {
     private readonly configService: ConfigService,
   ) {
     // .env 파일에서 COOKIE_SECURE 값을 불러와 Boolean으로 저장
-    this.secureCookie =
-      this.configService.get<string>('COOKIE_SECURE') === 'true';
+    this.secureCookie = true;
   }
 
   @Post('token/access')
@@ -69,7 +68,7 @@ export class AuthController {
       // strict => 동일한 사이트에서만 쿠키가 전송됨.  CSRF 공격을 방지하기 위해 크로스 사이트 쿠키 전송 제한.
       // lax => 약간의 크로스 사이트 요청에 쿠키가 전송.
       // none => 모든 종류의 크로스사이트 요청에서 쿠키가 전송됨. 이 경우 secure옵션이 "true"여야함.
-      sameSite: 'lax',
+      sameSite: 'none',
       //  쿠키의 유효 기간을 밀리초 단위로 설정하는 옵션
       maxAge: 3600 * 1000, // 적절한 만료 시간(밀리초 단위)
     });
