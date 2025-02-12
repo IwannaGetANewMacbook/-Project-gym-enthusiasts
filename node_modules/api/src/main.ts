@@ -10,8 +10,6 @@ async function bootstrap() {
      * For Deployement
      */
     origin: 'https://myproject-ui.onrender.com',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
 
     /**
      * ForLocal
