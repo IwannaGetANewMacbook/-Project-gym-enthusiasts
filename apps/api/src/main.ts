@@ -10,7 +10,7 @@ async function bootstrap() {
      * For Deployement
      */
     origin: 'https://myproject-ui.onrender.com',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    // methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     exposedHeaders: ['Authorization'],
 
@@ -19,7 +19,7 @@ async function bootstrap() {
      */
     // origin: 'http://localhost:5173', // 또는 특정 도메인만 허용
 
-    // credentials: true,
+    credentials: true,
   });
 
   // cookie-parser 미들웨어 사용
