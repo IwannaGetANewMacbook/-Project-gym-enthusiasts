@@ -111,9 +111,10 @@ export class AuthController {
       // strict => 동일한 사이트에서만 쿠키가 전송됨.  CSRF 공격을 방지하기 위해 크로스 사이트 쿠키 전송 제한.
       // lax => 약간의 크로스 사이트 요청에 쿠키가 전송.
       // none => 모든 종류의 크로스사이트 요청에서 쿠키가 전송됨. 이 경우 secure옵션이 "true"여야함.
-      sameSite: 'strict',
+      sameSite: 'none',
       //  쿠키의 유효 기간을 밀리초 단위로 설정하는 옵션
       maxAge: 3600 * 1000, // 적절한 만료 시간(밀리초 단위)
+      path: '/',
     });
     return {
       message: 'Refresh token set as HttpOnly cookie',
@@ -145,13 +146,14 @@ export class AuthController {
       httpOnly: true,
       // secure 옵션이 true로 설정되면 HTTPS 연결에서만 쿠키가 전송됨.
       // 개발환경에선 false, production환경에선 true.
-      secure: this.secureCookie,
+      secure: true,
       // strict => 동일한 사이트에서만 쿠키가 전송됨.  CSRF 공격을 방지하기 위해 크로스 사이트 쿠키 전송 제한.
       // lax => 약간의 크로스 사이트 요청에 쿠키가 전송.
       // none => 모든 종류의 크로스사이트 요청에서 쿠키가 전송됨. 이 경우 secure옵션이 "true"여야함.
-      sameSite: 'lax',
+      sameSite: 'none',
       //  쿠키의 유효 기간을 밀리초 단위로 설정하는 옵션
       maxAge: 3600 * 1000, // 적절한 만료 시간(밀리초 단위)
+      path: '/',
     });
 
     return {
@@ -173,8 +175,8 @@ export class AuthController {
     // 쿠키에서 refreshToken 삭제
     res.clearCookie('refreshToken', {
       httpOnly: true,
-      secure: this.secureCookie, // 로컬 환경일 경우 false, 배포 시 true로 변경
-      sameSite: 'lax', // 프론트엔드와 백엔드가 다른 도메인/포트인 경우 적합
+      secure: true, // 로컬 환경일 경우 false, 배포 시 true로 변경
+      sameSite: 'none', // 프론트엔드와 백엔드가 다른 도메인/포트인 경우 적합
       path: '/', // 쿠키가 적용된 경로, "/"로 설정하여 모든 경로에서 쿠키가 삭제되도록 함.
     });
 
