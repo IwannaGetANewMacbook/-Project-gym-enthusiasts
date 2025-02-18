@@ -71,6 +71,7 @@ export class AuthController {
       sameSite: 'none',
       //  쿠키의 유효 기간을 밀리초 단위로 설정하는 옵션
       maxAge: 3600 * 1000, // 적절한 만료 시간(밀리초 단위)
+      path: '/',
     });
 
     return {
