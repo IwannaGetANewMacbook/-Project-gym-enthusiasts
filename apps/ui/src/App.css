@@ -74,8 +74,8 @@
 
 /* Media Query */
 
-/* 뷰포트가 361px 이상일 때 요소 중앙정렬. */
-@media (min-width: 420px) {
+/* 뷰포트가 421px 이상일 때 요소 중앙정렬. */
+@media (min-width: 421px) {
   .center-align {
     display: flex;
     justify-content: center;

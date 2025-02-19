@@ -92,7 +92,7 @@ export function CardsPagination() {
       {/* 카드들을 행으로 표시 */}
       <Row>
         {cards.map((v) => (
-          <Col sm={4} key={v.id}>
+          <Col xs={12} sm={4} key={v.id}>
             <Card
               style={{
                 maxWidth: '300px',

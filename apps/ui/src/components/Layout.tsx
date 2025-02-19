@@ -14,7 +14,8 @@ export function Layout({ children }: LayoutProps) {
       <MainBg />
       <br />
       <Container>
-        <Row>{children}</Row>
+        {children}
+        {/* <Row>{children}</Row> */}
       </Container>
       <Footer />
     </>
