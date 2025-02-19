@@ -1,4 +1,4 @@
-import { Container, Row } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import { MainBg } from './MainBg';
 import { NavBar } from './NavBar';
 import { Footer } from './Footer';
