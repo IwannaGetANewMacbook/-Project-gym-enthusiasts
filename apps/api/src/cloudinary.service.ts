@@ -33,6 +33,7 @@ export class CloudinaryService {
             .upload_stream(
               {
                 folder: `${this.configService.get<string>('LocalOrDeploy')}/${path}`,
+                resource_type: 'image', // MIME 타입 명시.
               },
               (error, result) => {
                 if (error) {

@@ -89,6 +89,7 @@ export function EditProfilePicture() {
       await api.put('/users/updateUserProfilePicture', formData, {
         // headers: { Authorization: `Bearer ${accessToken}` }, // 인증 헤더 추가
         timeout: 60000, // 60초 (기본보다 크게 설정)
+        maxContentLength: 100000000, // 100MB (기본보다 크게 설정
       });
       alert('프로필 사진이 성공적으로 업데이트되었습니다!'); // 성공 시 사용자에게 알림
 
