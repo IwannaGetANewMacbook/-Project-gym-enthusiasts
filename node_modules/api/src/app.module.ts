@@ -47,7 +47,7 @@ import { CloudinaryService } from './cloudinary.service';
 
 @Module({
   imports: [
-    MulterModule.register(),
+    MulterModule.register({ limits: { fileSize: 10 * 1024 * 1024 } }), // 최대 10MB로 설정
     TestModule,
     ConfigModule.forRoot({
       envFilePath: '.env',

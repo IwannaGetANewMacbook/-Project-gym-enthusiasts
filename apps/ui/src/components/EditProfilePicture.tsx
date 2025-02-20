@@ -78,6 +78,7 @@ export function EditProfilePicture() {
 
       setLoading(false);
     } catch (e) {
+      alert(`프로필 사진 업데이트 오류: ${e}`);
       console.log('프로필 사진 업데이트 오류:', e); // 업데이트 실패 시 오류 로그
     } finally {
       setLoading(false); // 로딩 상태 변경
