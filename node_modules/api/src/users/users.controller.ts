@@ -79,6 +79,10 @@ export class UsersController {
     @User() user: UsersModel,
     @UploadedFiles() files?: Array<Express.Multer.File>,
   ) {
+    if (!files || files.length === 0) {
+      throw new BadRequestException('No files provided');
+    }
+
     try {
       // 1. cloudinary에 이미지 업로드 및 URL 가져오기
       const uploadResults = await this.cloudinaryService.uploadImage(

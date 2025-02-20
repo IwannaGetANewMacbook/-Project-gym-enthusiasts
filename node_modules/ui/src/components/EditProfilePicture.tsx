@@ -9,6 +9,8 @@ import { LoadingSpinner } from './LoadingSpinner';
 import { extractAccessTokenFromLocalStorage } from '../common/extratAccessTokenFromLocalStorage';
 
 export function EditProfilePicture() {
+  const env = import.meta.env;
+
   const navigate = useNavigate();
 
   const accessToken = extractAccessTokenFromLocalStorage();
@@ -86,12 +88,17 @@ export function EditProfilePicture() {
       }
 
       // 백엔드에 post 요청을 보내서 프로필 사진 업데이트
-      await api.post('/users/updateUserProfilePicture', formData, {
-        // headers: { Authorization: `Bearer ${accessToken}` }, // 인증 헤더 추가
-        timeout: 120000, // 2분 (기본값보다 크게 설정)
-        maxContentLength: Infinity, // 최대 요청 데이터 크기 무제한
-        maxBodyLength: Infinity, // 최대 요청 바디 크기 무제한
-      });
+      await api.post(
+        `${env.VITE_HOST}/users/updateUserProfilePicture`,
+        formData,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` }, // 인증 헤더 추가
+          timeout: 120000, // 2분 (기본값보다 크게 설정)
+          maxContentLength: Infinity, // 최대 요청 데이터 크기 무제한
+          maxBodyLength: Infinity, // 최대 요청 바디 크기 무제한
+          withCredentials: true, // 쿠키를 자동으로 전송
+        }
+      );
       alert('프로필 사진이 성공적으로 업데이트되었습니다!'); // 성공 시 사용자에게 알림
 
       // 리렌더링
