@@ -92,7 +92,7 @@ export function EditProfilePicture() {
         `${env.VITE_HOST}/users/updateUserProfilePicture`,
         formData,
         {
-          headers: { Authorization: `Bearer ${accessToken}` }, // 인증 헤더 추가
+          // headers: { Authorization: `Bearer ${accessToken}` }, // 인증 헤더 추가
           timeout: 120000, // 2분 (기본값보다 크게 설정)
           maxContentLength: Infinity, // 최대 요청 데이터 크기 무제한
           maxBodyLength: Infinity, // 최대 요청 바디 크기 무제한
