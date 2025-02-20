@@ -71,7 +71,7 @@ export class UsersController {
     return this.usersService.updateUserProfileInfo(user, updateProfileDto);
   }
 
-  @Put('updateUserProfilePicture')
+  @Post('updateUserProfilePicture')
   // FilesInterceptor를 등록을 하면은 moduel.ts 에서 등록한 multer모듈의 세팅이 확인되고 실행되고 이미지 파일을 해당 폴더안으로 넣어줌.
   @UseInterceptors(FilesInterceptor('images', 1))
   // @UseInterceptors(LogInterceptor)

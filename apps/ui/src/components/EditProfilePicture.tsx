@@ -85,11 +85,12 @@ export function EditProfilePicture() {
         });
       }
 
-      // 백엔드에 PUT 요청을 보내서 프로필 사진 업데이트
-      await api.put('/users/updateUserProfilePicture', formData, {
+      // 백엔드에 post 요청을 보내서 프로필 사진 업데이트
+      await api.post('/users/updateUserProfilePicture', formData, {
         // headers: { Authorization: `Bearer ${accessToken}` }, // 인증 헤더 추가
-        timeout: 60000, // 60초 (기본보다 크게 설정)
-        maxContentLength: 100000000, // 100MB (기본보다 크게 설정
+        timeout: 120000, // 2분 (기본값보다 크게 설정)
+        maxContentLength: Infinity, // 최대 요청 데이터 크기 무제한
+        maxBodyLength: Infinity, // 최대 요청 바디 크기 무제한
       });
       alert('프로필 사진이 성공적으로 업데이트되었습니다!'); // 성공 시 사용자에게 알림
 
