@@ -89,7 +89,8 @@ export function EditProfilePicture() {
 
       // 백엔드에 post 요청을 보내서 프로필 사진 업데이트
       await api.post('/users/updateUserProfilePicture', formData, {
-        // headers: { Authorization: `Bearer ${accessToken}` }, // 인증 헤더 추가
+        // 인증 헤더 추가!!! 꼭 필요!!!! 이거 추가 안해서 개고생함!!!!!
+        headers: { Authorization: `Bearer ${accessToken}` },
         timeout: 120000, // 2분 (기본값보다 크게 설정)
         maxContentLength: Infinity, // 최대 요청 데이터 크기 무제한
         maxBodyLength: Infinity, // 최대 요청 바디 크기 무제한
