@@ -17,7 +17,7 @@ export function EditProfilePicture() {
   const [loading, setLoading] = useState<boolean>(false);
 
   // 선택한 프로필 이미지 파일 상태
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
 
   // 프로필 이미지 미리보기 URL 상태
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -50,10 +50,26 @@ export function EditProfilePicture() {
 
   // 프로필 이미지 선택 시 호출되는 함수
   const handleImgForm = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.currentTarget.files[0]; // 선택한 파일을 가져옴
-    setImageFile(file); // 이미지 파일 상태 설정
-    if (file) {
-      setImagePreview(URL.createObjectURL(file)); // 이미지 미리보기 URL 설정
+    const files = Array.from(e.currentTarget.files || []); // 선택한 파일을 가져옴
+    const maxFileSize = 10 * 1024 * 1024; // 10MB
+
+    /**
+     * 파일 업로드 크기, 갯수 제한 및 검증.
+     */
+    const validFiles = files.filter((v) => {
+      return v.size <= maxFileSize;
+    });
+    if (validFiles.length !== files.length) {
+      alert('파일 크기는 10MB를 초과할 수 없습니다.');
+      return;
+    } else if (validFiles.length > 1) {
+      alert('파일은 1개만 업로드 가능합니다.');
+      return;
+    }
+    setImageFiles(validFiles); // 이미지 파일 상태 설정
+
+    if (files) {
+      setImagePreview(URL.createObjectURL(files[0])); // 이미지 미리보기 URL 설정
     }
   };
 
@@ -62,8 +78,11 @@ export function EditProfilePicture() {
     try {
       setLoading(true);
       const formData = new FormData();
-      if (imageFile) {
-        formData.append('images', imageFile); // 이미지 파일이 있는 경우 추가
+      if (imageFiles.length > 0) {
+        imageFiles.forEach((v) => {
+          // 'images' 라는 필드로 배열 전송
+          formData.append('images', v);
+        });
       }
 
       // 백엔드에 PUT 요청을 보내서 프로필 사진 업데이트
@@ -118,7 +137,7 @@ export function EditProfilePicture() {
       <Button
         variant='secondary'
         onClick={handleSaveProfilePicture}
-        disabled={!imageFile} // 이미지 파일이 없을 때 버튼 비활성화
+        disabled={!imageFiles[0]} // 이미지 파일이 없을 때 버튼 비활성화
       >
         Save Profile Picture
       </Button>
