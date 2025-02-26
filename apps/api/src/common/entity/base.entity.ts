@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { format } from 'date-fns';
+// import { format } from 'date-fns';
 import {
   CreateDateColumn,
   PrimaryGeneratedColumn,
@@ -11,14 +11,10 @@ export abstract class BaseModel {
   id: number;
 
   @CreateDateColumn({ type: 'timestamptz' })
-  @Transform(({ value }) => {
-    return format(new Date(value), 'yyyy-MM-dd HH:mm:ss');
-  })
+  @Transform(({ value }) => value.toISOString()) // ISO 8601 포맷으로 변환
   createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamptz' })
-  @Transform(({ value }) => {
-    return format(new Date(value), 'yyyy-MM-dd HH:mm:ss');
-  })
+  @Transform(({ value }) => value.toISOString()) // ISO 8601 포맷으로 변환
   updatedAt: Date;
 }
