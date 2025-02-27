@@ -68,7 +68,7 @@ export function Registraion() {
 
       formData.append('images', defaultFile);
 
-      const result = await api.put(
+      const result = await api.post(
         `/users/updateUserProfilePicture`,
         formData,
         {}
