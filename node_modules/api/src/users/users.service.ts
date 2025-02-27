@@ -10,6 +10,8 @@ import { UsersModel } from './entity/users.entity';
 import { SocialLinkModel } from './entity/social-link.entity';
 import { CreateSocialLinkDto } from './dto/create-socialLink.dto';
 import { MAX_SOCIAL_LINK } from './const/max.social.link';
+import { CommonService } from 'src/common/common.service';
+import { CloudinaryService } from 'src/cloudinary.service';
 
 @Injectable()
 export class UsersService {
@@ -18,6 +20,7 @@ export class UsersService {
     private readonly usersRepository: Repository<UsersModel>,
     @InjectRepository(SocialLinkModel)
     private readonly socialLinkRepository: Repository<SocialLinkModel>,
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   async createUser(user: Pick<UsersModel, 'email' | 'nickname' | 'password'>) {
@@ -118,22 +121,33 @@ export class UsersService {
   }
 
   async updateUserProfilePicture(nickname: string, images?: string[]) {
-    // 1) create -> 저장할 객체를 생성한다.
-    // 2) save -> 객체를 저장한다.(create 메서드에서 생성한 객체로 저장)
+    // 1️⃣ 기존 사용자 정보 가져오기
+    const user = await this.usersRepository.findOne({
+      where: { nickname: nickname },
+    });
 
-    // // files 배열에서 filename만 추출.
-    // const filenames = [];
-    // images.forEach((v) => {
-    //   filenames.push(v.filename);
-    // });
+    if (!user) {
+      throw new BadRequestException('400 BadRequest\nUser Not Found');
+    }
 
-    // create() 함수는 동기식으로 처리됨.
+    // 기존 프로필 이미지 URL
+    const oldImages = user.images;
+
+    // 2️⃣ 새 프로필 이미지 저장
     await this.usersRepository.update(
       {
         nickname: nickname,
       },
       { images: images },
     );
+
+    // 3️⃣ Cloudinary에서 기존 프로필 이미지 삭제(단, 깆혼 이미지가 존재할 경우)
+    if (oldImages && oldImages.length > 0) {
+      for (const imageUrl of oldImages) {
+        const publicId = this.cloudinaryService.extractPublicId(imageUrl);
+        await this.cloudinaryService.deleteImage(publicId);
+      }
+    }
 
     const result = await this.usersRepository.findOne({
       where: { nickname: nickname },

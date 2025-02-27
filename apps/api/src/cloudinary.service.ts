@@ -49,11 +49,32 @@ export class CloudinaryService {
 
     return Promise.all(uploadPromises);
   }
-}
 
-/**
- * Cloudinary로 파일 업로드 후 Postman에서 받는 Response JSON에는 업로드된 파일의 정보가 상세히 담겨 있습니다.
- * 아래는 각 필드의 설명입니다:
- *
- *
- */
+  // Cloudinary에서 이미지 삭제
+  // publicId: 이미지의 고유 아이디
+  async deleteImage(publicId: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      v2.uploader.destroy(publicId, (error, result) => {
+        if (error) {
+          console.error('Cloudinary 이미지 삭제 오류:', error);
+          reject(error);
+        } else {
+          console.log('Cloudinary 이미지 삭제 성공:', result);
+          resolve();
+        }
+      });
+    });
+  }
+
+  /**
+   * Cloudinary 이미지 URL에서 publicId 추출하는 함수
+   * 예시: https://res.cloudinary.com/dbb5z072p/image/upload/v1740652070/local/post/rjmre3ypzodknrbyyfiv.jpg
+   * 반환값: local/post/rjmre3ypzodknrbyyfiv
+   */
+  extractPublicId(imageUrl: string): string {
+    const parts = imageUrl.split('/image/upload/')[1].split('/');
+    parts.shift(); // 버전 정보 제거 (ex. v1740652070)
+    // 배열을 다시 /로 합치고 확장자 제거
+    return parts.join('/').replace(/\.[^.]+$/, '');
+  }
+}

@@ -1,3 +1,4 @@
+import { CloudinaryService } from 'src/cloudinary.service';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { CommonService } from './../common/common.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
@@ -20,6 +21,7 @@ export class PostsService {
     private readonly commonService: CommonService,
     private readonly configService: ConfigService,
     private readonly usersService: UsersService,
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   // 모든 repository method는 전부 다 async(비동기)임!
@@ -217,12 +219,21 @@ export class PostsService {
       where: {
         id: id,
       },
+      // relations: ['images'],
     });
 
     if (!post) {
       throw new NotFoundException('404 Not Found');
     }
 
+    // 1️⃣ Cloudinary에서 이미지 삭제
+    for (const imageUrl of post.images) {
+      const publicId = this.cloudinaryService.extractPublicId(imageUrl);
+      console.log('publicId:', publicId);
+      await this.cloudinaryService.deleteImage(publicId);
+    }
+
+    // 2️⃣ Post 삭제
     await this.postsRepository.delete(id);
 
     return `The id of deleted post is ${id}`;
