@@ -2,10 +2,10 @@
   "name": "MyProject",
   "short_name": "MyPWA",
   "description": "This is my PWA-enabled web app",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
   "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/",
   "icons": [
     {
       "src": "../src/assets/mainBg.jpg",
@@ -16,6 +16,13 @@
       "src": "../src/assets/mainBg.jpg",
       "sizes": "512x512",
       "type": "image/jpg"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/screenshot1.png",
+      "sizes": "1080x1920",
+      "type": "image/png"
     }
   ]
 }
