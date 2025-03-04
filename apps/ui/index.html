@@ -9,31 +9,9 @@
     <link type="text/css" rel="stylesheet" href="./src/reset.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>수현이가 만든 귀욤뽀짝 프로젝트</title>
-    <style>
-      /* ✅ 스플래시 화면 스타일 */
-      #splash-screen {
-        position: fixed;
-        width: 100vw;
-        height: 100vh;
-        background: url('../ui/src/assets/splash-1080x1920.png') center/cover
-          no-repeat;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-      }
-    </style>
   </head>
   <body>
-    <div id="splash-screen"></div>
     <div id="root"></div>
-    <script>
-      // ✅ PWA가 로드되면 스플래시 화면 숨기기
-      window.addEventListener('load', function () {
-        setTimeout(() => {
-          document.getElementById('splash-screen').style.display = 'none';
-        }, 2000); // 2초 후 스플래시 화면 제거
-      });
-    </script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
