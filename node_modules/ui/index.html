@@ -27,11 +27,11 @@
   <body>
     <div id="splash-screen"></div>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx">
-          // ✅ PWA가 로드되면 스플래시 화면 숨기기
-          window.addEventListener("load", function () {
+    <script>
+      // ✅ PWA가 로드되면 스플래시 화면 숨기기
+      window.addEventListener('load', function () {
         setTimeout(() => {
-          document.getElementById("splash-screen").style.display = "none";
+          document.getElementById('splash-screen').style.display = 'none';
         }, 2000); // 2초 후 스플래시 화면 제거
       });
     </script>
