@@ -21,11 +21,11 @@ export default defineConfig({
        * 브라우저가 이 파일을 참조하여, 홈 화면에 설치 가능한지 판단함.
        */
       manifest: {
-        name: 'MyProject', // 앱의 전체 이름
-        short_name: 'MyPWA', // 홈 화면에서 보이는 짧은 이름
+        name: '수현이가 만든 귀욤뽀짝 프로젝트', // 앱의 전체 이름
+        short_name: '귀욤뽀짝 수현', // 홈 화면에서 보이는 짧은 이름
         description: 'This is my PWA-enabled web app', // 앱의 설명
         theme_color: '#ffffff', // 앱의 기본 색상
-        background_color: '#ffffff', // 앱 실행 시 배경 색상
+        background_color: '#ee3c24', // 앱 실행 시 배경 색상
         display: 'standalone', // 앱 실행 방식 (standalone → 웹 브라우저 UI 없이 실행)
         start_url: '/', // 앱 실행 시 기본으로 열리는 URL
         /**
