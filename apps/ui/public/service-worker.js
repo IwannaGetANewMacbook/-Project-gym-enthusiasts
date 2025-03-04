@@ -1,8 +1,17 @@
 // install: 서비스 워커가 설치될 때 실행됨.
 self.addEventListener('install', (event) => {
-  console.log('Service Worker installing.');
+  console.log('Service Worker installing...');
+  event.waitUntil(
+    caches.open('myproject-cache').then((cache) => {
+      return cache.addAll([
+        '/',
+        '/index.html',
+        '/icons/icon-192x192.png',
+        '/icons/icon-512x512.png',
+      ]);
+    })
+  );
 });
-
 // activate: 서비스 워커가 활성화될 때 실행됨.
 self.addEventListener('activate', (event) => {
   console.log('Service Worker activated.');

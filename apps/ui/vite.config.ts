@@ -35,14 +35,21 @@ export default defineConfig({
          */
         icons: [
           {
-            src: './src/assets/mainBg.jpg',
+            src: '/icons/icon-192x192.png',
             sizes: '192x192',
-            type: 'image/jpg',
+            type: 'image/png',
           },
           {
-            src: './src/assets/mainBg.jpg',
+            src: '/icons/icon-512x512.png',
             sizes: '512x512',
-            type: 'image/jpg',
+            type: 'image/png',
+          },
+        ],
+        screenshots: [
+          {
+            src: '/screenshots/screenshot1.png',
+            sizes: '1080x1920',
+            type: 'image/png',
           },
         ],
       },
