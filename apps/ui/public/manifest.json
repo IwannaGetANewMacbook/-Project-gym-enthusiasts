@@ -16,13 +16,12 @@
       "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
-    }
-  ],
-  "screenshots": [
+    },
     {
       "src": "/screenshots/screenshot1.png",
       "sizes": "1080x1920",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
