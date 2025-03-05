@@ -25,7 +25,7 @@ export default defineConfig({
         short_name: '귀욤뽀짝 수현', // 홈 화면에서 보이는 짧은 이름
         description: 'This is my PWA-enabled web app', // 앱의 설명
         theme_color: '#ffffff', // 앱의 기본 색상
-        background_color: '#ee3c24', // 앱 실행 시 배경 색상
+        background_color: '#ffffff', // 앱 실행 시 배경 색상
         display: 'standalone', // 앱 실행 방식 (standalone → 웹 브라우저 UI 없이 실행)
         start_url: '/', // 앱 실행 시 기본으로 열리는 URL
         /**
@@ -38,21 +38,27 @@ export default defineConfig({
             src: '/icons/icon-192x192.png',
             sizes: '192x192',
             type: 'image/png',
+            purpose: 'any maskable',
           },
           {
             src: '/icons/icon-512x512.png',
             sizes: '512x512',
             type: 'image/png',
+            purpose: 'any maskable',
           },
-        ],
-        screenshots: [
           {
-            src: '/screenshots/screenshot1.png',
-            sizes: '1080x1920',
+            src: '/splashImg/splashImg.png',
+            sizes: '2000x3556',
             type: 'image/png',
+            purpose: 'any',
           },
         ],
       },
+      includeAssets: [
+        '/icons/icon-192x192.png',
+        '/icons/icon-512x512.png',
+        '/splashImg/splashImg.png',
+      ],
       // workbox - (서비스 워커 캐싱 설정)
       workbox: {
         // runtimeCaching - (캐싱 정책 정의) - 이 설정은 정적인 파일뿐만 아니라 API 요청도 캐싱할 수 있도록 함.
