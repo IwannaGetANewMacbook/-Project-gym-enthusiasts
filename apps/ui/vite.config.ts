@@ -38,27 +38,14 @@ export default defineConfig({
             src: '/icons/icon-192x192.png',
             sizes: '192x192',
             type: 'image/png',
-            purpose: 'any maskable',
           },
           {
             src: '/icons/icon-512x512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any maskable',
-          },
-          {
-            src: '/splashImg/splashImg.png',
-            sizes: '2000x3556',
-            type: 'image/png',
-            purpose: 'any',
           },
         ],
       },
-      includeAssets: [
-        '/icons/icon-192x192.png',
-        '/icons/icon-512x512.png',
-        '/splashImg/splashImg.png',
-      ],
       // workbox - (서비스 워커 캐싱 설정)
       workbox: {
         // runtimeCaching - (캐싱 정책 정의) - 이 설정은 정적인 파일뿐만 아니라 API 요청도 캐싱할 수 있도록 함.

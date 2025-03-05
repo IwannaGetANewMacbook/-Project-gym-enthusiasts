@@ -3,7 +3,7 @@
   "short_name": "귀욤뽀짝수현",
   "description": "This is my PWA-enabled web app",
   "theme_color": "#ffffff",
-  "background_color": "#ffffff",
+  "background_color": "#803137",
   "display": "standalone",
   "start_url": "/",
   "icons": [
@@ -16,12 +16,6 @@
     {
       "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/splashImg/splashImg.png",
-      "sizes": "2000x3556",
       "type": "image/png",
       "purpose": "any"
     }
