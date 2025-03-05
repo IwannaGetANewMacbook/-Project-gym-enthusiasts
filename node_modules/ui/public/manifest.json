@@ -2,8 +2,8 @@
   "name": "수현이가 만든 귀욤뽀짝 프로젝트",
   "short_name": "귀욤뽀짝수현",
   "description": "This is my PWA-enabled web app",
-  "theme_color": "#000000",
-  "background_color": "#000000",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
   "display": "standalone",
   "start_url": "/",
   "icons": [
