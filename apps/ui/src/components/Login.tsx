@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { LoadingSpinner } from './LoadingSpinner';
+import { GoogleLoginButton } from './GoogleLoginButton';
 
 // 클라이언트 측에서 요청 시 쿠키를 포함하고, 응답 시 서버로부터 전달된 쿠키를 브라우저에 저장할 수 있도록 하는 역할
 // 모든 요청과 응답에 쿠키를 포함할 수 있도록 하기 위하여 전역으로 true로 설정.
@@ -116,6 +117,13 @@ export function Login() {
               >
                 Go to sign Up
               </Button>
+            </Col>
+          </Form.Group>
+          {/* ✅ 구글 로그인 버튼 추가 영역 */}
+          <Form.Group as={Row} className='mt-4'>
+            <Col sm={{ span: 5, offset: 2 }}>
+              <hr />
+              <GoogleLoginButton />
             </Col>
           </Form.Group>
         </Form>

@@ -14,17 +14,23 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { IsPublic } from 'src/common/decorator/is-public.decorator';
 import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
+import { OAuth2Client } from 'google-auth-library';
 
 @Controller('auth')
 export class AuthController {
   // secureCookie => auth의 대부분의 라우터에 공통적으로 쓰이기때문에 클래스레벨에서 변수선언.
   private readonly secureCookie: boolean;
+  private oauthClient: OAuth2Client;
+
   constructor(
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
   ) {
     // .env 파일에서 COOKIE_SECURE 값을 불러와 Boolean으로 저장
     this.secureCookie = true;
+    this.oauthClient = new OAuth2Client(
+      this.configService.get('GOOGLE_CLIENT_ID'),
+    );
   }
 
   @Post('token/access')
@@ -34,16 +40,20 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
     @Headers('Cookie') rawToken: string,
   ) {
-    // console.log('로우한토큰: ', rawToken);
-    const token = this.authService.extractTokenFromHeaderForRefresh(rawToken);
-    // console.log('정제된 토큰: ', token);
+    try {
+      // console.log('로우한토큰: ', rawToken);
+      const token = this.authService.extractTokenFromHeaderForRefresh(rawToken);
+      // console.log('정제된 토큰: ', token);
 
-    const newToken = this.authService.rotateToken(token, false);
+      const newToken = this.authService.rotateToken(token, false);
 
-    // { accessToken: { token } } 이런식으로 반환할꺼.
-    return {
-      accessToken: newToken,
-    };
+      // { accessToken: { token } } 이런식으로 반환할꺼.
+      return {
+        accessToken: newToken,
+      };
+    } catch (e) {
+      this.logout(res);
+    }
   }
 
   @Post('token/refresh')
@@ -188,5 +198,47 @@ export class AuthController {
   @Get('validateAccessToken')
   validateAccessToken() {
     return true;
+  }
+
+  /**
+   * Google OAuth 로그인 관련 API
+   */
+
+  /**
+   * Google OAuth 로그인 완료 후, 프론트에서 받은 ID 토큰 검증 및 사용자 정보 추출
+   */
+  @Post('google/callback')
+  async googleLoin(@Body('token') token: string, @Res() res: Response) {
+    try {
+      // 1. 토큰을 구글에 검증 요청
+      const ticket = await this.oauthClient.verifyIdToken({
+        idToken: token,
+        audience: this.configService.get<string>('GOOGLE_CLIENT_ID'),
+      });
+
+      // 2. 구글로부터 받은 사용자 정보
+      const payload = ticket.getPayload();
+
+      if (!payload) {
+        return res
+          .status(401)
+          .json({ message: 'Invalid token: 유효하지 않은 구글 사용자입니다.' });
+      }
+
+      console.log('✅ 구글 사용자 정보:', payload); // <- 이메일, 이름, picture 등
+
+      // 3. 사용자 정보 저장 또는 JWT 발급 등 (여기선 생략)
+      // const user = await this.userService.findOrCreate(payload);
+      // const accessToken = this.jwtService.sign({ ... });
+
+      // 4. 응답 반환 또는 리디렉션
+      return res.status(200).json({ message: '구글 로그인 성공!', payload });
+    } catch (error) {
+      console.error('❌ 구글 로그인 실패: ', error);
+      this.logout(res); // 로그아웃 처리
+      return res
+        .status(401)
+        .json({ message: '구글 로그인 실패: ' + error.message });
+    }
   }
 }
