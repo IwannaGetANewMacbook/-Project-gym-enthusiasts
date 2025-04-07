@@ -14,6 +14,7 @@ export const logout = (path: string, logoutButton: boolean) => {
           // localStorage에서 accessToken/user 삭제
           localStorage.removeItem('accessToken');
           localStorage.removeItem('user');
+          localStorage.clear();
 
           // 로그아웃 후 원하는 경로로 이동
           location.replace(`${path}`);
@@ -32,6 +33,7 @@ export const logout = (path: string, logoutButton: boolean) => {
         // localStorage에서 accessToken/user 삭제
         localStorage.removeItem('accessToken');
         localStorage.removeItem('user');
+        localStorage.clear();
 
         // 로그아웃 후 원하는 경로로 이동
         location.replace(`${path}`);

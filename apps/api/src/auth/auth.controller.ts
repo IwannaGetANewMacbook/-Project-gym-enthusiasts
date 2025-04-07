@@ -5,6 +5,7 @@ import {
   Headers,
   Post,
   Res,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -15,6 +16,7 @@ import { IsPublic } from 'src/common/decorator/is-public.decorator';
 import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { OAuth2Client } from 'google-auth-library';
+import { UsersService } from 'src/users/users.service';
 
 @Controller('auth')
 export class AuthController {
@@ -25,6 +27,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
+    private readonly usersService: UsersService,
   ) {
     // .env 파일에서 COOKIE_SECURE 값을 불러와 Boolean으로 저장
     this.secureCookie = true;
@@ -208,7 +211,12 @@ export class AuthController {
    * Google OAuth 로그인 완료 후, 프론트에서 받은 ID 토큰 검증 및 사용자 정보 추출
    */
   @Post('google/callback')
-  async googleLoin(@Body('token') token: string, @Res() res: Response) {
+  @IsPublic()
+  async googleLoin(
+    @Body('token') token: string,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    console.log('✅ [google/callback] 요청 수신됨');
     try {
       // 1. 토큰을 구글에 검증 요청
       const ticket = await this.oauthClient.verifyIdToken({
@@ -216,29 +224,60 @@ export class AuthController {
         audience: this.configService.get<string>('GOOGLE_CLIENT_ID'),
       });
 
-      // 2. 구글로부터 받은 사용자 정보
+      // 2. 구글로부터 받은 사용자 정보 파싱
       const payload = ticket.getPayload();
 
       if (!payload) {
-        return res
-          .status(401)
-          .json({ message: 'Invalid token: 유효하지 않은 구글 사용자입니다.' });
+        throw new UnauthorizedException('유효하지 않은 구글 사용자입니다.');
       }
 
-      console.log('✅ 구글 사용자 정보:', payload); // <- 이메일, 이름, picture 등
+      // 3. 필요한 정봅만 추출
+      const { email, name, picture } = payload;
 
-      // 3. 사용자 정보 저장 또는 JWT 발급 등 (여기선 생략)
-      // const user = await this.userService.findOrCreate(payload);
-      // const accessToken = this.jwtService.sign({ ... });
+      console.log('✅ 구글 사용자:', { email, name, picture });
 
-      // 4. 응답 반환 또는 리디렉션
-      return res.status(200).json({ message: '구글 로그인 성공!', payload });
+      // 4. 사용자 DB 저장 or 기존 사용자 조회
+      const user = await this.usersService.findOrCreateByGoogle({
+        email,
+        nickname: name,
+        picture,
+      });
+
+      console.log('4번에 대한 유저: ', user);
+      const userToGetAccToken = {
+        id: user.id,
+        email: user.email,
+        nickname: user.nickname,
+      };
+      console.log('✅ 구글 사용자 DB 저장:', userToGetAccToken);
+
+      // 5. accessToke, refreshToken 발급
+      const { accessToken, refreshToken } =
+        this.authService.loginUser(userToGetAccToken);
+
+      console.log('✅ 구글 로그인 성공:', { accessToken, refreshToken });
+      // 6. refreshToken을 HttpOnly 쿠키로 설정
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        maxAge: 3600 * 1000, // 1시간
+        path: '/',
+      });
+
+      // 7. 응답 반환
+      return {
+        message: '구글 로그인 성공!',
+        accessToken,
+        refreshToken,
+        user: {
+          UserEmail: user.email,
+          userNickname: user.nickname,
+        },
+      };
     } catch (error) {
       console.error('❌ 구글 로그인 실패: ', error);
-      this.logout(res); // 로그아웃 처리
-      return res
-        .status(401)
-        .json({ message: '구글 로그인 실패: ' + error.message });
+      throw new UnauthorizedException('구글 로그인 실패: ' + error.message);
     }
   }
 }

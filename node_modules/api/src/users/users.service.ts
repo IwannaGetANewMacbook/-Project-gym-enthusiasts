@@ -12,6 +12,7 @@ import { CreateSocialLinkDto } from './dto/create-socialLink.dto';
 import { MAX_SOCIAL_LINK } from './const/max.social.link';
 import { CommonService } from 'src/common/common.service';
 import { CloudinaryService } from 'src/cloudinary.service';
+import { CreateGoogleUserDto } from './dto/create-google-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -249,5 +250,38 @@ export class UsersService {
     }
 
     return true;
+  }
+
+  /**
+   * 구글OAuth 관련 API
+   */
+  // Google 사용자 DB 저장 및 자동 회원가입 처리
+  async findOrCreateByGoogle(dto: CreateGoogleUserDto) {
+    const { email, nickname, picture } = dto;
+
+    // 구글로그인한 유저의 email이 DB에 존재하는지 확인.
+    let user = await this.usersRepository.findOne({
+      where: { email: email },
+    });
+
+    // 이미 존재하는 유저라면, 해당 유저를 반환.
+    if (user) {
+      return user;
+    }
+
+    // nickname 중복 방지 처리
+    let baseNickname = nickname.replace(/\s/g, ''); // 공백 제거(ex. "김 수현" → "김수현")
+    const randomSuffix = Math.floor(1000 + Math.random() * 9000); // 1000~9999 사이의 랜덤 숫자 생성
+    const finalNickname = `${baseNickname}${randomSuffix}`; // nickname + 랜덤 숫자
+
+    // 새 사용자 생성
+    const newUser = this.usersRepository.create({
+      email,
+      nickname: finalNickname,
+      password: 'google_oauth', // 구글 로그인 시, 비밀번호는 사용하지 않지만, Null 방지를 위해 임의 값
+      images: picture ? [picture] : [], // 프로필 이미지가 있을 경우에만 저장
+    });
+    await this.usersRepository.save(newUser);
+    return newUser;
   }
 }

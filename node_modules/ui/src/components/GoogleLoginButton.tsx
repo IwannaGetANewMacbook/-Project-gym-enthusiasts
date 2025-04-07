@@ -4,24 +4,38 @@
  */
 
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { useNavigate } from 'react-router-dom';
 import api from '../common/api';
-const env = import.meta.env;
 
 export const GoogleLoginButton = () => {
+  const env = import.meta.env;
+  const navigate = useNavigate();
+
   const clientId = env.VITE_GOOGLE_CLIENT_ID || '';
 
   const handleGoogleLoginSuccess = async (response: any) => {
     console.log('Google Login Success:', response);
-    // 사용자가 google 로그인에 성공하면 "response.credential"에 JWT 형태의 ID Token이 담겨있음.
+    // 사용자가 google 로그인에 성공하면 구글서버가 "response.credential"에 JWT 형태의 ID Token이 담겨있음.
     // 이 ID Token을 백엔드에 전달해서 유저인증을 진행.
     try {
-      const { data } = await api.post('/auth/google/callback', {
-        // 백엔드로 ID 토큰을 전송해서, 서버에서 검증 및 사용자 식별
-        token: response.credential,
-      });
-      console.log('서버 응답: ', data);
-    } catch (error) {
-      console.error('Google Login Error:', error);
+      const res = await api.post(
+        '/auth/google/callback',
+        { token: response.credential },
+        { withCredentials: true } // 쿠키 전달을 위해 필요
+      );
+
+      console.log('🎉 서버 응답:', res.data);
+
+      // 서버에서 응답받은 accessToken과 user 정보를 localStorage에 저장.
+      localStorage.setItem('accessToken', res.data.accessToken);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+
+      navigate('/');
+    } catch (error: any) {
+      console.error('❌ 구글 로그인 실패:', error);
+      alert(
+        error?.response?.data?.message || '구글 로그인 중 문제가 발생했습니다.'
+      );
     }
   };
 

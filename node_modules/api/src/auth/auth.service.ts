@@ -86,6 +86,9 @@ export class AuthService {
   }
 
   loginUser(user: Pick<UsersModel, 'id' | 'email' | 'nickname'>) {
+    if (!user.id) {
+      throw new Error('User ID is missing!');
+    }
     return {
       accessToken: this.signToken(user, false),
       refreshToken: this.signToken(user, true),
