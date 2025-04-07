@@ -19,6 +19,7 @@ import { ChatsModel } from 'src/chats/entity/chat.entity';
 import { MessagesModel } from 'src/chats/messages/entity/messages.entity';
 import { CommentsModel } from 'src/posts/comments/entity/comments.entity';
 import { SocialLinkModel } from './social-link.entity';
+import { LoginTypeEnum } from '../const/login.type.const';
 // import { UserFollowersModel } from './user-followers.entity';
 
 @Entity()
@@ -58,6 +59,13 @@ export class UsersModel extends BaseModel {
     toPlainOnly: true, // 응답이 나가는 상황에서만 제외시키겠다.(요청에서는 제외안됨.)
   })
   password: string;
+
+  @Column({
+    type: 'enum',
+    enum: LoginTypeEnum,
+    default: LoginTypeEnum.LOCAL,
+  })
+  loginType: LoginTypeEnum;
 
   @Column({ nullable: true })
   @IsString()

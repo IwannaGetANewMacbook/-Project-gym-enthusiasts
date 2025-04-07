@@ -54,6 +54,7 @@ import {
   ENV_JWT_SECRET_KEY,
 } from 'src/common/const/env-keys.const';
 import { UsersModel } from 'src/users/entity/users.entity';
+import { LoginTypeEnum } from 'src/users/const/login.type.const';
 
 @Injectable()
 export class AuthService {
@@ -151,6 +152,7 @@ export class AuthService {
     const newUser = await this.usersService.createUser({
       ...user,
       password: hash,
+      loginType: LoginTypeEnum.LOCAL,
     });
 
     return this.loginUser(newUser);

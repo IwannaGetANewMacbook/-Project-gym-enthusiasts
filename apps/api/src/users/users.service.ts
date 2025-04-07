@@ -13,6 +13,7 @@ import { MAX_SOCIAL_LINK } from './const/max.social.link';
 import { CommonService } from 'src/common/common.service';
 import { CloudinaryService } from 'src/cloudinary.service';
 import { CreateGoogleUserDto } from './dto/create-google-user.dto';
+import { LoginTypeEnum } from './const/login.type.const';
 
 @Injectable()
 export class UsersService {
@@ -24,7 +25,9 @@ export class UsersService {
     private readonly cloudinaryService: CloudinaryService,
   ) {}
 
-  async createUser(user: Pick<UsersModel, 'email' | 'nickname' | 'password'>) {
+  async createUser(
+    user: Pick<UsersModel, 'email' | 'nickname' | 'password' | 'loginType'>,
+  ) {
     // 1) nickname 중복 확인
     // exist() -> 만약에 조건에 해당되는 값이 있으면 true만환.
     const isNickname = await this.usersRepository.exist({
@@ -280,6 +283,7 @@ export class UsersService {
       nickname: finalNickname,
       password: 'google_oauth', // 구글 로그인 시, 비밀번호는 사용하지 않지만, Null 방지를 위해 임의 값
       images: picture ? [picture] : [], // 프로필 이미지가 있을 경우에만 저장
+      loginType: LoginTypeEnum.GOOGLE,
     });
     await this.usersRepository.save(newUser);
     return newUser;
