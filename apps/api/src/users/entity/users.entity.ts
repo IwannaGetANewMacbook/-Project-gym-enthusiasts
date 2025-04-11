@@ -110,6 +110,9 @@ export class UsersModel extends BaseModel {
   @OneToMany(() => CommentsModel, (comment) => comment.author)
   postComments: CommentsModel[];
 
+  @Column({ default: false })
+  canChangeNicknameOnce: boolean; // 한번만 닉네임 변경 가능.
+
   // // 나를 팔로우 하고 있는 사람들
   // @OneToMany(() => UserFollowersModel, (ufm) => ufm.follower)
   // followers: UserFollowersModel[];

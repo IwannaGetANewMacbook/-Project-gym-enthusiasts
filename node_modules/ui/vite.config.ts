@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import path from 'path';
+import fs from 'fs';
 
 import { VitePWA } from 'vite-plugin-pwa';
 
@@ -9,6 +10,12 @@ import { VitePWA } from 'vite-plugin-pwa';
 export default defineConfig({
   build: {
     outDir: 'dist',
+  },
+  server: {
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname, 'localhost-key.pem')),
+      cert: fs.readFileSync(path.resolve(__dirname, 'localhost.pem')),
+    },
   },
   plugins: [
     nodePolyfills(),

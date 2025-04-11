@@ -10,7 +10,7 @@ async function bootstrap() {
   app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
   app.enableCors({
-    origin: ['http://localhost:5173', 'https://myproject-ui.onrender.com'],
+    origin: ['https://localhost:5173', 'https://myproject-ui.onrender.com'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: ['Content-Type', 'Authorization'],
     exposedHeaders: ['Authorization', 'X-Token'],

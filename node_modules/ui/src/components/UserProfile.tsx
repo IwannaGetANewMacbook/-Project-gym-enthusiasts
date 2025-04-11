@@ -9,6 +9,7 @@ import { LoadingSpinner } from './LoadingSpinner';
 import linkIcon from '../assets/link.svg';
 import { extractAccessTokenFromLocalStorage } from '../common/extratAccessTokenFromLocalStorage';
 import { extractUserFromLocalStorage } from '../common/extractUserFromLocalStorage';
+import { NicknameEditor } from './NicknameEditor';
 
 export function UserProfile() {
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ export function UserProfile() {
     };
 
     fetchData();
-  }, [username, isMyProfile, navigate, user.userNickname]);
+  }, [username]);
 
   // API 호출이 완료되고 userData가 유효할 때만 렌더링되도록 설정했습니다.
   if (loading || !userData) {
@@ -80,6 +81,14 @@ export function UserProfile() {
               />
             </div>
             <h3 className={styles.nickname}>{userData.nickname}</h3>
+
+            <NicknameEditor
+              canChange={isMyProfile && userData.canChangeNicknameOnce}
+              onNicknameChange={(newNickname) =>
+                setUserData((prev: any) => ({ ...prev, nickname: newNickname }))
+              }
+            />
+
             <p className={styles.bio}>{userData.bio}</p>
             {/* 프로필 편집 버튼 추가 */}
             {isMyProfile && (

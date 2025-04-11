@@ -29,6 +29,7 @@ import { CreateSocialLinkDto } from './dto/create-socialLink.dto';
 import { UpdateSocialLinksDto } from './dto/update-socialLinks.dto';
 import { IsSocialLinkMineOrAdminGuard } from './guard/is-socialLink-mine-or-admin.guard';
 import { CloudinaryPathEnum, CloudinaryService } from 'src/cloudinary.service';
+import { UpdateNicknameDto } from './dto/update-nickname.dto';
 
 @Controller('users')
 export class UsersController {
@@ -189,5 +190,22 @@ export class UsersController {
     @User() user: UsersModel,
   ) {
     return this.usersService.deleteSocialLink(socialLinkId, user);
+  }
+
+  /**
+   * 구글 OAuth 관련 API
+   */
+  // 구글로 로그인한 유저에 한해 닉네임 변경 처리 로직
+  @Patch('nickname/update-once')
+  async updateNicknameOnce(
+    @Body() dto: UpdateNicknameDto,
+    @User() user: UsersModel,
+  ) {
+    const userId = user.id; // AccessToken에 담긴 userId (jwt payload)
+    const updateUser = await this.usersService.updateNicknameOnce(userId, dto);
+    return {
+      message: '닉네임 변경 완료',
+      updateUser,
+    };
   }
 }

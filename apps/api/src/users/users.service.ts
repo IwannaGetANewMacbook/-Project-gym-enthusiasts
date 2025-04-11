@@ -2,7 +2,12 @@ import { UpdateSocialLinksDto } from './dto/update-socialLinks.dto';
 /* eslint-disable prefer-const */
 import { UpdateProfileDto } from './dto/update-profile.dto';
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,6 +19,7 @@ import { CommonService } from 'src/common/common.service';
 import { CloudinaryService } from 'src/cloudinary.service';
 import { CreateGoogleUserDto } from './dto/create-google-user.dto';
 import { LoginTypeEnum } from './const/login.type.const';
+import { UpdateNicknameDto } from './dto/update-nickname.dto';
 
 @Injectable()
 export class UsersService {
@@ -26,7 +32,10 @@ export class UsersService {
   ) {}
 
   async createUser(
-    user: Pick<UsersModel, 'email' | 'nickname' | 'password' | 'loginType'>,
+    user: Pick<
+      UsersModel,
+      'email' | 'nickname' | 'password' | 'loginType' | 'canChangeNicknameOnce'
+    >,
   ) {
     // 1) nickname 중복 확인
     // exist() -> 만약에 조건에 해당되는 값이 있으면 true만환.
@@ -51,6 +60,8 @@ export class UsersService {
       nickname: user.nickname,
       email: user.email,
       password: user.password,
+      loginType: user.loginType,
+      canChangeNicknameOnce: user.canChangeNicknameOnce,
     });
 
     const newUser = await this.usersRepository.save(userObject);
@@ -284,8 +295,40 @@ export class UsersService {
       password: 'google_oauth', // 구글 로그인 시, 비밀번호는 사용하지 않지만, Null 방지를 위해 임의 값
       images: picture ? [picture] : [], // 프로필 이미지가 있을 경우에만 저장
       loginType: LoginTypeEnum.GOOGLE,
+      canChangeNicknameOnce: true, // ✅ 최초 구글 로그인 시 단 한 번 변경 허용
     });
     await this.usersRepository.save(newUser);
     return newUser;
+  }
+
+  // 구글로 로그인한 유저에 한해 닉네임 변경 처리 로직
+  async updateNicknameOnce(userId: number, dto: UpdateNicknameDto) {
+    const { newNickname } = dto;
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    // canChangeNicknameOnce가 false인 경우 예외처리.
+    if (!user.canChangeNicknameOnce) {
+      throw new ForbiddenException("You can't change your nickname anymore.");
+    }
+
+    // 중복닉네임 체크
+    const existingUser = await this.usersRepository.findOne({
+      where: { nickname: newNickname },
+    });
+    if (existingUser) {
+      throw new BadRequestException('Nickname already exists.');
+    }
+
+    user.nickname = newNickname;
+    user.canChangeNicknameOnce = false; // 닉네임 변경 후, 다시는 변경할 수 없도록 설정
+    await this.usersRepository.save(user);
+
+    return user;
   }
 }

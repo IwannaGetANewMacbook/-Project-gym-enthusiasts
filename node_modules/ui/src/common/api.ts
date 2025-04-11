@@ -56,7 +56,7 @@ api.interceptors.response.use(
         // 새로운 accessToken을 로컬스토리지에 저장
         const newAccessToken = response.data.accessToken;
         localStorage.setItem('accessToken', newAccessToken);
-        console.log('accessToken 갱신 완료');
+        console.log('쿠키의 refreshToken을 이용하여 accessToken 갱신 완료');
 
         // 원래 요청의 Authorization 헤더 업데이트
         originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;

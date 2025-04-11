@@ -82,7 +82,7 @@ export class AuthService {
 
     return this.jwtService.sign(payload, {
       secret: this.configService.get<string>(ENV_JWT_SECRET_KEY),
-      expiresIn: isRefreshToken ? 3600 : 300, // sec
+      expiresIn: isRefreshToken ? 3600 : 3, // sec
     });
   }
 
@@ -153,6 +153,7 @@ export class AuthService {
       ...user,
       password: hash,
       loginType: LoginTypeEnum.LOCAL,
+      canChangeNicknameOnce: true,
     });
 
     return this.loginUser(newUser);
@@ -244,6 +245,9 @@ export class AuthService {
       );
     }
 
-    return this.signToken({ ...decoded, id: decoded.sub }, isRefreshToken);
+    return this.signToken(
+      { email: decoded.email, id: decoded.sub },
+      isRefreshToken,
+    );
   }
 }
