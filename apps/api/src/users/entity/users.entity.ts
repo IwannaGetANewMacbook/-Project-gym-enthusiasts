@@ -132,4 +132,8 @@ export class UsersModel extends BaseModel {
   //   default: 0,
   // })
   // followeeCount: number;
+
+  // 이메일 인증 여부를 저장할 컬럼
+  @Column({ default: false })
+  isEmailVerified: boolean; // 이메일 인증 여부를 저장할 컬럼
 }

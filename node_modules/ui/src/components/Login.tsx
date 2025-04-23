@@ -71,7 +71,7 @@ export function Login() {
                 type='email'
                 placeholder='Email'
                 onChange={(e) => {
-                  setEmail(e.currentTarget.value);
+                  setEmail(e.currentTarget.value.trim());
                 }}
               />
             </Col>
@@ -90,7 +90,7 @@ export function Login() {
                 type='password'
                 placeholder='Password'
                 onChange={(e) => {
-                  setPassword(e.currentTarget.value);
+                  setPassword(e.currentTarget.value.trim());
                 }}
               />
             </Col>
@@ -105,6 +105,7 @@ export function Login() {
                 onClick={() => {
                   onClickForLogin();
                 }}
+                disabled={!email || !password}
               >
                 Sign in
               </Button>

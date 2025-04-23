@@ -81,7 +81,7 @@ export function NicknameEditor({
             }
           >
             <div
-              className='text-warning small text-center'
+              className='text-danger small text-center'
               style={{ cursor: 'help' }}
             >
               <i className='bi bi-exclamation-circle me-1'></i>

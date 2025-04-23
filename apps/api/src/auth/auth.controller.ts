@@ -1,9 +1,11 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
   Headers,
   Post,
+  Query,
   Res,
   UnauthorizedException,
   UseGuards,
@@ -17,6 +19,7 @@ import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { OAuth2Client } from 'google-auth-library';
 import { UsersService } from 'src/users/users.service';
+import { MailService } from 'src/mail/mail.service';
 
 @Controller('auth')
 export class AuthController {
@@ -28,6 +31,7 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
     private readonly usersService: UsersService,
+    private readonly mailService: MailService,
   ) {
     // .env 파일에서 COOKIE_SECURE 값을 불러와 Boolean으로 저장
     this.secureCookie = true;
@@ -149,11 +153,18 @@ export class AuthController {
   ) {
     const { nickname, email, password } = body;
 
-    // 회원가입 로직 실행
+    // 1. 이메일 인증 여부 확인
+    const verification =
+      await this.mailService.findLatestVerificationByEmail(email);
+    if (!verification || !verification.isVerified) {
+      throw new BadRequestException('이메일 인증이 필요합니다.');
+    }
+
+    // 2. 회원가입 로직 실행
     const { accessToken, refreshToken, user } =
       await this.authService.registerWithEmail({ nickname, email, password });
 
-    // HttpOnly 쿠키로 refresh token 설정
+    // 3. HttpOnly 쿠키로 refresh token 설정
     res.cookie('refreshToken', refreshToken, {
       // 쿠키가 클라이언트의 JavaScript 코드에서 접근할 수 없게 설정.
       httpOnly: true,
@@ -196,6 +207,21 @@ export class AuthController {
     return {
       message: 'Logged out successfully',
     };
+  }
+
+  /**
+   * 회원 가입시 유저가 입력한 닉네임이 중복인지 확인하는 API
+   */
+  @Get('check-nickname')
+  @IsPublic()
+  async checkNickname(@Query('nickname') nickname: string) {
+    const isNickname = await this.usersService.CheckUserByNickname(nickname);
+    if (isNickname) {
+      return {
+        isAvailable: false,
+      };
+    }
+    return { isAvailable: true };
   }
 
   @Get('validateAccessToken')

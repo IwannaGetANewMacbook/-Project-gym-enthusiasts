@@ -17,6 +17,7 @@ import { EditSocialLink } from './components/EditSocialLink';
 import { GetUserPosts } from './components/GetUserPosts';
 import { AuthRedirect } from './components/AuthRedirect';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import { VerifyEmailPage } from './components/registration/VerifyEmailPage';
 const env = import.meta.env;
 const clientId = env.VITE_GOOGLE_CLIENT_ID;
 
@@ -116,6 +117,15 @@ function App() {
                 <Layout>
                   <EditProfilePicture></EditProfilePicture>
                   <EditProfileInfo></EditProfileInfo>
+                </Layout>
+              }
+            />
+
+            <Route
+              path='/mail/verify-email'
+              element={
+                <Layout>
+                  <VerifyEmailPage />
                 </Layout>
               }
             />
