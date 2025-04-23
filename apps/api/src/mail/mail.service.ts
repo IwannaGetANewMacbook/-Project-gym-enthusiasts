@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { EmailVerificationModel } from 'src/auth/entity/email-verification.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { generateVerifyEmailHtml } from './templates/VerifyEmailTemplate';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class MailService {
