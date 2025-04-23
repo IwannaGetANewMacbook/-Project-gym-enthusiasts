@@ -55,6 +55,7 @@ export default defineConfig({
       },
       // workbox - (서비스 워커 캐싱 설정)
       workbox: {
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // ✅ 5MB로 증가
         // runtimeCaching - (캐싱 정책 정의) - 이 설정은 정적인 파일뿐만 아니라 API 요청도 캐싱할 수 있도록 함.
         runtimeCaching: [
           {

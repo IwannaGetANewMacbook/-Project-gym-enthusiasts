@@ -1,0 +1,65 @@
+{
+  "id": "/my-pwa",
+  "name": "수현이가 만든 귀욤뽀짝 프로젝트",
+  "short_name": "귀욤뽀짝수현",
+  "description": "This is my PWA-enabled web app",
+  "lang": "ko-KR",
+  "theme_color": "#ffffff",
+  "background_color": "#803137",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/",
+  "orientation": "portrait",
+  "launch_handler": {},
+  "prefer_related_applications": false,
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.example.app",
+      "id": "com.example.app"
+    }
+  ],
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/maskable-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/screenshot1.png",
+      "sizes": "2108x2076",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "purpose": "any"
+    },
+    {
+      "src": "/screenshots/screenshot2.png",
+      "sizes": "3556x2000",
+      "type": "image/png",
+      "form_factor": "wide",
+      "purpose": "any"
+    }
+  ],
+  "iarc_rating_id": "YOUR_IARC_RATING_ID"
+}
