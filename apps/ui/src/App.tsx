@@ -122,7 +122,7 @@ function App() {
             />
 
             <Route
-              path='/mail/verify-email'
+              path='/auth/email/verify-email'
               element={
                 <Layout>
                   <VerifyEmailPage />

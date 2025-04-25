@@ -12,7 +12,7 @@ export function VerifyEmailPage() {
   useEffect(() => {
     const verify = async () => {
       try {
-        const res = await api.get(`/mail/verify-email?token=${token}`);
+        const res = await api.get(`/auth/email/verify-email?token=${token}`);
         setMessage(res.data.message || '이메일 인증이 완료되었습니다.');
         // 이렇게 로컬스토리지에 저장하면 회원가입탭에서 'storage event'를 통해 localStorage를 감지할 수 잇음.
         localStorage.setItem('isEmailVerified', 'true');

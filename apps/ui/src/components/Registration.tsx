@@ -159,7 +159,7 @@ export function Registraion() {
   const requestEmailVerification = async () => {
     try {
       setLoading(true);
-      const res = await api.post('/mail/request-verification', {
+      const res = await api.post('/auth/email/request-verification', {
         email: email,
       });
       alert(res.data.message);

@@ -1,3 +1,4 @@
+import { AuthEmailService } from './auth.email.service';
 import {
   BadRequestException,
   Body,
@@ -32,6 +33,7 @@ export class AuthController {
     private readonly configService: ConfigService,
     private readonly usersService: UsersService,
     private readonly mailService: MailService,
+    private readonly authEmailService: AuthEmailService,
   ) {
     // .env 파일에서 COOKIE_SECURE 값을 불러와 Boolean으로 저장
     this.secureCookie = true;
@@ -155,7 +157,7 @@ export class AuthController {
 
     // 1. 이메일 인증 여부 확인
     const verification =
-      await this.mailService.findLatestVerificationByEmail(email);
+      await this.authEmailService.findLatestVerificationByEmail(email);
     if (!verification || !verification.isVerified) {
       throw new BadRequestException('이메일 인증이 필요합니다.');
     }
@@ -305,5 +307,16 @@ export class AuthController {
       console.error('❌ 구글 로그인 실패: ', error);
       throw new UnauthorizedException('구글 로그인 실패: ' + error.message);
     }
+  }
+
+  /** ------------------------------------------------------------------------------ */
+  /**
+   * 사용자 비밀번호 재설정을 위한 APIs.
+   */
+
+  @IsPublic()
+  @Post('reset-password/request')
+  async requestPasswordReset() {
+    return 1;
   }
 }

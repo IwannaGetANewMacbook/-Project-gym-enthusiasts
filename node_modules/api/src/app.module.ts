@@ -46,6 +46,7 @@ import { CloudinaryService } from './cloudinary.service';
 // import { ImageController } from './image.controller';
 import { MailModule } from './mail/mail.module';
 import { EmailVerificationModel } from './auth/entity/email-verification.entity';
+import { ResetPasswordTokenModel } from './auth/entity/reset-password-token.entity';
 
 @Module({
   imports: [
@@ -72,6 +73,7 @@ import { EmailVerificationModel } from './auth/entity/email-verification.entity'
         CommentsModel,
         SocialLinkModel,
         EmailVerificationModel,
+        ResetPasswordTokenModel,
       ],
       // synchronize: true -> nestJS에서 작성하는 typeORM코드와 db싱크를 자동으로 맞추겠다!
       // 개발환경에서는 synchronize: true, 프로덕션 환경에서는 synchronize: false
