@@ -331,4 +331,17 @@ export class UsersService {
 
     return user;
   }
+
+  /**
+   * 이메일인증기반 패스워드 변경처리를 위한 로직에서 user정보 업데이트.
+   * 다만, 이메일인증기반 패스워드 변경처리 뿐만아니라 이후에 유저업데이트 작업 시,
+   * 메소드를 재사용하기위해 updateData의 타입을 Partial타입으로 정의.
+   */
+  async updateUser(id: number, updateData: Partial<UsersModel>): Promise<void> {
+    const result = await this.usersRepository.update(id, updateData);
+
+    if (result.affected === 0) {
+      throw new NotFoundException('업데이트할 사용자를 찾을 수 없습니다.');
+    }
+  }
 }

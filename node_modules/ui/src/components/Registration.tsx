@@ -13,6 +13,7 @@ import { EmailInputSection } from './registration/EmailInputSection';
 import { NicknameInputSection } from './registration/NicknameInputSection';
 import { PasswordInputSection } from './registration/PasswordInputSection';
 import { SubmitButton } from './registration/SubmitButton';
+import { emailRegex, passwordRegex } from '../common/regex';
 
 // 클라이언트 측에서 요청 시 쿠키를 포함하고, 응답 시 서버로부터 전달된 쿠키를 브라우저에 저장할 수 있도록 하는 역할
 // 모든 요청과 응답에 쿠키를 포함할 수 있도록 하기 위하여 전역으로 true로 설정.
@@ -148,8 +149,6 @@ export function Registraion() {
     const value = e.currentTarget.value.trim();
     setEmail(value);
 
-    // 정규 표현식을 사용하여 이메일 형식 체크
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     setIsEmailValid(emailRegex.test(value));
   };
 
@@ -177,8 +176,6 @@ export function Registraion() {
     const value = e.currentTarget.value.trim();
     setPassword(value);
 
-    // 정규 표현식을 사용하여 비밀번호 형식 체크 (최소 8자, 영문자+숫자 조합)
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
     setIsPasswordValid(passwordRegex.test(value)); // 비밀번호 유효성 체크
   };
 

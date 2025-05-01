@@ -18,6 +18,8 @@ import { GetUserPosts } from './components/GetUserPosts';
 import { AuthRedirect } from './components/AuthRedirect';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { VerifyEmailPage } from './components/registration/VerifyEmailPage';
+import { RequestPasswordResetPage } from './components/RequestPasswordResetPage';
+import { ResetPasswordPage } from './components/ResetPasswordPage';
 const env = import.meta.env;
 const clientId = env.VITE_GOOGLE_CLIENT_ID;
 
@@ -126,6 +128,26 @@ function App() {
               element={
                 <Layout>
                   <VerifyEmailPage />
+                </Layout>
+              }
+            />
+
+            {/* 비밀번호 재설정 요청 페이지 추가 */}
+            <Route
+              path='/auth/request-password-reset'
+              element={
+                <Layout>
+                  <RequestPasswordResetPage />
+                </Layout>
+              }
+            />
+
+            {/* 실제 유저가 비밀번호를 재설정하는 페이지 */}
+            <Route
+              path='/auth/reset-password'
+              element={
+                <Layout>
+                  <ResetPasswordPage />
                 </Layout>
               }
             />

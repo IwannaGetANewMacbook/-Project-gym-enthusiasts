@@ -4,11 +4,13 @@ import {
   Body,
   Controller,
   Get,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common';
 import { IsPublic } from 'src/common/decorator/is-public.decorator';
 import { MailService } from 'src/mail/mail.service';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Controller('auth/email')
 export class AuthEmailController {
@@ -53,6 +55,39 @@ export class AuthEmailController {
     return {
       result,
       message: '이메일 인증이 완료되었습니다.',
+    };
+  }
+
+  /** ------------------------------------------------------------------------------ */
+  /** ------------------------------------------------------------------------------ */
+  /**
+   * 사용자 비밀번호 재설정을 위한 APIs.
+   */
+  // 사용자에게 비밀번호 재설정 요청 전송 API
+  @IsPublic()
+  @Post('request-password-reset')
+  async requestPasswordReset(@Body('email') email: string) {
+    if (!email || !email.includes('@')) {
+      throw new BadRequestException('올바른 이메일 형식을 입력해주세요.');
+    }
+
+    const token = await this.authEmailService.requestPasswordReset(email);
+    await this.mailService.sendResetPasswordEmail(email, token);
+
+    return {
+      message: '비밀번호 재설정 메일을 전송했습니다. 이메일을 확인해주세요.',
+    };
+  }
+
+  // 사용자및 데이터가 유효하면 유저의 비밀번호 번경 PATCH API.
+  @IsPublic()
+  @Patch('reset-password')
+  async resetPassword(@Body() body: ResetPasswordDto) {
+    const { token, newPassword } = body;
+    await this.authEmailService.resetPassword(token, newPassword);
+
+    return {
+      message: '비밀번호가 성공적으로 재설정되었습니다.',
     };
   }
 }

@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import React from 'react';
 import { PasswordStrengthMeter } from './PasswordStrengthMeter';
+import { passwordErrorMessage } from '../../common/regex';
 
 interface PasswordInputSectionProps {
   password: string;
@@ -36,7 +37,7 @@ export function PasswordInputSection({
           isValid={showValid}
         />
         <Form.Control.Feedback type='invalid'>
-          비밀번호는 최소 8자 이상, 영문자와 숫자를 포함해야 합니다.
+          {passwordErrorMessage}
         </Form.Control.Feedback>
         <Form.Control.Feedback type='valid'>
           사용 가능한 비밀번호입니다.

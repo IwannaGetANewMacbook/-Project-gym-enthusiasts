@@ -79,7 +79,7 @@ export function Login() {
 
           <Form.Group
             as={Row}
-            className='mb-3'
+            className='mb-1'
             controlId='formHorizontalPassword'
           >
             <Form.Label column sm={2}>
@@ -97,27 +97,42 @@ export function Login() {
           </Form.Group>
 
           <Form.Group as={Row} className='mb-3'>
-            <Col sm={{ span: 10, offset: 2 }}>
+            <Col sm={{ span: 5, offset: 2 }} className='text-end'>
+              <a
+                href='/auth/request-password-reset'
+                className='text-decoration-none small text-primary'
+              >
+                Forgot password?
+              </a>
+            </Col>
+          </Form.Group>
+
+          <Form.Group as={Row} className='mb-3'>
+            <Col
+              sm={{ span: 5, offset: 2 }}
+              className='d-flex flex-column align-items-center'
+            >
               <Button
                 type='button'
                 variant='primary'
-                style={{ marginRight: '20px' }}
-                onClick={() => {
-                  onClickForLogin();
-                }}
+                className='w-50 mb-2'
+                onClick={onClickForLogin}
                 disabled={!email || !password}
               >
                 Sign in
               </Button>
-              <Button
-                variant='success'
-                type='button'
-                onClick={() => {
-                  navigate('/auth/register/email');
-                }}
-              >
-                Go to sign Up
-              </Button>
+
+              <div className='mt-1 d-flex justify-content-center align-items-baseline'>
+                <span className='me-1'>New to Limitless?</span>
+                <Button
+                  variant='link'
+                  className='p-0 text-decoration-none'
+                  style={{ fontSize: '0.9rem' }}
+                  onClick={() => navigate('/auth/register/email')}
+                >
+                  Create an account
+                </Button>
+              </div>
             </Col>
           </Form.Group>
           {/* ✅ 구글 로그인 버튼 추가 영역 */}
