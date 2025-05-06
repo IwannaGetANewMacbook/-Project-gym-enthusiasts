@@ -97,18 +97,24 @@ export function RequestPasswordResetPage() {
                   </div>
                 )}
               </Form.Group>
-            ) : null}
+            ) : (
+              <div className='alert alert-success mt-3' role='alert'>
+                📬 비밀번호 재설정 메일을 전송했습니다.
+                <br />
+                이메일을 확인해 주세요.
+              </div>
+            )}
 
-            <Button
-              variant='primary'
-              onClick={handleRequestReset}
-              disabled={!isEmailValid || isRequested}
-              className='w-100 mt-2'
-            >
-              {isRequested
-                ? '메일이 전송되었습니다'
-                : '비밀번호 재설정 메일 보내기'}
-            </Button>
+            {!isRequested ? (
+              <Button
+                variant='primary'
+                onClick={handleRequestReset}
+                disabled={!isEmailValid || isRequested}
+                className='w-100 mt-2'
+              >
+                비밀번호 재설정 메일 보내기
+              </Button>
+            ) : null}
           </Form>
         </Col>
       </Row>

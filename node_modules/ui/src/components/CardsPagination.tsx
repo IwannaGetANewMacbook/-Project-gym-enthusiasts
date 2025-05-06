@@ -12,6 +12,12 @@ import { convertPostDates } from '../common/convertPostDates';
 import styles from './styles/CardsPagination.module.css';
 
 export function CardsPagination() {
+  const token = localStorage.getItem('accessToken');
+  if (!token || token === 'undefined') {
+    ('not token');
+    location.replace('/auth/login/email');
+  }
+
   const navigate = useNavigate();
   // 가져온 카드 데이터를 저장하는 상태
   const [cards, setCards] = useState([]);
