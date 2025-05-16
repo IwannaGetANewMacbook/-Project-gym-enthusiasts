@@ -34,6 +34,10 @@ This led me to design and build a web platform optimized for interactive sharing
 - **React Router**: Page navigation
 - **Axios**: API requests
 - **CSS Modules**: Component-scoped styling
+- **Bootstrap + React Bootstrap**: UI styling and responsive layout
+- **React OAuth Google**: Google login integration
+- **Moment.js + Timezone**: Date formatting and time zone handling
+- **zxcvbn**: Password strength estimation
 
 ### 🛠 Backend
 - **Nest.js**: Scalable server-side framework
@@ -43,6 +47,9 @@ This led me to design and build a web platform optimized for interactive sharing
 - **Gmail SMTP**: Email verification
 - **WebSocket (Gateway)**: Real-time chat
 - **Cloudinary**: Image uploads and CDN
+- **Google Auth Library**: Google OAuth user handling
+- **class-validator, class-transformer**: DTO validation and transformation
+- **multer**: File upload handling middleware
 
 ---
 
@@ -59,9 +66,15 @@ This led me to design and build a web platform optimized for interactive sharing
 - Infinite scrolling feed with post pagination
 - Post detail view and user-specific post management
 
-### 💬 Real-Time Chat
-- WebSocket-based 1:1 real-time chat
-- Chat room creation, entry, and message flow
+### 📸 Image Upload & Optimization
+- Upload multiple images per post using Cloudinary
+- Optimized image delivery via CDN
+- Preview feature and responsive display on UI
+
+### 📧 Email Verification Workflow
+- Secure email verification via tokenized links
+- Resend verification support
+- Prevents sign-up completion before verification
 
 ### 🧑‍🎨 User Profile
 - One-time nickname change enforcement
@@ -69,10 +82,25 @@ This led me to design and build a web platform optimized for interactive sharing
 - Social links (e.g., GitHub, Instagram)
 - Viewable user profile page
 
+### 🛠 Robust Project Architecture
+- Monorepo structure with TurboRepo
+- Separation of concerns between frontend and backend
+- Environment-based configuration for scalable deployment
+
 ### 🛡 Access Control & UX
 - Axios interceptors for token refresh logic
 - Custom guards in NestJS for route protection
 - Conditional rendering based on login state
+
+### 📆 Token Refresh & Auto-Logout
+- Automatically refreshes expired access tokens
+- Handles token expiration and redirects securely
+- Improves long-session user experience
+
+### 🧪 Form Validation & Input Feedback
+- Regex-based email and nickname validation
+- Password strength meter with real-time feedback
+- Disabled button states and visual input alerts
 
 ---
 
@@ -152,3 +180,13 @@ It reflects my passion for fullstack development and delivering meaningful user 
 
 MIT License
 
+
+---
+
+## 📞 Contact
+
+**Name**: Kim Suhyeon  
+**Email**: [01057557503a@gmail.com](mailto:01057557503a@gmail.com)  
+**Instagram**: [@suhyeon.ts](https://instagram.com/suhyeon.ts)
+
+License
