@@ -196,7 +196,7 @@ It reflects my passion for fullstack development and delivering meaningful user 
 
 ## 👨‍💻 Developer Introduction
 
-| ![Profile Picture](https://asset.cloudinary.com/dbb5z072p/27028f158129221bc0f6d048b1557c79) |
+| ![Profile Picture](https://media.licdn.com/dms/image/v2/D4D03AQFcrpzvwsUQmg/profile-displayphoto-shrink_400_400/B4DZX67pIoG8Ak-/0/1743671694808?e=1752710400&v=beta&t=UW-wnCn4YeUe5EQCi7pl3PdaPs2c90Hl-SO4Vkc3570) |
 |:--:|
 | **Kim Suhyeon** |
 | Fullstack Developer with a passion for community building and fitness-oriented applications. |
