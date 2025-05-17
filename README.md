@@ -1,7 +1,12 @@
-
 # 💪 Gym Enthusiasts Platform
 
 A fullstack web application built to connect fitness lovers, share workout experiences, and foster real-time community engagement. This project demonstrates a scalable monorepo architecture using **React.js**, **Nest.js**, and **TypeScript**.
+
+---
+
+## 🔗 Live Demo
+
+🌍 [https://myproject-ui.onrender.com/](https://myproject-ui.onrender.com/)
 
 ---
 
@@ -28,6 +33,7 @@ This led me to design and build a web platform optimized for interactive sharing
 ## 🔧 Tech Stack
 
 ### 🖥️ Frontend
+
 - **React.js**: Component-based UI library
 - **TypeScript**: Statically-typed JavaScript
 - **Vite**: Lightning-fast build tool
@@ -40,6 +46,7 @@ This led me to design and build a web platform optimized for interactive sharing
 - **zxcvbn**: Password strength estimation
 
 ### 🛠 Backend
+
 - **Nest.js**: Scalable server-side framework
 - **TypeORM**: ORM for PostgreSQL
 - **PostgreSQL**: Relational database
@@ -56,48 +63,57 @@ This led me to design and build a web platform optimized for interactive sharing
 ## ✅ Features
 
 ### 🔐 Authentication
+
 - User registration and login
 - Email verification via tokenized links
 - JWT-based access and refresh token issuance
 - Google OAuth login support
 
 ### 📝 Post & Feed
+
 - Create, edit, delete posts with image uploads (via Cloudinary)
 - Infinite scrolling feed with post pagination
 - Post detail view and user-specific post management
 
 ### 📸 Image Upload & Optimization
+
 - Upload multiple images per post using Cloudinary
 - Optimized image delivery via CDN
 - Preview feature and responsive display on UI
 
 ### 📧 Email Verification Workflow
+
 - Secure email verification via tokenized links
 - Resend verification support
 - Prevents sign-up completion before verification
 
 ### 🧑‍🎨 User Profile
+
 - One-time nickname change enforcement
 - Uploadable profile image
 - Social links (e.g., GitHub, Instagram)
 - Viewable user profile page
 
 ### 🛠 Robust Project Architecture
+
 - Monorepo structure with TurboRepo
 - Separation of concerns between frontend and backend
 - Environment-based configuration for scalable deployment
 
 ### 🛡 Access Control & UX
+
 - Axios interceptors for token refresh logic
 - Custom guards in NestJS for route protection
 - Conditional rendering based on login state
 
 ### 📆 Token Refresh & Auto-Logout
+
 - Automatically refreshes expired access tokens
 - Handles token expiration and redirects securely
 - Improves long-session user experience
 
 ### 🧪 Form Validation & Input Feedback
+
 - Regex-based email and nickname validation
 - Password strength meter with real-time feedback
 - Disabled button states and visual input alerts
@@ -148,12 +164,14 @@ npm run dev
 ## 📂 Folder Overview
 
 ### 📦 `/apps/api/src`
+
 - `auth/`: Login, register, token & email logic
 - `posts/`: Post CRUD + image upload interceptor
 - `chats/`: WebSocket gateway, chat rooms, messages
 - `users/`: Profile editing, nickname policy, social links
 
 ### 💻 `/apps/ui/src`
+
 - `components/`: UI components like Cards, Login, NavBar, etc.
 - `common/`: Axios configs, token handlers, date formatters
 - `assets/`: Image and SVG assets used across UI
@@ -162,8 +180,8 @@ npm run dev
 
 ## 🌐 Deployment
 
-- **Backend**: Ready for Docker + Render deployment
-  - Includes `dockerfile`, `docker-compose.yaml`
+- **Backend**: Ready for Docker + Render deployment  
+  Includes `dockerfile`, `docker-compose.yaml`
 - **Frontend**: Vite build ready for deployment on Vercel or Render
 - `.env.production` files should be configured per environment
 
@@ -176,10 +194,18 @@ It reflects my passion for fullstack development and delivering meaningful user 
 
 ---
 
+## 👨‍💻 Developer Introduction
+
+| ![Profile Picture](https://asset.cloudinary.com/dbb5z072p/27028f158129221bc0f6d048b1557c79) |
+|:--:|
+| **Kim Suhyeon** |
+| Fullstack Developer with a passion for community building and fitness-oriented applications. |
+
+---
+
 ## 📜 License
 
 MIT License
-
 
 ---
 
@@ -187,6 +213,5 @@ MIT License
 
 **Name**: Kim Suhyeon  
 **Email**: [01057557503a@gmail.com](mailto:01057557503a@gmail.com)  
-**Instagram**: [@suhyeon.ts](https://instagram.com/suhyeon.ts)
-
-License
+**Instagram**: [@suhyeon.ts](https://instagram.com/suhyeon.ts)  
+**LinkedIn**: [Suhyeon Kim](https://www.linkedin.com/in/suhyeon-kim-bb934b2b6/)
