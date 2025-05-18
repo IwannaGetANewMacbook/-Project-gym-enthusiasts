@@ -15,6 +15,7 @@ export function CardsPagination() {
   const token = localStorage.getItem('accessToken');
   if (!token || token === 'undefined') {
     ('not token');
+    localStorage.clear();
     location.replace('/auth/login/email');
   }
 
