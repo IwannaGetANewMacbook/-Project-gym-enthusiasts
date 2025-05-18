@@ -130,11 +130,9 @@ export function PostPosts() {
         navigate('/');
       })
       .catch((e) => {
-        if (e.response?.status === 401) {
-          alert('세션이 만료되었거나 토큰이 없습니다\n다시 로그인 해주세요.');
-          navigate('/auth/login/email');
-          return;
-        }
+        alert('세션이 만료되었거나 토큰이 없습니다\n다시 로그인 해주세요.');
+        navigate('/auth/login/email');
+
         console.log(e.response?.data.message);
         alert(e.response?.data.message);
         window.location.reload();
