@@ -187,6 +187,26 @@ npm run dev
 
 ---
 
+## 🛡 Admin Test Account
+
+For demo and evaluation purposes, an admin account is available for interviewers.
+
+### 🔐 Admin Login Info
+
+- **Login Page**: [https://myproject-ui.onrender.com/auth/login/email](https://myproject-ui.onrender.com/auth/login/email)
+- **Email**: `admin@su.com`
+- **Password**: `admin`
+
+> This account has elevated privileges:
+> - View and manage all user posts
+> - Delete or update any post
+> - Access user profile information
+> - Manage social links of any user
+
+Please use this account only for demonstration and testing purposes. Do not share it publicly.
+
+---
+
 ## 🙋‍♂️ Author
 
 This project was built to support a fitness-focused real-time community.  
@@ -196,7 +216,7 @@ It reflects my passion for fullstack development and delivering meaningful user 
 
 ## 👨‍💻 Developer Introduction
 
-| ![Profile Picture](https://media.licdn.com/dms/image/v2/D4D03AQFcrpzvwsUQmg/profile-displayphoto-shrink_400_400/B4DZX67pIoG8Ak-/0/1743671694808?e=1752710400&v=beta&t=UW-wnCn4YeUe5EQCi7pl3PdaPs2c90Hl-SO4Vkc3570) |
+|<img src="https://res.cloudinary.com/dbb5z072p/image/upload/v1747551539/KakaoTalk_20250518_155826430_jyk6cm.jpg" width="150" style="border-radius: 50%; margin-bottom: 1rem;" alt="Profile Photo" />  |
 |:--:|
 | **Kim Suhyeon** |
 | Fullstack Developer with a passion for community building and fitness-oriented applications. |
@@ -215,3 +235,4 @@ MIT License
 **Email**: [01057557503a@gmail.com](mailto:01057557503a@gmail.com)  
 **Instagram**: [@suhyeon.ts](https://instagram.com/suhyeon.ts)  
 **LinkedIn**: [Suhyeon Kim](https://www.linkedin.com/in/suhyeon-kim-bb934b2b6/)
+
