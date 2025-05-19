@@ -88,7 +88,7 @@ export function PostPosts() {
     setContent(e.currentTarget.value);
   };
 
-  const handlePost = async () => {
+  const handlePost = () => {
     // if a user doesn't upload imgFile, automatically upload default imgFile.
     const formData = new FormData();
     formData.append('title', title);
@@ -114,7 +114,7 @@ export function PostPosts() {
         .catch((e) => console.log('Error fetching default profile image: ', e));
       return;
     }
-    await submitPost(formData);
+    submitPost(formData);
   };
 
   const submitPost = async (formData: FormData) => {
@@ -127,7 +127,7 @@ export function PostPosts() {
       setLoading(false);
       navigate('/');
     } catch (e: any) {
-      alert('세션이 만료되었거나 토큰이 없습니다\n다시 로그인 해주세요.4');
+      alert('세션이 만료되었거나 토큰이 없습니다\n다시 로그인 해주세요.5');
       console.log('Error: ', e);
       alert(e.response?.data.message);
       // navigate('/auth/login/email');
