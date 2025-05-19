@@ -16,6 +16,7 @@ import api from '../common/api';
 import { LoadingSpinner } from './LoadingSpinner';
 import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBeforeRendering';
 import { extractAccessTokenFromLocalStorage } from '../common/extratAccessTokenFromLocalStorage';
+import { convertImagesToJpeg } from '../common/imageConverter';
 
 // 클라이언트 측에서 요청 시 쿠키를 포함하고, 응답 시 서버로부터 전달된 쿠키를 브라우저에 저장할 수 있도록 하는 역할
 // 모든 요청과 응답에 쿠키를 포함할 수 있도록 하기 위하여 전역으로 true로 설정.
@@ -74,6 +75,7 @@ export function PostPosts() {
 
     setImageFiles(validFiles);
 
+    // 이미지 미리보기 생성
     if (validFiles) {
       const previews = validFiles.map((v) => URL.createObjectURL(v));
       setImagePreviews(previews);
@@ -88,46 +90,39 @@ export function PostPosts() {
     setContent(e.currentTarget.value);
   };
 
-  const handlePost = () => {
-    // if a user doesn't upload imgFile, automatically upload default imgFile.
+  const handlePost = async () => {
+    // 사용자가 이미지를 업로드 하지 않은 경우 예외처리.
+    if (imageFiles.length === 0) {
+      alert('사진을 업로드 해주세요.');
+      throw new Error('사진을 업로드 해주세요.');
+    }
+    // 사용자가 제목 또는 내용을 입력하지 않은 경우 예외처리.
+    if (title.length === 0 || content.length === 0) {
+      alert('제목과 내용을 입력해주세요.');
+      throw new Error('제목과 내용을 입력해주세요.');
+    }
+
     const formData = new FormData();
     formData.append('title', title);
     formData.append('content', content);
 
-    // 여러 파일 추가
-    if (imageFiles.length > 0) {
-      imageFiles.forEach((v) => {
-        // 'images' 라는 필드로 배열 전송
-        formData.append('images', v);
-      });
-    } else {
-      alert('사진을 업로드 해주세요.');
-      throw new Error('사진을 업로드 해주세요.');
+    // 이미지 확장자 변환 로직 적용
+    const convertedImages = await convertImagesToJpeg(imageFiles);
+    convertedImages.forEach((v) => {
+      formData.append('images', v);
+    });
 
-      // // 이미지가 없을 경우 기본 이미지 추가
-      // fetch(defaultProfile)
-      //   .then((res) => res.blob())
-      //   .then((blob) => {
-      //     const defaultFile = new File([blob], 'defaultProfile.jpg', {
-      //       type: blob.type,
-      //     });
-      //     formData.append('images', defaultFile);
-      //     submitPost(formData);
-      //   })
-      //   .catch((e) => console.log('Error fetching default profile image: ', e));
-      // return;
-    }
+    // submitPost로 formData 전달
     submitPost(formData);
   };
 
   const submitPost = async (formData: FormData) => {
     try {
       setLoading(true);
-      console.log('formData: ', formData.getAll('images'));
+
       const result = await api.post(`${env.VITE_HOST}/posts`, formData, {});
       console.log(result.data);
       alert('포스팅 완료!');
-      setLoading(false);
       navigate('/');
     } catch (e: any) {
       alert('세션이 만료되었거나 토큰이 없습니다\n다시 로그인 해주세요.6');
@@ -138,8 +133,6 @@ export function PostPosts() {
     } finally {
       setLoading(false);
     }
-
-    setLoading(true);
   };
 
   // html 렌더링 전 accessToken 유무 검사
@@ -158,13 +151,22 @@ export function PostPosts() {
               <Form>
                 <Form.Group controlId='formFileMultiple' className='mb-3'>
                   <div className={styles.fileUploadContainer}>
-                    <input
+                    <Form.Control
+                      type='file'
+                      id='fileInput'
+                      multiple
+                      onChange={handleImgForm}
+                      hidden={true}
+                      isInvalid={imageFiles.length === 0}
+                    />
+
+                    {/* <input
                       type='file'
                       id='fileInput'
                       multiple
                       onChange={handleImgForm}
                       style={{ display: 'none' }}
-                    />
+                    /> */}
                     <Button
                       variant='outline-primary'
                       onClick={() =>
@@ -173,6 +175,9 @@ export function PostPosts() {
                     >
                       사진 선택
                     </Button>
+                    <Form.Control.Feedback type='invalid'>
+                      사진을 업로드 해주세요.
+                    </Form.Control.Feedback>
                     <p className='text-muted mt-2'>
                       최대 3개의 파일을 업로드할 수 있습니다.
                     </p>
@@ -211,7 +216,11 @@ export function PostPosts() {
                     type='text'
                     placeholder='제목을 입력해 주세요.'
                     onChange={handleTitleForm}
+                    isInvalid={title.length === 0}
                   />
+                  <Form.Control.Feedback type='invalid'>
+                    제목을 입력해 주세요.
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className='mb-3'>
                   <Form.Label>내용</Form.Label>
@@ -220,14 +229,23 @@ export function PostPosts() {
                     rows={5}
                     placeholder='내용을 입력해 주세요.'
                     onChange={handleContentForm}
+                    isInvalid={content.length === 0}
                   />
+                  <Form.Control.Feedback type='invalid'>
+                    내용을 입력해 주세요.
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <div className='d-grid'>
                   <Button
                     variant='primary'
                     type='button'
                     onClick={handlePost}
-                    disabled={btnDisable}
+                    disabled={
+                      !title ||
+                      !content ||
+                      btnDisable ||
+                      imageFiles.length === 0
+                    }
                   >
                     Post
                   </Button>
