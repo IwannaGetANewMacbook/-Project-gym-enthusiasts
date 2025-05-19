@@ -125,7 +125,9 @@ export function PostPosts() {
       alert('포스팅 완료!');
       navigate('/');
     } catch (e: any) {
-      alert('세션이 만료되었거나 토큰이 없습니다\n다시 로그인 해주세요.6');
+      alert(
+        '세션이 만료되었거나 토큰이 없습니다\n다시 로그인 해주세요(리팩토링후)'
+      );
       console.log('Error: ', e);
       alert(e.response?.data.message);
       // navigate('/auth/login/email');
