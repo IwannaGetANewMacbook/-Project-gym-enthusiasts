@@ -88,7 +88,7 @@ export function PostPosts() {
     setContent(e.currentTarget.value);
   };
 
-  const handlePost = () => {
+  const handlePost = async () => {
     // if a user doesn't upload imgFile, automatically upload default imgFile.
     const formData = new FormData();
     formData.append('title', title);
@@ -114,19 +114,20 @@ export function PostPosts() {
         .catch((e) => console.log('Error fetching default profile image: ', e));
       return;
     }
-    submitPost(formData);
+    await submitPost(formData);
   };
 
   const submitPost = async (formData: FormData) => {
     try {
       setLoading(true);
+      console.log('formData: ', formData.getAll('images'));
       const result = await api.post(`${env.VITE_HOST}/posts`, formData, {});
       console.log(result.data);
       alert('포스팅 완료!');
       setLoading(false);
       navigate('/');
     } catch (e: any) {
-      alert('세션이 만료되었거나 토큰이 없습니다\n다시 로그인 해주세요.1');
+      alert('세션이 만료되었거나 토큰이 없습니다\n다시 로그인 해주세요.4');
       console.log('Error: ', e);
       alert(e.response?.data.message);
       // navigate('/auth/login/email');
