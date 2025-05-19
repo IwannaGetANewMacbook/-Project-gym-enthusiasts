@@ -26,6 +26,7 @@ export class CloudinaryService {
       throw new Error('No files found');
     }
 
+    console.log('요청 받은 파일들: ', files);
     const uploadPromises = files.map((file) => {
       return new Promise<UploadApiResponse | UploadApiErrorResponse>(
         (resolve, reject) => {
