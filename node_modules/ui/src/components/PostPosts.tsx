@@ -9,7 +9,7 @@ import {
   Image,
   Container,
 } from 'react-bootstrap';
-import defaultProfile from '../assets/No-photo.jpg';
+// import defaultProfile from '../assets/No-photo.jpg';
 import styles from './styles/PostPosts.module.css';
 import axios from 'axios';
 import api from '../common/api';
@@ -101,18 +101,21 @@ export function PostPosts() {
         formData.append('images', v);
       });
     } else {
-      // 이미지가 없을 경우 기본 이미지 추가
-      fetch(defaultProfile)
-        .then((res) => res.blob())
-        .then((blob) => {
-          const defaultFile = new File([blob], 'defaultProfile.jpg', {
-            type: blob.type,
-          });
-          formData.append('images', defaultFile);
-          submitPost(formData);
-        })
-        .catch((e) => console.log('Error fetching default profile image: ', e));
-      return;
+      alert('사진을 업로드 해주세요.');
+      throw new Error('사진을 업로드 해주세요.');
+
+      // // 이미지가 없을 경우 기본 이미지 추가
+      // fetch(defaultProfile)
+      //   .then((res) => res.blob())
+      //   .then((blob) => {
+      //     const defaultFile = new File([blob], 'defaultProfile.jpg', {
+      //       type: blob.type,
+      //     });
+      //     formData.append('images', defaultFile);
+      //     submitPost(formData);
+      //   })
+      //   .catch((e) => console.log('Error fetching default profile image: ', e));
+      // return;
     }
     submitPost(formData);
   };
@@ -127,7 +130,7 @@ export function PostPosts() {
       setLoading(false);
       navigate('/');
     } catch (e: any) {
-      alert('세션이 만료되었거나 토큰이 없습니다\n다시 로그인 해주세요.5');
+      alert('세션이 만료되었거나 토큰이 없습니다\n다시 로그인 해주세요.6');
       console.log('Error: ', e);
       alert(e.response?.data.message);
       // navigate('/auth/login/email');
