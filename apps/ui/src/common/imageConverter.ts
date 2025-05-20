@@ -8,10 +8,14 @@ import imageCompression from 'browser-image-compression';
  * @returns 변환된 File 객체 배열 (모두 image/jpeg 형식으로 변경됨)
  */
 export const convertImagesToJpeg = async (files: File[]): Promise<File[]> => {
+  console.log('convertImagesToJpeg 함수 호출됨');
+  console.log('변환전 파일들: ', files);
   // 변환에 사용할 옵션 설정
   const options = {
     fileType: 'image/jpeg', // 모든 이미지를 JPEG으로 변환
-    maxSizeMB: 10, // 최대 파일 용량 제한 (10MB)
+    maxSizeMB: 11, // 최대 파일 용량 제한 (1MB)
+    maxwidthOrHeight: 1920, // 최대 너비 또는 높이 (1920px)
+    initialQuality: 0.7, // 초기 압축률 설정
     useWebWorker: true, // 성능 향상을 위한 Web Worker 사용
   };
 
