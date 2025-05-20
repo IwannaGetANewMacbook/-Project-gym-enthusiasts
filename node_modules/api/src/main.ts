@@ -12,7 +12,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'https://localhost:5173',
-      'https://project-gym-enthusiasts-ui.vercel.app/',
+      'https://project-gym-enthusiasts-ui.vercel.app',
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: ['Content-Type', 'Authorization'],
