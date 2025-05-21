@@ -13,9 +13,8 @@ export const convertImagesToJpeg = async (files: File[]): Promise<File[]> => {
   // 변환에 사용할 옵션 설정
   const options = {
     fileType: 'image/jpeg', // 모든 이미지를 JPEG으로 변환
-    maxSizeMB: 1, // 최대 파일 용량 제한 (1MB)
+    maxSizeMB: 0.5, // 🔥 최대 0.5MB로 압축
     maxwidthOrHeight: 1920, // 최대 너비 또는 높이 (1920px)
-    initialQuality: 0.7, // 초기 압축률 설정
     useWebWorker: true, // 성능 향상을 위한 Web Worker 사용
   };
 
