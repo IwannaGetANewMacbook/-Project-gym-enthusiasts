@@ -6,7 +6,7 @@ A fullstack web application built to connect fitness lovers, share workout exper
 
 ## 🔗 Live Demo
 
-🌍 [https://myproject-ui.onrender.com/](https://myproject-ui.onrender.com/)
+🌍 [https://project-gym-enthusiasts-ui.vercel.app/](https://project-gym-enthusiasts-ui.vercel.app/)
 
 ---
 
@@ -180,7 +180,7 @@ npm run dev
 
 ## 🌐 Deployment
 
-- **Backend**: Ready for Docker + Render deployment  
+- **Backend**: Ready for Docker + Fly.io deployment  
   Includes `dockerfile`, `docker-compose.yaml`
 - **Frontend**: Vite build ready for deployment on Vercel or Render
 - `.env.production` files should be configured per environment
@@ -193,11 +193,12 @@ For demo and evaluation purposes, an admin account is available for interviewers
 
 ### 🔐 Admin Login Info
 
-- **Login Page**: [https://myproject-ui.onrender.com/auth/login/email](https://myproject-ui.onrender.com/auth/login/email)
+- **Login Page**: [https://project-gym-enthusiasts-ui.vercel.app/auth/login/email](https://project-gym-enthusiasts-ui.vercel.app/auth/login/email)
 - **Email**: `admin@su.com`
 - **Password**: `admin`
 
 > This account has elevated privileges:
+>
 > - View and manage all user posts
 > - Delete or update any post
 > - Access user profile information
@@ -216,10 +217,10 @@ It reflects my passion for fullstack development and delivering meaningful user 
 
 ## 👨‍💻 Developer Introduction
 
-|<img src="https://res.cloudinary.com/dbb5z072p/image/upload/v1747551539/KakaoTalk_20250518_155826430_jyk6cm.jpg" width="150" style="border-radius: 50%; margin-bottom: 1rem;" alt="Profile Photo" />  |
-|:--:|
-| **Kim Suhyeon** |
-| Fullstack Developer with a passion for community building and fitness-oriented applications. |
+| <img src="https://res.cloudinary.com/dbb5z072p/image/upload/v1747551539/KakaoTalk_20250518_155826430_jyk6cm.jpg" width="150" style="border-radius: 50%; margin-bottom: 1rem;" alt="Profile Photo" /> |
+| :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|                                                                                           **Kim Suhyeon**                                                                                            |
+|                                                     Fullstack Developer with a passion for community building and fitness-oriented applications.                                                     |
 
 ---
 
@@ -235,4 +236,3 @@ MIT License
 **Email**: [01057557503a@gmail.com](mailto:01057557503a@gmail.com)  
 **Instagram**: [@suhyeon.ts](https://instagram.com/suhyeon.ts)  
 **LinkedIn**: [Suhyeon Kim](https://www.linkedin.com/in/suhyeon-kim-bb934b2b6/)
-
