@@ -8,8 +8,6 @@ import imageCompression from 'browser-image-compression';
  * @returns 변환된 File 객체 배열 (모두 image/jpeg 형식으로 변경됨)
  */
 export const convertImagesToJpeg = async (files: File[]): Promise<File[]> => {
-  console.log('convertImagesToJpeg 함수 호출됨');
-  console.log('변환전 파일들: ', files);
   // 변환에 사용할 옵션 설정
   const options = {
     fileType: 'image/jpeg', // 모든 이미지를 JPEG으로 변환
@@ -31,11 +29,12 @@ export const convertImagesToJpeg = async (files: File[]): Promise<File[]> => {
         const compressed = await imageCompression(file, options);
 
         // 압축된 Blob 데이터를 다시 File 객체로 감싸줌
-        return new File(
+        const newFiles = new File(
           [compressed], // Blob 데이터
           file.name.replace(/\.\w+$/, '.jpg'), // 확장자명 강제로 .jpg 로 바꿈
           { type: 'image/jpeg' } // MIME 타입 설정
         );
+        return newFiles; // 변환된 파일 반환
       } catch (err) {
         // 변환 중 에러 발생 시 콘솔에 출력 후 원본 파일 그대로 사용
         console.error(`이미지 변환 실패: ${file.name}`, err);

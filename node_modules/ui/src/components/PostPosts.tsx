@@ -117,7 +117,6 @@ export function PostPosts() {
   };
 
   const submitPost = async (formData: FormData) => {
-    console.log('formData: ', formData.getAll('images'));
     try {
       setLoading(true);
 

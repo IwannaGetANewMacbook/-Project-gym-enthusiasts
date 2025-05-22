@@ -7,6 +7,7 @@ import { checkAccessTokenBeforeRendering } from '../common/checkAccessTokenBefor
 import { handleTokenExpiration } from '../common/handleTokenExpiration';
 import { LoadingSpinner } from './LoadingSpinner';
 import { extractAccessTokenFromLocalStorage } from '../common/extratAccessTokenFromLocalStorage';
+import { convertImagesToJpeg } from '../common/imageConverter';
 
 export function EditProfilePicture() {
   // const env = import.meta.env;
@@ -70,7 +71,7 @@ export function EditProfilePicture() {
     }
     setImageFiles(validFiles); // 이미지 파일 상태 설정
 
-    if (files) {
+    if (validFiles.length > 0) {
       setImagePreview(URL.createObjectURL(files[0])); // 이미지 미리보기 URL 설정
     }
   };
@@ -81,10 +82,8 @@ export function EditProfilePicture() {
       setLoading(true);
       const formData = new FormData();
       if (imageFiles.length > 0) {
-        imageFiles.forEach((v) => {
-          // 'images' 라는 필드로 배열 전송
-          formData.append('images', v);
-        });
+        const convertedImage = await convertImagesToJpeg(imageFiles);
+        formData.append('images', convertedImage[0]); // 변환된 이미지 파일을 FormData에 추가
       }
 
       // 백엔드에 post 요청을 보내서 프로필 사진 업데이트
