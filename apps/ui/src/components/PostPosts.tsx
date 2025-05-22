@@ -117,7 +117,6 @@ export function PostPosts() {
   };
 
   const submitPost = async (formData: FormData) => {
-    console.log('submitpost함수 진입');
     console.log('formData: ', formData.getAll('images'));
     try {
       setLoading(true);
@@ -125,16 +124,22 @@ export function PostPosts() {
       const result = await api.post(`${env.VITE_HOST}/posts`, formData, {
         timeout: 30000, // 30초까지 기다리게 설정
       });
+
       console.log(result.data);
       alert('포스팅 완료!');
       navigate('/');
-    } catch (e: any) {
-      alert(
-        '세션이 만료되었거나 토큰이 없습니다\n다시 로그인 해주세요(리팩토링후)6'
-      );
-      console.log('Error: ', e);
-      alert(e.response?.data.message);
-
+    } catch (error: any) {
+      console.log('Error: ', error);
+      // 예외 유형별 분기
+      if (error.code === 'ECONNABORTED') {
+        alert('요청 시간이 초과되었습니다. 인터넷 연결을 확인해주세요.');
+      } else if (!error.response) {
+        alert('서버로부터 응답이 없습니다. 잠시 후 다시 시도해주세요.');
+      } else {
+        alert('알 수 없는 오류가 발생했습니다.');
+        console.error('Error: ', error);
+      }
+      // 폼 데이터 초기화
       setImageFiles([]);
       setImagePreviews([]);
       setTitle('');

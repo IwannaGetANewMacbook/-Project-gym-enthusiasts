@@ -77,7 +77,6 @@ export class PostsController {
     // @Body('content') content: string,
     @UploadedFiles() files?: Array<Express.Multer.File>, // 다중 파일 수신
   ) {
-    console.log('일단 postcontroller에 요청이 들어옴.', ' files: ', files);
     try {
       // 1. cloudinary에 이미지 업로드 및 URL 가져오기
       const uploadResults = await this.cloudinaryService.uploadImage(
